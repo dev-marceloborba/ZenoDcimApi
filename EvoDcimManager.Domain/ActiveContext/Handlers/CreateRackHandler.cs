@@ -24,7 +24,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             AddNotifications(rack.Notifications);
 
             if (Invalid)
-                return new CommandResult(false, "Error on create rack", rack.Notifications);
+                return new CommandResult(false, "Error on create rack", Notifications);
 
             // save on repository
             _rackRepository.Save(rack);
