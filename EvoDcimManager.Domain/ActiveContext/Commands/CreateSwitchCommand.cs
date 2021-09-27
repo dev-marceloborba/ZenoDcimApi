@@ -9,7 +9,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
         public string Manufactor { get; set; }
         public string SerialNumber { get; set; }
         public int Occupation { get; set; }
-        public int RackPosition { get; set; }
+        public int Position { get; set; }
         public int EthPorts { get; set; }
 
         public void Validate()

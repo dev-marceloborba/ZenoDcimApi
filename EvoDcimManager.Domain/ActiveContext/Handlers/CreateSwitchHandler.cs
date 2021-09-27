@@ -20,10 +20,10 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
         public ICommandResult Handle(CreateSwitchCommand command)
         {
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
-            var occupation = new Capacity(command.Occupation);
-            var sw = new Switch(equipment, occupation, command.EthPorts);
+            var slot = new RackSlot(command.Position, command.Occupation);
+            var sw = new Switch(equipment, slot, command.EthPorts);
 
-            AddNotifications(equipment, occupation, sw);
+            AddNotifications(equipment, slot, sw);
 
             if (Invalid)
                 return new CommandResult(false, "Error on creating switch", Notifications);

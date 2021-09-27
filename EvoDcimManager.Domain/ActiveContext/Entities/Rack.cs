@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared;
 using Flunt.Validations;
 
@@ -8,14 +9,14 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
     {
         public int Size { get; private set; }
         public string Localization { get; private set; }
-        public Equipment[] Equipments { get; private set; }
+        public RackEquipment[] Equipments { get; private set; }
         public int OccupedSlots { get; private set; } = 0;
 
         public Rack(int size, string localization)
         {
             Size = size;
             Localization = localization;
-            Equipments = new Equipment[Size];
+            Equipments = new RackEquipment[Size];
 
             AddNotifications(
                 new Contract()
@@ -26,19 +27,17 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
             );
         }
 
-        public void AddEquipment(Equipment equipment)
+        private void IncreaseOccupedSlot(RackEquipment equipment)
         {
-            if (OccupedSlots < Size)
-            {
-                Equipments[OccupedSlots] = equipment;
-                OccupedSlots += equipment.Occupation.Value;
-            }
-            else
-            {
-                AddNotification("Equipments", "No space left");
-            }
+            OccupedSlots += equipment.Slot.Occupation;
         }
-        public void AddEquipment(Equipment equipment, int position)
+
+        private void DecreaseOccupedSlot(RackEquipment equipment)
+        {
+            OccupedSlots -= equipment.Slot.Occupation;
+        }
+
+        public void AddEquipment(RackEquipment equipment, int position)
         {
             ValidatePosition(position);
             if (Valid)
@@ -51,8 +50,14 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
                 }
                 else
                 {
-                    Equipments[currentPosition] = equipment;
-                    OccupedSlots += equipment.Occupation.Value;
+                    var slot = currentPosition;
+                    for (int i = 0; i < equipment.Slot.Occupation; i++)
+                    {
+                        Equipments[slot] = equipment;
+                        slot++;
+                    }
+
+                    IncreaseOccupedSlot(equipment);
                 }
             }
 
@@ -92,17 +97,17 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         }
 
         // Remove equipment
-        public void RemoveEquipment(int position, Equipment equipment)
+        public void RemoveEquipment(int position, RackEquipment equipment)
         {
             ValidatePosition(position);
             if (Valid)
             {
                 Equipments[position] = null;
-                OccupedSlots -= equipment.Occupation.Value;
+                DecreaseOccupedSlot(equipment);
             }
         }
 
-        public void UpdateEquipment(Equipment equipment, int position)
+        public void UpdateEquipment(RackEquipment equipment, int position)
         {
             ValidatePosition(position);
             if (Valid)

@@ -24,16 +24,16 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             var cpu = new Cpu(command.Cpu);
             var memory = new Memory(command.Memory);
             var storage = new Capacity(command.Storage);
-            var occupation = new Capacity(command.Occupation);
+            var slot = new RackSlot(command.Position, command.Occupation);
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
 
             var server = new Server(equipment,
-                                  occupation,
+                                  slot,
                                   cpu,
                                   memory,
                                   storage);
 
-            AddNotifications(cpu, memory, storage, occupation, equipment, server);
+            AddNotifications(cpu, memory, storage, slot, equipment, server);
 
             if (Invalid)
                 return new CommandResult(false, "Failure do create server", Notifications);

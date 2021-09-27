@@ -22,10 +22,10 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
 
             var capacity = new Capacity(command.Capacity);
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
-            var occupation = new Capacity(command.Capacity);
-            var storage = new Storage(equipment, occupation, capacity);
+            var slot = new RackSlot(command.Position, command.Occupation);
+            var storage = new Storage(equipment, slot, capacity);
 
-            AddNotifications(capacity, equipment, occupation, storage);
+            AddNotifications(capacity, equipment, slot, storage);
 
             if (Invalid)
                 return new CommandResult(false, "Cannot create storage", Notifications);

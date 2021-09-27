@@ -2,9 +2,9 @@ using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
-    public class Storage : Equipment
+    public class Storage : RackEquipment
     {
-        public Storage(BaseEquipment baseEquipment, Capacity occupation, Capacity capacity) : base(baseEquipment, occupation)
+        public Storage(BaseEquipment baseEquipment, RackSlot slot, Capacity capacity) : base(baseEquipment, slot)
         {
             Capacity = capacity;
         }
