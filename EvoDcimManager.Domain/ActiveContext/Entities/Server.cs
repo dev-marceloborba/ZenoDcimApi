@@ -4,6 +4,10 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
     public class Server : RackEquipment
     {
+        public Server()
+        {
+
+        }
         public Server(BaseEquipment baseEquipment, RackSlot slot, Cpu cpu, Memory memory, Capacity storage) : base(baseEquipment, slot)
         {
             Cpu = cpu;

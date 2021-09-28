@@ -1,9 +1,10 @@
+using EvoDcimManager.Shared;
 using EvoDcimManager.Shared.Entities;
 using Flunt.Validations;
 
 namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
 {
-    public class Cpu : ValueObject
+    public class Cpu : Entity
     {
         public string Name { get; private set; }
 

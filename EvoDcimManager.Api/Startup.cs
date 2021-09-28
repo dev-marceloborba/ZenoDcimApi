@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EvoDcimManager.Domain.ActiveContext.Handlers;
+using EvoDcimManager.Domain.ActiveContext.Repositories;
 using EvoDcimManager.Domain.UserContext.Handlers;
 using EvoDcimManager.Domain.UserContext.Repositories;
 using EvoDcimManager.Infra.Contexts;
 using EvoDcimManager.Infra.Repositories;
+using EvoDcimManager.Infra.Services;
 using EvoDcimManager.Shared.Handlers;
+using EvoDcimManager.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,13 +40,22 @@ namespace EvoDcimManager.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // contexts
             services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Database"));
+            services.AddDbContext<ActiveContext>(opt => opt.UseInMemoryDatabase("Database"));
+
+            // services
+            services.AddTransient<IEmailService, EmailService>();
 
             // repositories
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRackRepository, RackRepository>();
+            services.AddTransient<IServerRepository, ServerRepository>();
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
+            services.AddTransient<CreateRackHandler, CreateRackHandler>();
+            services.AddTransient<CreateServerHandler, CreateServerHandler>();
 
             services.AddCors();
             services.AddResponseCompression(options =>

@@ -18,9 +18,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateRackCommand command)
         {
-
             var rack = new Rack(command.Size, command.Localization);
-
             AddNotifications(rack.Notifications);
 
             if (Invalid)

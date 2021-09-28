@@ -4,6 +4,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
 {
     public class CreateRackCommand : ICommand
     {
+        public int Size { get; set; }
+        public string Localization { get; set; }
         public CreateRackCommand()
         {
 
@@ -13,10 +15,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
             Size = size;
             Localization = localization;
         }
-
-        public int Size { get; set; }
-        public string Localization { get; set; }
-
         public void Validate()
         {
 

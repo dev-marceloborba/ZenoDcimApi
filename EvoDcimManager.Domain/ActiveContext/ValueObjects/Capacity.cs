@@ -1,9 +1,10 @@
+using EvoDcimManager.Shared;
 using EvoDcimManager.Shared.Entities;
 using Flunt.Validations;
 
 namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
 {
-    public class Capacity : ValueObject
+    public class Capacity : Entity
     {
         public int Value { get; private set; }
 

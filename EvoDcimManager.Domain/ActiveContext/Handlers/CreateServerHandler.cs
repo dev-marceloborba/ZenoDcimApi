@@ -38,7 +38,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             if (Invalid)
                 return new CommandResult(false, "Failure do create server", Notifications);
 
-            var rack = _rackRepository.Find(command.RackId);
+            // var rack = _rackRepository.Find(command.RackId);
+            var rack = new Rack(45, "ABC");
             if (rack == null)
             {
                 AddNotification("Rack", "Rack was not found");

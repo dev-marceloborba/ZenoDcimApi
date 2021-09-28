@@ -1,9 +1,10 @@
+using EvoDcimManager.Shared;
 using EvoDcimManager.Shared.Entities;
 using Flunt.Validations;
 
 namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
 {
-    public class RackSlot : ValueObject
+    public class RackSlot : Entity
     {
         public int Position { get; private set; }
         public int Occupation { get; private set; }

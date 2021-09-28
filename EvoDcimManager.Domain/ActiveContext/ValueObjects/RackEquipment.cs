@@ -1,11 +1,15 @@
 using EvoDcimManager.Domain.ActiveContext.Entities;
-using EvoDcimManager.Shared.Entities;
+using EvoDcimManager.Shared;
 using Flunt.Validations;
 
 namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
 {
-    public abstract class RackEquipment : ValueObject
+    public abstract class RackEquipment : Entity
     {
+        public RackEquipment()
+        {
+
+        }
         public RackEquipment(BaseEquipment baseEquipment, RackSlot slot)
         {
             BaseEquipment = baseEquipment;
