@@ -7,16 +7,19 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
     public class Rack : Entity
     {
+        private List<RackEquipment> _equipments;
         public int Size { get; set; }
         public string Localization { get; set; }
         public int OccupedSlots { get; set; } = 0;
-        public RackEquipment[] Equipments { get; set; }
+        // public RackEquipment[] Equipments { get; set; }
+        public IReadOnlyCollection<RackEquipment> Equipments => _equipments.ToArray();
 
         public Rack(int size, string localization)
         {
             Size = size;
             Localization = localization;
-            Equipments = new RackEquipment[Size];
+            _equipments = new List<RackEquipment>();
+            // Equipments = new RackEquipment[Size];
 
             AddNotifications(
                 new Contract()
@@ -34,32 +37,55 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
             OccupedSlots -= equipment.Slot.Occupation;
         }
-        public void AddEquipment(RackEquipment equipment, int position)
+        public void AddEquipment(RackEquipment equipment)
         {
-            ValidatePosition(position);
+            ValidatePosition(equipment.Slot.Position);
             if (Valid)
             {
-                var currentPosition = position - 1;
-                if (Equipments[currentPosition] != null)
+                // verifica se o slot está ocupado
+                if (_equipments.Exists(x => x.Slot.Position == equipment.Slot.Position))
                 {
                     AddNotification("Equipment", "There's already an equipment on the selected slot");
                     return;
                 }
                 else
                 {
-                    var slot = currentPosition;
-                    for (int i = 0; i < equipment.Slot.Occupation; i++)
-                    {
-                        Equipments[slot] = equipment;
-                        slot++;
-                    }
+                    var position = equipment.Slot.Position;
+                    var occupation = equipment.Slot.Occupation;
 
+                    for (int i = 0; i < occupation; i++)
+                    {
+                        _equipments.Add(equipment);
+                        position++;
+                    }
                     IncreaseOccupedSlot(equipment);
                 }
             }
-
-
         }
+        // public void AddEquipment(RackEquipment equipment, int position)
+        // {
+        //     ValidatePosition(position);
+        //     if (Valid)
+        //     {
+        //         var currentPosition = position - 1;
+        //         if (Equipments[currentPosition] != null)
+        //         {
+        //             AddNotification("Equipment", "There's already an equipment on the selected slot");
+        //             return;
+        //         }
+        //         else
+        //         {
+        //             var slot = currentPosition;
+        //             for (int i = 0; i < equipment.Slot.Occupation; i++)
+        //             {
+        //                 Equipments[slot] = equipment;
+        //                 slot++;
+        //             }
+
+        //             IncreaseOccupedSlot(equipment);
+        //         }
+        //     }
+        // }
         public double RackSpaceUsage()
         {
             double usage = (double)OccupedSlots / Size;
@@ -78,13 +104,19 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         }
         public int[] AvailablePositions()
         {
+            // lista
+            // elemento1 = 2u
+            // elemento2 = 2u
+            // rack=8u
+            // livre: 5, 6, 7, 8
             if (OccupedSlots == Size)
                 return null;
 
             var positions = new List<int>();
-            for (int i = 0; i < Size; i++)
+            for (int i = 1; i <= Size; i++)
             {
-                if (Equipments[i] == null)
+                // if (Equipments[i] == null)
+                // if (!_equipments.Exists(x => x.Slot.Position == i))
                 {
                     positions.Add(i + 1);
                 }
@@ -96,7 +128,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
             ValidatePosition(position);
             if (Valid)
             {
-                Equipments[position] = null;
+                // Equipments[position] = null;
+                _equipments.Remove(equipment);
                 DecreaseOccupedSlot(equipment);
             }
         }
@@ -104,7 +137,12 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
             ValidatePosition(position);
             if (Valid)
-                Equipments[position] = equipment;
+            {
+                var selectedEquipment = _equipments.Find(x => x.Slot.Position == equipment.Slot.Position);
+                selectedEquipment = equipment;
+
+            }
+            // Equipments[position] = equipment;
 
         }
         private void ValidatePosition(int position)

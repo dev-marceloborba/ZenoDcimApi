@@ -8,6 +8,7 @@ namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
     {
         public int Position { get; private set; }
         public int Occupation { get; private set; }
+        public RackEquipment Equipment { get; private set; }
 
         public RackSlot(int position, int occupation)
         {
@@ -19,6 +20,11 @@ namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
                 .IsGreaterThan(Position, 0, "Position", "Position should be greater than zero")
                 .IsGreaterThan(Occupation, 0, "Occupation", "Occupation should be greater than zero")
             );
+        }
+
+        public RackSlot(int position, int occupation, RackEquipment equipment) : this(position, occupation)
+        {
+            Equipment = equipment;
         }
     }
 }
