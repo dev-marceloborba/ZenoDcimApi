@@ -20,8 +20,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
         public ICommandResult Handle(CreateSwitchCommand command)
         {
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
-            var slot = new RackSlot(command.Position, command.Occupation);
-            var sw = new Switch(equipment, slot, command.EthPorts);
+            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
+            var sw = new Switch(equipment, command.EthPorts);
 
             AddNotifications(equipment, slot, sw);
 

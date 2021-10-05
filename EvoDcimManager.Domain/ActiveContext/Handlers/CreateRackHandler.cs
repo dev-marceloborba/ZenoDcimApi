@@ -24,6 +24,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             if (Invalid)
                 return new CommandResult(false, "Error on create rack", Notifications);
 
+            rack.InitEmptyRack();
+
             // save on repository
             _rackRepository.Save(rack);
 

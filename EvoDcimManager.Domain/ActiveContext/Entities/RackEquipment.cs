@@ -3,22 +3,19 @@ using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
-    public abstract class Equipment : Entity
+    public class RackEquipment : Entity
     {
-        public Equipment(BaseEquipment baseEquipment, Capacity occupation)
-        {
-            BaseEquipment = baseEquipment;
-            Occupation = occupation;
-
-            AddNotifications(baseEquipment.Notifications);
-        }
-
         public BaseEquipment BaseEquipment { get; private set; }
-        public int RackPosition { get; private set; }
-        public Capacity Occupation { get; private set; }
         public Rack Rack { get; private set; }
 
+        public RackEquipment()
+        {
 
+        }
+        public RackEquipment(BaseEquipment baseEquipment)
+        {
+            BaseEquipment = baseEquipment;
+        }
 
         public void AssociateRack(Rack rack)
         {

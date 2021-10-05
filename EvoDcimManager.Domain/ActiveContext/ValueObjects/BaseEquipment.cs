@@ -1,11 +1,9 @@
-using System;
-using EvoDcimManager.Shared;
-using EvoDcimManager.Shared.Entities;
+using EvoDcimManager.Shared.ValueObjects;
 using Flunt.Validations;
 
 namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
 {
-    public class BaseEquipment : Entity
+    public class BaseEquipment : ValueObject
     {
         public BaseEquipment(string name, string model, string manufactor, string serialNumber)
         {

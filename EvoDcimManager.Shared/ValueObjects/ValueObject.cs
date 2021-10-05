@@ -1,6 +1,6 @@
 using Flunt.Notifications;
 
-namespace EvoDcimManager.Shared.Entities
+namespace EvoDcimManager.Shared.ValueObjects
 {
     public abstract class ValueObject : Notifiable
     {

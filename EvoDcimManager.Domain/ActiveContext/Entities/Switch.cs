@@ -5,7 +5,11 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
     public class Switch : RackEquipment
     {
-        public Switch(BaseEquipment baseEquipment, RackSlot slot, int ethPorts) : base(baseEquipment, slot)
+        public Switch()
+        {
+
+        }
+        public Switch(BaseEquipment baseEquipment, int ethPorts) : base(baseEquipment)
         {
             EthPorts = ethPorts;
             AddNotifications(new Contract()

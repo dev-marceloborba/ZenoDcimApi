@@ -1,5 +1,4 @@
 using EvoDcimManager.Domain.ActiveContext.Entities;
-using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +12,8 @@ namespace EvoDcimManager.Infra.Contexts
 
         public DbSet<Rack> Racks { get; set; }
         public DbSet<Server> Servers { get; set; }
+        // public DbSet<Switch> Switches { get; set; }
+        // public DbSet<Storage> Storages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,37 +21,68 @@ namespace EvoDcimManager.Infra.Contexts
 
             // rack
             modelBuilder.Entity<Rack>().ToTable("rack");
-            modelBuilder.Entity<Rack>().Property(x => x.Id);
-            modelBuilder.Entity<Rack>().HasKey(x => x.Id);
+            modelBuilder.Entity<Rack>().Property(x => x.Localization).HasMaxLength(12).HasColumnType("varchar(12)");
             modelBuilder.Entity<Rack>().Property(x => x.Size);
-            modelBuilder.Entity<Rack>().Property(x => x.OccupedSlots);
-            modelBuilder.Entity<Rack>().Property(x => x.Localization).HasColumnType("varchar(12)");
-            modelBuilder.Entity<Rack>()
-                .HasMany(x => x.Equipments)
-                .WithOne(x => x.Rack);
-            modelBuilder.Entity<Rack>().HasIndex(x => x.Localization);
+            modelBuilder.Entity<Rack>().OwnsMany(
+                p => p.Slots,
+                a =>
+                {
+                    a.Property(x => x.InitialPosition);
+                    a.Property(x => x.FinalPosition);
+                    a.OwnsOne(q => q.Equipment,
+                        b =>
+                        {
+                            b.OwnsOne(r => r.BaseEquipment, c =>
+                            {
+                                c.Property(x => x.Name).HasMaxLength(30).HasColumnType("varchar(30)");
+                                c.Property(x => x.Model).HasMaxLength(30).HasColumnType("varchar(30)");
+                                c.Property(x => x.Manufactor).HasMaxLength(30).HasColumnType("varchar(30)");
+                                c.Property(x => x.SerialNumber).HasMaxLength(30).HasColumnType("varchar(30)");
+                            });
+                            // b.OwnsOne(r => r.Rack, c =>
+                            // {
 
-            // rack equipment
-            modelBuilder.Entity<RackEquipment>().ToTable("rack_equipment");
-            modelBuilder.Entity<RackEquipment>().Property(x => x.Id);
-            modelBuilder.Entity<RackEquipment>().HasKey(x => x.Id);
-            // modelBuilder.Entity<RackEquipment>().Property(x => x.BaseEquipment.Name);
+                            // });
+                        }
+                    );
+                }
+            );
 
             // server
             modelBuilder.Entity<Server>().ToTable("server");
-            // modelBuilder.Entity<Server>().Property(x => x.Id);
-            // modelBuilder.Entity<Server>().HasKey(x => x.Id);
-            // modelBuilder.Entity<Server>().Property(x => x.BaseEquipment.Name).HasColumnType("varchar(30)");
-            // modelBuilder.Entity<Server>().Property(x => x.BaseEquipment.Manufactor).HasColumnType("varchar(40)");
-            // modelBuilder.Entity<Server>().Property(x => x.BaseEquipment.Model).HasColumnType("varchar(40)");
-            // modelBuilder.Entity<Server>().Property(x => x.BaseEquipment.SerialNumber).HasColumnType("varchar(20)");
-            // modelBuilder.Entity<Server>().Property(x => x.Slot.Position);
-            // modelBuilder.Entity<Server>().Property(x => x.Slot.Occupation);
-            // modelBuilder.Entity<Server>().Property(x => x.Cpu.Name).HasColumnType("varchar(40)");
-            // modelBuilder.Entity<Server>().Property(x => x.Memory.Value);
-            // modelBuilder.Entity<Server>().Property(x => x.Storage.Value);
+            modelBuilder.Entity<Server>().OwnsOne(
+                p => p.Cpu,
+                a =>
+                {
+                    a.Property(x => x.Name).HasMaxLength(30).HasColumnType("varchar(30)");
+                }
+            );
+            modelBuilder.Entity<Server>().OwnsOne(
+                p => p.Memory,
+                a =>
+                {
+                    a.Property(x => x.Value);
+                }
+            );
+            modelBuilder.Entity<Server>().OwnsOne(
+                p => p.Storage,
+                a =>
+                {
+                    a.Property(x => x.Value);
+                }
+            );
+            modelBuilder.Entity<Server>().OwnsOne(
+                p => p.BaseEquipment,
+                a =>
+                {
+                    a.Property(x => x.Name).HasMaxLength(30).HasColumnType("varchar(30)");
+                    a.Property(x => x.Model).HasMaxLength(30).HasColumnType("varchar(30)");
+                    a.Property(x => x.Manufactor).HasMaxLength(30).HasColumnType("varchar(30)");
+                    a.Property(x => x.SerialNumber).HasMaxLength(30).HasColumnType("varchar(30)");
+                }
+            );
+
 
         }
-
     }
 }

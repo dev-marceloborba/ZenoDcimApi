@@ -8,17 +8,16 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
 
         }
-        public Server(BaseEquipment baseEquipment, RackSlot slot, Cpu cpu, Memory memory, Capacity storage) : base(baseEquipment, slot)
+
+        public Server(BaseEquipment baseEquipment, Cpu cpu, Memory memory, Capacity storage) : base(baseEquipment)
         {
             Cpu = cpu;
             Memory = memory;
             Storage = storage;
             AddNotifications(baseEquipment.Notifications);
         }
-
         public Cpu Cpu { get; private set; }
         public Memory Memory { get; private set; }
         public Capacity Storage { get; private set; }
-
     }
 }

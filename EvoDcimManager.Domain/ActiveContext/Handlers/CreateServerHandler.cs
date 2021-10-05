@@ -24,11 +24,10 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             var cpu = new Cpu(command.Cpu);
             var memory = new Memory(command.Memory);
             var storage = new Capacity(command.Storage);
-            var slot = new RackSlot(command.Position, command.Occupation);
+            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
 
             var server = new Server(equipment,
-                                  slot,
                                   cpu,
                                   memory,
                                   storage);
@@ -38,13 +37,16 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             if (Invalid)
                 return new CommandResult(false, "Failure do create server", Notifications);
 
-            // var rack = _rackRepository.Find(command.RackId);
-            var rack = new Rack(45, "ABC");
+            var rack = _rackRepository.Find(command.RackId);
+            // var rack = new Rack(45, "ABC");
             if (rack == null)
             {
                 AddNotification("Rack", "Rack was not found");
                 return new CommandResult(false, "Rack was not found", "");
             }
+
+            slot.AddEquipment(server);
+            rack.PlaceEquipment(slot);
 
             server.AssociateRack(rack);
 

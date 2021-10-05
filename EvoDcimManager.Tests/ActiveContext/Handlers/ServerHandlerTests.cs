@@ -32,7 +32,8 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.Cpu = "Intel x86";
             command.Memory = 32;
             command.Storage = 512;
-            command.Position = 3;
+            command.InitialPosition = 1;
+            command.FinalPosition = 2;
             command.RackId = _rackRepository.List().FirstOrDefault().Id;
 
             var handler = new CreateServerHandler(_serverRepository, _rackRepository);
@@ -53,8 +54,8 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.Cpu = "Intel x86";
             command.Memory = 32;
             command.Storage = 512;
-            command.Position = 3;
-            command.Occupation = 1;
+            command.InitialPosition = 1;
+            command.FinalPosition = 2;
             command.RackId = _rackRepository.List().FirstOrDefault().Id;
 
             var handler = new CreateServerHandler(_serverRepository, _rackRepository);
@@ -75,7 +76,8 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.Cpu = "Intel x86";
             command.Memory = 32;
             command.Storage = 512;
-            command.Position = 3;
+            command.InitialPosition = 1;
+            command.FinalPosition = 2;
             command.RackId = Guid.NewGuid();
 
             var handler = new CreateServerHandler(_serverRepository, _rackRepository);

@@ -15,13 +15,13 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         private readonly Name _serverName = new Name("Server01");
         private readonly Rack _rack = new Rack(16, "F1-A12");
         private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
-        private readonly RackSlot _rackSlot = new RackSlot(1, 2);
+        private readonly RackPosition _rackSlot = new RackPosition(1, 2);
 
         [TestMethod]
         [TestCategory("Entities")]
         public void ShouldCreateAValidServer()
         {
-            var server = new Server(_serverBase, _rackSlot, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
             Assert.AreEqual(server.Valid, true);
         }
 
@@ -30,7 +30,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         public void ShouldNotCreateAnInvalidServer()
         {
             var equipment = new BaseEquipment("", "HP-Proliant", "HP", "12345679");
-            var server = new Server(equipment, _rackSlot, _cpu, _memory, _storage);
+            var server = new Server(equipment, _cpu, _memory, _storage);
             Assert.AreEqual(server.Invalid, true);
         }
 
@@ -38,7 +38,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldAssociateAValidRack()
         {
-            var server = new Server(_serverBase, _rackSlot, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
             server.AssociateRack(_rack);
             Assert.IsNotNull(server.Rack);
         }
@@ -47,7 +47,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldNotAssociateAnInvalidRack()
         {
-            var server = new Server(_serverBase, _rackSlot, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
             var rack = new Rack(0, "");
             server.AssociateRack(rack);
             Assert.AreEqual(server.Invalid, true);

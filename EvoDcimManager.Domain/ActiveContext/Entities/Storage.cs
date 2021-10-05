@@ -4,7 +4,11 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
     public class Storage : RackEquipment
     {
-        public Storage(BaseEquipment baseEquipment, RackSlot slot, Capacity capacity) : base(baseEquipment, slot)
+        public Storage()
+        {
+
+        }
+        public Storage(BaseEquipment baseEquipment, Capacity capacity) : base(baseEquipment)
         {
             Capacity = capacity;
         }

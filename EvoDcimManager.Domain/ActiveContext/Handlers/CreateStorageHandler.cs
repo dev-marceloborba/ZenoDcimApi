@@ -22,8 +22,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
 
             var capacity = new Capacity(command.Capacity);
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
-            var slot = new RackSlot(command.Position, command.Occupation);
-            var storage = new Storage(equipment, slot, capacity);
+            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
+            var storage = new Storage(equipment, capacity);
 
             AddNotifications(capacity, equipment, slot, storage);
 

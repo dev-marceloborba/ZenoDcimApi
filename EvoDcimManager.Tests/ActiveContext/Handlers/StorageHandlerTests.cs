@@ -28,8 +28,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
             command.Manufactor = "Manufactor";
             command.SerialNumber = "SerialNumber";
             command.Capacity = 10;
-            command.Occupation = 2;
-            command.Position = 1;
+            command.InitialPosition = 1;
+            command.FinalPosition = 2;
 
             var handler = new CreateStorageHandler(_storageRepository);
             handler.Handle(command);
@@ -47,8 +47,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
             command.Manufactor = "Manufactor";
             command.SerialNumber = "SerialNumber";
             command.Capacity = 0;
-            command.Occupation = 2;
-            command.Position = 1;
+            command.InitialPosition = 1;
+            command.FinalPosition = 2;
 
             var handler = new CreateStorageHandler(_storageRepository);
             handler.Handle(command);

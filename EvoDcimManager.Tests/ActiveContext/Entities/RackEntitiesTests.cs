@@ -18,10 +18,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldAdd3EquipmentsOnRack()
         {
-            var rack = new Rackv2(16, "F1-A12");
+            var rack = new Rack(16, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 3, 4));
@@ -34,10 +34,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldHave6OccupedSlots()
         {
-            var rack = new Rackv2(16, "F1-A12");
+            var rack = new Rack(16, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 3, 4));
@@ -50,10 +50,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnInvalidIfRackCapacityIsFullWhenNewEquipmentIsAdded()
         {
-            var rack = new Rackv2(6, "F1-A12");
+            var rack = new Rack(6, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 3, 4));
@@ -67,10 +67,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void SpaceUsedShouldBe50()
         {
-            var rack = new Rackv2(8, "F1-A12");
+            var rack = new Rack(8, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 3, 4));
@@ -82,10 +82,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void AvailableSpaceShouldBe50()
         {
-            var rack = new Rackv2(8, "F1-A12");
+            var rack = new Rack(8, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 3, 4));
@@ -96,10 +96,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnInvalidWhenAnEquipmentIsAddedOnANotAvaibleSlot()
         {
-            var rack = new Rackv2(8, "F1-A12");
+            var rack = new Rack(8, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
@@ -110,10 +110,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnAvailableSlot9()
         {
-            var rack = new Rackv2(10, "F1-A12");
+            var rack = new Rack(10, "F1-A12");
             rack.InitEmptyRack();
 
-            var server = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server, 1, 2));
             rack.PlaceEquipment(new RackPosition(server, 3, 4));
@@ -127,14 +127,14 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnAvaibleSlot7to8()
         {
-            var rack = new Rackv2(12, "F1-A12");
+            var rack = new Rack(12, "F1-A12");
             rack.InitEmptyRack();
 
-            var server1 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server2 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server3 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server4 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server5 = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server1 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server2 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server3 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server4 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server5 = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server1, 1, 2));
             rack.PlaceEquipment(new RackPosition(server2, 3, 4));
@@ -149,11 +149,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnAvaibleSlot3And4()
         {
-            var rack = new Rackv2(6, "F1-A12");
+            var rack = new Rack(6, "F1-A12");
             rack.InitEmptyRack();
 
-            var server1 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server2 = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server1 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server2 = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server1, 1, 2));
             rack.PlaceEquipment(new RackPosition(server1, 5, 6));
@@ -165,11 +165,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldInsertTwoServersAndRemoveTheFirstOne()
         {
-            var rack = new Rackv2(6, "F1-A12");
+            var rack = new Rack(6, "F1-A12");
             rack.InitEmptyRack();
 
-            var server1 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server2 = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server1 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server2 = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server1, 1, 2));
             rack.PlaceEquipment(new RackPosition(server1, 5, 6));
@@ -182,11 +182,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
         [TestCategory("Entities")]
         public void ShouldDeleteAnEquipment()
         {
-            var rack = new Rackv2(6, "F1-A12");
+            var rack = new Rack(6, "F1-A12");
             rack.InitEmptyRack();
 
-            var server1 = new Serverv2(_serverBase, _cpu, _memory, _storage);
-            var server2 = new Serverv2(_serverBase, _cpu, _memory, _storage);
+            var server1 = new Server(_serverBase, _cpu, _memory, _storage);
+            var server2 = new Server(_serverBase, _cpu, _memory, _storage);
 
             rack.PlaceEquipment(new RackPosition(server1, 1, 2));
             rack.PlaceEquipment(new RackPosition(server1, 5, 6));

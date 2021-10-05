@@ -1,5 +1,4 @@
-using EvoDcimManager.Shared.Entities;
-using Flunt.Validations;
+using EvoDcimManager.Shared.ValueObjects;
 
 namespace EvoDcimManager.Domain.UserContext.ValueObjects
 {

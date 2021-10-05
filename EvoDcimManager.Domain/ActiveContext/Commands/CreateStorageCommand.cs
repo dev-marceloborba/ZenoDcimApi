@@ -8,8 +8,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
         public string Model { get; set; }
         public string Manufactor { get; set; }
         public string SerialNumber { get; set; }
-        public int Occupation { get; set; }
-        public int Position { get; set; }
+        public int InitialPosition { get; set; }
+        public int FinalPosition { get; set; }
         public int Capacity { get; set; }
 
         public void Validate()
