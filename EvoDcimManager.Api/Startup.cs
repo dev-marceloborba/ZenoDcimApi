@@ -41,8 +41,10 @@ namespace EvoDcimManager.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // contexts
-            services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Database"));
-            services.AddDbContext<ActiveContext>(opt => opt.UseInMemoryDatabase("Database"));
+            // services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Database"));
+            // services.AddDbContext<ActiveContext>(opt => opt.UseInMemoryDatabase("Database"));
+            services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
+            services.AddDbContext<ActiveContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
 
             // services
             services.AddTransient<IEmailService, EmailService>();
