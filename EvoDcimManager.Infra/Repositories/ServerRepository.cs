@@ -17,7 +17,7 @@ namespace EvoDcimManager.Infra.Repositories
             _context = context;
         }
 
-        public Server Delete(Server item)
+        public void Delete(Server item)
         {
             throw new NotImplementedException();
         }
@@ -39,14 +39,13 @@ namespace EvoDcimManager.Infra.Repositories
             return result;
         }
 
-        public Server Save(Server item)
+        public void Save(Server item)
         {
             _context.Servers.Add(item);
             _context.SaveChanges();
-            return item;
         }
 
-        public Server Update(Server item)
+        public void Update(Server item)
         {
             throw new NotImplementedException();
         }

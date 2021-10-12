@@ -20,10 +20,9 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _racks.Add(new Rack(16, "Rack-06"));
         }
 
-        public Rack Delete(Rack item)
+        public void Delete(Rack item)
         {
             _racks.Remove(item);
-            return item;
         }
 
         public Rack Find(Guid id)
@@ -36,13 +35,12 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             return _racks.ToList();
         }
 
-        public Rack Save(Rack item)
+        public void Save(Rack item)
         {
             _racks.Add(item);
-            return item;
         }
 
-        public Rack Update(Rack item)
+        public void Update(Rack item)
         {
             // todo
             throw new System.NotImplementedException();

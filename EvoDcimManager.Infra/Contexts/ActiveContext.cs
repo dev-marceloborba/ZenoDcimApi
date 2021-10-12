@@ -34,15 +34,28 @@ namespace EvoDcimManager.Infra.Contexts
                         {
                             b.OwnsOne(r => r.BaseEquipment, c =>
                             {
-                                c.Property(x => x.Name).HasMaxLength(30).HasColumnType("varchar(30)");
-                                c.Property(x => x.Model).HasMaxLength(30).HasColumnType("varchar(30)");
-                                c.Property(x => x.Manufactor).HasMaxLength(30).HasColumnType("varchar(30)");
-                                c.Property(x => x.SerialNumber).HasMaxLength(30).HasColumnType("varchar(30)");
-                            });
-                            // b.OwnsOne(r => r.Rack, c =>
-                            // {
+                                c.Property(x => x.Name)
+                                    .HasMaxLength(30)
+                                    .HasColumnType("varchar(30)")
+                                    .HasColumnName("Name");
 
-                            // });
+                                c.Property(x => x.Model)
+                                    .HasMaxLength(30)
+                                    .HasColumnType("varchar(30)")
+                                    .HasColumnName("Model");
+
+                                c.Property(x => x.Manufactor)
+                                    .HasMaxLength(30)
+                                    .HasColumnType("varchar(30)")
+                                    .HasColumnName("Manufactor");
+
+                                c.Property(x => x.SerialNumber)
+                                    .HasMaxLength(30)
+                                    .HasColumnType("varchar(30)")
+                                    .HasColumnName("SerialNumber");
+                            });
+
+                            b.HasOne(r => r.Rack).WithOne();
                         }
                     );
                 }
@@ -54,35 +67,55 @@ namespace EvoDcimManager.Infra.Contexts
                 p => p.Cpu,
                 a =>
                 {
-                    a.Property(x => x.Name).HasMaxLength(30).HasColumnType("varchar(30)");
+                    a.Property(x => x.Name)
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("Cpu");
                 }
             );
             modelBuilder.Entity<Server>().OwnsOne(
                 p => p.Memory,
                 a =>
                 {
-                    a.Property(x => x.Value);
+                    a.Property(x => x.Value)
+                        .HasColumnName("Memory");
                 }
             );
             modelBuilder.Entity<Server>().OwnsOne(
                 p => p.Storage,
                 a =>
                 {
-                    a.Property(x => x.Value);
+                    a.Property(x => x.Value)
+                        .HasColumnName("Storage");
                 }
             );
             modelBuilder.Entity<Server>().OwnsOne(
                 p => p.BaseEquipment,
                 a =>
                 {
-                    a.Property(x => x.Name).HasMaxLength(30).HasColumnType("varchar(30)");
-                    a.Property(x => x.Model).HasMaxLength(30).HasColumnType("varchar(30)");
-                    a.Property(x => x.Manufactor).HasMaxLength(30).HasColumnType("varchar(30)");
-                    a.Property(x => x.SerialNumber).HasMaxLength(30).HasColumnType("varchar(30)");
+                    a.Property(x => x.Name)
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("Name");
+
+                    a.Property(x => x.Model)
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("Model");
+
+                    a.Property(x => x.Manufactor)
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("Manufactor");
+
+                    a.Property(x => x.SerialNumber)
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("SerialNumber");
                 }
             );
 
-
+            // modelBuilder.Entity<Server>().HasOne(x => x.Rack).WithOne();
         }
     }
 }

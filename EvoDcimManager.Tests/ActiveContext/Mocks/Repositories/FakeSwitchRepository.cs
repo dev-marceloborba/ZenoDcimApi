@@ -18,7 +18,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _switches.Add(new Switch(_baseEquipment, 4));
         }
 
-        public Switch Delete(Switch item)
+        public void Delete(Switch item)
         {
             throw new NotImplementedException();
         }
@@ -33,13 +33,12 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             return _switches.ToList();
         }
 
-        public Switch Save(Switch item)
+        public void Save(Switch item)
         {
             _switches.Add(item);
-            return item;
         }
 
-        public Switch Update(Switch item)
+        public void Update(Switch item)
         {
             throw new NotImplementedException();
         }

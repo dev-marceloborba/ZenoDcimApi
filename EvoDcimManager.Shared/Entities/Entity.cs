@@ -3,13 +3,17 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Shared
 {
-    public abstract class Entity : Notifiable
+    public abstract class Entity : Notifiable, IEquatable<Entity>
     {
         public Entity()
         {
             Id = Guid.NewGuid();
         }
-        public Guid Id { get; set; }
-        // public int Id { get; set; }
+        public Guid Id { get; private set; }
+
+        public bool Equals(Entity other)
+        {
+            return Id == other.Id;
+        }
     }
 }

@@ -5,10 +5,10 @@ namespace EvoDcimManager.Shared.Repositories
 {
     public interface CrudRepository<T> where T : class
     {
-        T Save(T item);
+        void Save(T item);
         IReadOnlyCollection<T> List();
-        T Update(T item);
-        T Delete(T item);
+        void Update(T item);
+        void Delete(T item);
         T Find(Guid id);
     }
 }

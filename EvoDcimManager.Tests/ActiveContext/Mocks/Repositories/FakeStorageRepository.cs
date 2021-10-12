@@ -19,7 +19,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _storages.Add(new Storage(_baseEquipment, _capactity));
         }
 
-        public Storage Delete(Storage item)
+        public void Delete(Storage item)
         {
             throw new NotImplementedException();
         }
@@ -34,13 +34,12 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             return _storages.ToList();
         }
 
-        public Storage Save(Storage item)
+        public void Save(Storage item)
         {
             _storages.Add(item);
-            return item;
         }
 
-        public Storage Update(Storage item)
+        public void Update(Storage item)
         {
             throw new NotImplementedException();
         }

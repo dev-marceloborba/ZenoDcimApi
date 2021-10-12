@@ -15,7 +15,7 @@ namespace EvoDcimManager.Infra.Repositories
             _context = context;
         }
 
-        public User Delete(User item)
+        public void Delete(User item)
         {
             throw new NotImplementedException();
         }
@@ -35,14 +35,13 @@ namespace EvoDcimManager.Infra.Repositories
             throw new NotImplementedException();
         }
 
-        public User Save(User user)
+        public void Save(User user)
         {
-            _context.Add(user);
+            _context.Users.Add(user);
             _context.SaveChanges();
-            return user;
         }
 
-        public User Update(User item)
+        public void Update(User item)
         {
             throw new NotImplementedException();
         }

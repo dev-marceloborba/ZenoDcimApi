@@ -15,12 +15,11 @@ namespace EvoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         public ICommandResult Create(
-            [FromServices] CreateRackHandler handler,
-            [FromBody] CreateRackCommand command
+            [FromBody] CreateRackCommand command,
+            [FromServices] CreateRackHandler handler
         )
         {
-            var result = (CommandResult)handler.Handle(command);
-            return result;
+            return (CommandResult)handler.Handle(command);
         }
 
         [Route("")]
@@ -29,8 +28,7 @@ namespace EvoDcimManager.Api.Controllers
             [FromServices] IRackRepository repository
         )
         {
-            var racks = repository.List();
-            return racks;
+            return repository.List();
         }
 
         [Route("configure")]

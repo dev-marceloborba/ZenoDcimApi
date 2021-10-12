@@ -23,10 +23,9 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _servers.Add(new Server(_serverBase, _cpu, _memory, _storage));
         }
 
-        public Server Delete(Server item)
+        public void Delete(Server item)
         {
             _servers.Remove(item);
-            return item;
         }
 
         public IReadOnlyCollection<Server> List()
@@ -34,13 +33,12 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             return _servers.ToList();
         }
 
-        public Server Save(Server item)
+        public void Save(Server item)
         {
             _servers.Add(item);
-            return item;
         }
 
-        public Server Update(Server item)
+        public void Update(Server item)
         {
             throw new System.NotImplementedException();
         }

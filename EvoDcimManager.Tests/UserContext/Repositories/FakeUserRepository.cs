@@ -24,10 +24,9 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
         }
 
 
-        public User Delete(User item)
+        public void Delete(User item)
         {
             _users.Remove(item);
-            return item;
         }
 
         public User Find(Guid id)
@@ -45,20 +44,18 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
             throw new System.NotImplementedException();
         }
 
-        public User Save(User item)
+        public void Save(User item)
         {
             _users.Add(item);
-            return item;
         }
 
-        public User Update(User item)
+        public void Update(User item)
         {
             _users.ForEach(x =>
             {
                 if (x.Id == item.Id)
                     x = item;
             });
-            return item;
         }
     }
 }

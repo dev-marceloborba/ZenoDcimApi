@@ -15,38 +15,36 @@ namespace EvoDcimManager.Infra.Repositories
         {
             _context = context;
         }
-        public Rack Delete(Rack item)
+        public void Delete(Rack item)
         {
             throw new NotImplementedException();
         }
 
         public Rack Find(Guid id)
         {
-            var result = _context.Racks
+            return _context.Racks
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Id == id);
-            return result;
         }
 
         public IReadOnlyCollection<Rack> List()
         {
-            var result = _context.Racks
+            return _context.Racks
                 .AsNoTracking()
                 .OrderBy(x => x.Id)
                 .ToList();
-            return result;
         }
 
-        public Rack Save(Rack item)
+        public void Save(Rack item)
         {
             _context.Racks.Add(item);
             _context.SaveChanges();
-            return item;
         }
 
-        public Rack Update(Rack item)
+        public void Update(Rack item)
         {
-            throw new NotImplementedException();
+            _context.Entry(item).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }
