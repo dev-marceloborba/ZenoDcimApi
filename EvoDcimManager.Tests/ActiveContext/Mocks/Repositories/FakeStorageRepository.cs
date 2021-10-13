@@ -12,7 +12,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
         private IList<Storage> _storages = new List<Storage>();
         private readonly BaseEquipment _baseEquipment = new BaseEquipment("Storage1", "STG1", "Seagate", "12345679");
         private readonly RackPosition _rackSlot = new RackPosition(1, 2);
-        private readonly Capacity _capactity = new Capacity(512);
+        private readonly int _capactity = 512;
 
         public FakeStorageRepository()
         {

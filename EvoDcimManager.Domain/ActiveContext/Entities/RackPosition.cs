@@ -1,10 +1,9 @@
-using EvoDcimManager.Domain.ActiveContext.Entities;
-using EvoDcimManager.Shared.ValueObjects;
+using EvoDcimManager.Shared;
 using Flunt.Validations;
 
-namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
+namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
-    public class RackPosition : ValueObject
+    public class RackPosition : Entity
     {
         public RackEquipment Equipment { get; private set; }
         public int InitialPosition { get; private set; }
@@ -19,10 +18,7 @@ namespace EvoDcimManager.Domain.ActiveContext.ValueObjects
             InitialPosition = initialPosition;
             FinalPosition = finalPosition;
 
-            AddNotifications(new Contract()
-                .Requires()
-                .IsTrue(InitialPosition >= FinalPosition, "InitialPosition", "Initial position should be equal or lower than final position")
-            );
+
         }
         public RackPosition(RackEquipment equipment, int initialPosition, int finalPosition) : this(initialPosition, finalPosition)
         {

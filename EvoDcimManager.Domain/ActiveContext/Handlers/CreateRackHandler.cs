@@ -1,6 +1,7 @@
 using EvoDcimManager.Domain.ActiveContext.Commands;
 using EvoDcimManager.Domain.ActiveContext.Entities;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
+using EvoDcimManager.Domain.ActiveContext.Validators;
 using EvoDcimManager.Shared.Commands;
 using EvoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
@@ -19,7 +20,9 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
         public ICommandResult Handle(CreateRackCommand command)
         {
             var rack = new Rack(command.Size, command.Localization);
-            AddNotifications(rack.Notifications);
+            var rackValidator = new RackValidator(rack);
+
+            AddNotifications(rackValidator);
 
             if (Invalid)
                 return new CommandResult(false, "Error on create rack", Notifications);

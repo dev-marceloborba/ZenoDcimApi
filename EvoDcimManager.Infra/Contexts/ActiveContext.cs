@@ -62,58 +62,58 @@ namespace EvoDcimManager.Infra.Contexts
             );
 
             // server
-            modelBuilder.Entity<Server>().ToTable("server");
-            modelBuilder.Entity<Server>().OwnsOne(
-                p => p.Cpu,
-                a =>
-                {
-                    a.Property(x => x.Name)
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("Cpu");
-                }
-            );
-            modelBuilder.Entity<Server>().OwnsOne(
-                p => p.Memory,
-                a =>
-                {
-                    a.Property(x => x.Value)
-                        .HasColumnName("Memory");
-                }
-            );
-            modelBuilder.Entity<Server>().OwnsOne(
-                p => p.Storage,
-                a =>
-                {
-                    a.Property(x => x.Value)
-                        .HasColumnName("Storage");
-                }
-            );
-            modelBuilder.Entity<Server>().OwnsOne(
-                p => p.BaseEquipment,
-                a =>
-                {
-                    a.Property(x => x.Name)
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("Name");
+            // modelBuilder.Entity<Server>().ToTable("server");
+            // modelBuilder.Entity<Server>().OwnsOne(
+            //     p => p.Cpu,
+            //     a =>
+            //     {
+            //         a.Property(x => x.Name)
+            //             .HasMaxLength(30)
+            //             .HasColumnType("varchar(30)")
+            //             .HasColumnName("Cpu");
+            //     }
+            // );
+            // modelBuilder.Entity<Server>().OwnsOne(
+            //     p => p.Memory,
+            //     a =>
+            //     {
+            //         a.Property(x => x.Value)
+            //             .HasColumnName("Memory");
+            //     }
+            // );
+            // modelBuilder.Entity<Server>().OwnsOne(
+            //     p => p.Storage,
+            //     a =>
+            //     {
+            //         a.Property(x => x.Value)
+            //             .HasColumnName("Storage");
+            //     }
+            // );
+            // modelBuilder.Entity<Server>().OwnsOne(
+            //     p => p.BaseEquipment,
+            //     a =>
+            //     {
+            //         a.Property(x => x.Name)
+            //             .HasMaxLength(30)
+            //             .HasColumnType("varchar(30)")
+            //             .HasColumnName("Name");
 
-                    a.Property(x => x.Model)
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("Model");
+            //         a.Property(x => x.Model)
+            //             .HasMaxLength(30)
+            //             .HasColumnType("varchar(30)")
+            //             .HasColumnName("Model");
 
-                    a.Property(x => x.Manufactor)
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("Manufactor");
+            //         a.Property(x => x.Manufactor)
+            //             .HasMaxLength(30)
+            //             .HasColumnType("varchar(30)")
+            //             .HasColumnName("Manufactor");
 
-                    a.Property(x => x.SerialNumber)
-                        .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("SerialNumber");
-                }
-            );
+            //         a.Property(x => x.SerialNumber)
+            //             .HasMaxLength(30)
+            //             .HasColumnType("varchar(30)")
+            //             .HasColumnName("SerialNumber");
+            //     }
+            // );
 
             // modelBuilder.Entity<Server>().HasOne(x => x.Rack).WithOne();
         }

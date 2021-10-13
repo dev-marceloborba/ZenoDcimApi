@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared;
-using Flunt.Validations;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
@@ -21,12 +20,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
             Size = size;
             Localization = localization;
             Slots = new List<RackPosition>();
-
-            AddNotifications(new Contract()
-                .Requires()
-                .IsNotNullOrEmpty(Localization, "Localization", "Localization is required")
-                .IsGreaterThan(Size, 0, "Size", "Size must be greater than 0")
-            );
         }
 
         public void InitEmptyRack()
@@ -39,12 +32,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         public void PopulateSlots(List<RackPosition> slots) => Slots = slots;
         public void PlaceEquipment(RackPosition rackPosition)
         {
-            if (rackPosition.InitialPosition > Size)
-            {
-                AddNotification("Size", "Rack initial position is greater than rack size");
-                return;
-            }
-
             if (rackPosition.FinalPosition > rackPosition.InitialPosition)
             {
                 var rangeSlots = Slots.Where(x =>
@@ -53,17 +40,17 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
                     .ToList();
 
 
-                foreach (var item in rangeSlots)
-                {
-                    if (item.IsNotAvailable())
-                    {
-                        AddNotification("Slots", "The specified position is already occuped");
-                        break;
-                    }
-                }
+                // foreach (var item in rangeSlots)
+                // {
+                //     if (item.IsNotAvailable())
+                //     {
+                //         AddNotification("Slots", "The specified position is already occuped");
+                //         break;
+                //     }
+                // }
 
-                if (Invalid)
-                    return;
+                // if (Invalid)
+                //     return;
 
                 foreach (var item in rangeSlots)
                 {

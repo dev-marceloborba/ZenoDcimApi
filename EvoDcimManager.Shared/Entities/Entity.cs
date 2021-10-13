@@ -3,7 +3,7 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Shared
 {
-    public abstract class Entity : Notifiable, IEquatable<Entity>
+    public abstract class Entity : IEquatable<Entity>
     {
         public Entity()
         {

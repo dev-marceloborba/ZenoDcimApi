@@ -1,4 +1,3 @@
-using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
@@ -19,10 +18,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 
         public void AssociateRack(Rack rack)
         {
-            if (rack.Valid)
-                Rack = rack;
-            else
-                AddNotification("Rack", "Rack is invalid");
+            Rack = rack;
         }
     }
 }

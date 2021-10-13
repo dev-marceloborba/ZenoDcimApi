@@ -12,10 +12,10 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         public Switch(BaseEquipment baseEquipment, int ethPorts) : base(baseEquipment)
         {
             EthPorts = ethPorts;
-            AddNotifications(new Contract()
-                .Requires()
-                .IsGreaterThan(EthPorts, 0, "EthPorts", "Ethernet ports should be greater then zero")
-            );
+            // AddNotifications(new Contract()
+            //     .Requires()
+            //     .IsGreaterThan(EthPorts, 0, "EthPorts", "Ethernet ports should be greater then zero")
+            // );
         }
 
         public int EthPorts { get; private set; }

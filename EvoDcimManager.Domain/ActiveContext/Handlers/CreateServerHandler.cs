@@ -1,6 +1,7 @@
 using EvoDcimManager.Domain.ActiveContext.Commands;
 using EvoDcimManager.Domain.ActiveContext.Entities;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
+using EvoDcimManager.Domain.ActiveContext.Validators;
 using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared.Commands;
 using EvoDcimManager.Shared.Handlers;
@@ -21,24 +22,24 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateServerCommand command)
         {
-            var cpu = new Cpu(command.Cpu);
-            var memory = new Memory(command.Memory);
-            var storage = new Capacity(command.Storage);
             var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
 
-            var server = new Server(equipment,
-                                  cpu,
-                                  memory,
-                                  storage);
+            var equipmentValidator = new BaseEquipmentValidator(equipment);
 
-            AddNotifications(cpu, memory, storage, slot, equipment, server);
+            var server = new Server(equipment,
+                                  command.Cpu,
+                                  command.Memory,
+                                  command.Storage);
+
+            var serverValidator = new ServerValidator(server);
+
+            AddNotifications(equipmentValidator, serverValidator);
 
             if (Invalid)
                 return new CommandResult(false, "Failure do create server", Notifications);
 
             var rack = _rackRepository.Find(command.RackId);
-            // var rack = new Rack(45, "ABC");
             if (rack == null)
             {
                 AddNotification("Rack", "Rack was not found");

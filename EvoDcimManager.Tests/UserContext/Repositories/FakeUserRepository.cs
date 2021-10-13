@@ -16,10 +16,10 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
         {
             _users = new List<User>();
             _users.Add(
-                new User(new Name("Marcelo", "Borba"), new Email("marcelo@marcelo.com"), new Password("123456", "123465"), EUserRole.ADMIN)
+                new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", "123456798", EUserRole.ADMIN)
             );
             _users.Add(
-                new User(new Name("Gustavo", "Dalmolin"), new Email("gustavo@gustavo.com"), new Password("123456", "123465"), EUserRole.EXTERNAL_CLIENT)
+                new User("Juliane", "Mattei", "juliane@marcelo.com", "123456798", "123456798", EUserRole.ADMIN)
             );
         }
 

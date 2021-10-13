@@ -10,9 +10,9 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
     public class FakeServerRepository : IServerRepository
     {
         private IList<Server> _servers = new List<Server>();
-        private readonly Cpu _cpu = new Cpu("Intel Xeon 16C 2.4GHz");
-        private readonly Memory _memory = new Memory(32);
-        private readonly Capacity _storage = new Capacity(512);
+        private readonly string _cpu = "Intel Xeon 16C 2.4GHz";
+        private readonly int _memory = 32;
+        private readonly int _storage = 512;
         private readonly Name _serverName = new Name("Server01");
         private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
         private readonly Capacity _occupation = new Capacity(2);

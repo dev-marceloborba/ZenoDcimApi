@@ -1,6 +1,7 @@
 using EvoDcimManager.Domain.ActiveContext.Commands;
 using EvoDcimManager.Domain.ActiveContext.Entities;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
+using EvoDcimManager.Domain.ActiveContext.Validators;
 using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared.Commands;
 using EvoDcimManager.Shared.Handlers;
@@ -20,10 +21,15 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
         public ICommandResult Handle(CreateSwitchCommand command)
         {
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
-            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
-            var sw = new Switch(equipment, command.EthPorts);
+            var equipmentValidator = new BaseEquipmentValidator(equipment);
 
-            AddNotifications(equipment, slot, sw);
+            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
+            var rackPositionValidator = new RackPositionValidator(slot);
+
+            var sw = new Switch(equipment, command.EthPorts);
+            var swValidator = new SwitchValidator(sw);
+
+            AddNotifications(equipmentValidator, rackPositionValidator, swValidator);
 
             if (Invalid)
                 return new CommandResult(false, "Error on creating switch", Notifications);

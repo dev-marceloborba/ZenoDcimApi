@@ -1,27 +1,27 @@
 using EvoDcimManager.Domain.UserContext.Enums;
-using EvoDcimManager.Domain.UserContext.ValueObjects;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.UserContext.Entities
 {
     public class User : Entity
     {
-        public User()
-        {
 
-        }
-        public User(Name name, Email email, Password password, EUserRole role)
+        public User(string firstName, string lastName, string email, string password, string confirmationPassword, EUserRole role)
         {
-            Name = name;
+            FirstName = firstName;
+            LastName = lastName;
             Email = email;
             Password = password;
+            ConfirmationPassword = confirmationPassword;
             Role = role;
             Active = true;
         }
 
-        public Name Name { get; private set; }
-        public Email Email { get; private set; }
-        public Password Password { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string Email { get; private set; }
+        public string Password { get; private set; }
+        public string ConfirmationPassword { get; private set; }
         public EUserRole Role { get; private set; }
         public bool Active { get; private set; }
 
@@ -40,9 +40,14 @@ namespace EvoDcimManager.Domain.UserContext.Entities
             Role = role;
         }
 
-        public void ChangeEmail(Email email)
+        public void ChangeEmail(string email)
         {
             Email = email;
+        }
+
+        public override string ToString()
+        {
+            return FirstName + ' ' + LastName;
         }
     }
 }

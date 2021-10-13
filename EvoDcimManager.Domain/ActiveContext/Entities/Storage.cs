@@ -8,12 +8,12 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
 
         }
-        public Storage(BaseEquipment baseEquipment, Capacity capacity) : base(baseEquipment)
+        public Storage(BaseEquipment baseEquipment, int capacity) : base(baseEquipment)
         {
             Capacity = capacity;
         }
 
-        public Capacity Capacity { get; private set; }
+        public int Capacity { get; private set; }
 
     }
 }
