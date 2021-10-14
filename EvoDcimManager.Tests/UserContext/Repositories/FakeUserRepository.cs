@@ -34,7 +34,7 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
             throw new NotImplementedException();
         }
 
-        public IReadOnlyCollection<User> List()
+        public IEnumerable<User> List()
         {
             return _users.ToList();
         }

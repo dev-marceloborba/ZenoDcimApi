@@ -24,13 +24,18 @@ namespace EvoDcimManager.Infra.Repositories
         {
             return _context.Racks
                 .AsNoTracking()
+                .Include(x => x.Slots)
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public IReadOnlyCollection<Rack> List()
+        public IEnumerable<Rack> List()
         {
             return _context.Racks
                 .AsNoTracking()
+                .Include(x => x.Slots)
+                .ThenInclude(x => x.Equipment.BaseEquipment)
+                .Include(x => x.Slots)
+                .ThenInclude(x => x.Equipment.Rack)
                 .OrderBy(x => x.Id)
                 .ToList();
         }
@@ -44,6 +49,12 @@ namespace EvoDcimManager.Infra.Repositories
         public void Update(Rack item)
         {
             _context.Entry(item).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void UpdateRackSlots(IEnumerable<RackPosition> positions)
+        {
+            _context.Entry(positions).State = EntityState.Modified;
             _context.SaveChanges();
         }
     }

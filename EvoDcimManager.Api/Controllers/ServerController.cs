@@ -24,12 +24,11 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpGet]
-        public IReadOnlyCollection<Server> GetAll(
+        public IEnumerable<Server> GetAll(
             [FromServices] IServerRepository repository
         )
         {
-            var result = repository.List();
-            return result;
+            return repository.List();
         }
     }
 }

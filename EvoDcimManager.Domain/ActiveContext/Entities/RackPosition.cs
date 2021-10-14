@@ -17,8 +17,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
             InitialPosition = initialPosition;
             FinalPosition = finalPosition;
-
-
         }
         public RackPosition(RackEquipment equipment, int initialPosition, int finalPosition) : this(initialPosition, finalPosition)
         {

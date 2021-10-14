@@ -28,7 +28,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             throw new NotImplementedException();
         }
 
-        public IReadOnlyCollection<Switch> List()
+        public IEnumerable<Switch> List()
         {
             return _switches.ToList();
         }

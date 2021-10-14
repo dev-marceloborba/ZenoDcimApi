@@ -29,7 +29,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             throw new NotImplementedException();
         }
 
-        public IReadOnlyCollection<Storage> List()
+        public IEnumerable<Storage> List()
         {
             return _storages.ToList();
         }

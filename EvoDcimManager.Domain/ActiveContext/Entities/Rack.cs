@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
@@ -30,33 +30,38 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
             }
         }
         public void PopulateSlots(List<RackPosition> slots) => Slots = slots;
-        public void PlaceEquipment(RackPosition rackPosition)
+        // public void PlaceEquipment(RackPosition rackPosition)
+        // {
+        //     if (rackPosition.FinalPosition > rackPosition.InitialPosition)
+        //     {
+        //         var rangeSlots = Slots.Where(x =>
+        //                 x.InitialPosition >= rackPosition.InitialPosition &&
+        //                 x.FinalPosition <= rackPosition.FinalPosition)
+        //             .ToList();
+
+        //         foreach (var item in rangeSlots)
+        //         {
+        //             Slots.Remove(item);
+        //         }
+        //         Slots.Add(rackPosition);
+        //     }
+        // }
+
+        public void PlaceEquipment(RackEquipment equipment, int initialPosition, int finalPosition)
         {
-            if (rackPosition.FinalPosition > rackPosition.InitialPosition)
+            if (finalPosition > initialPosition)
             {
                 var rangeSlots = Slots.Where(x =>
-                        x.InitialPosition >= rackPosition.InitialPosition &&
-                        x.FinalPosition <= rackPosition.FinalPosition)
-                    .ToList();
-
-
-                // foreach (var item in rangeSlots)
-                // {
-                //     if (item.IsNotAvailable())
-                //     {
-                //         AddNotification("Slots", "The specified position is already occuped");
-                //         break;
-                //     }
-                // }
-
-                // if (Invalid)
-                //     return;
+                    x.InitialPosition >= initialPosition &&
+                    x.FinalPosition <= finalPosition
+                ).ToList();
 
                 foreach (var item in rangeSlots)
-                {
                     Slots.Remove(item);
-                }
-                Slots.Add(rackPosition);
+
+                var slot = new RackPosition(initialPosition, finalPosition);
+                slot.AddEquipment(equipment);
+                Slots.Add(slot);
             }
         }
 

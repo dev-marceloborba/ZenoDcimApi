@@ -24,26 +24,11 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpGet]
-        public IReadOnlyCollection<Rack> GetAll(
+        public IEnumerable<Rack> GetAll(
             [FromServices] IRackRepository repository
         )
         {
             return repository.List();
-        }
-
-        [Route("configure")]
-        [HttpPost]
-        public ActionResult Configure(
-            [FromServices] IRackRepository repository
-        )
-        {
-            var rack1 = new Rack(20, "ABC");
-            var rack2 = new Rack(20, "CDA");
-
-            repository.Save(rack1);
-            repository.Save(rack2);
-
-            return Ok();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _servers.Remove(item);
         }
 
-        public IReadOnlyCollection<Server> List()
+        public IEnumerable<Server> List()
         {
             return _servers.ToList();
         }

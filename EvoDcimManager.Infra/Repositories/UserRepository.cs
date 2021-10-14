@@ -25,7 +25,7 @@ namespace EvoDcimManager.Infra.Repositories
             throw new NotImplementedException();
         }
 
-        public IReadOnlyCollection<User> List()
+        public IEnumerable<User> List()
         {
             throw new NotImplementedException();
         }

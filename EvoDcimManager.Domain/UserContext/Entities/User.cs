@@ -6,6 +6,10 @@ namespace EvoDcimManager.Domain.UserContext.Entities
     public class User : Entity
     {
 
+        public User()
+        {
+
+        }
         public User(string firstName, string lastName, string email, string password, string confirmationPassword, EUserRole role)
         {
             FirstName = firstName;

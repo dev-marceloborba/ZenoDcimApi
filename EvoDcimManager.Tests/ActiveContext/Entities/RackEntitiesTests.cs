@@ -24,9 +24,9 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 3, 4));
-            rack.PlaceEquipment(new RackPosition(server, 5, 6));
+            rack.PlaceEquipment(server, 1, 2);
+            rack.PlaceEquipment(server, 3, 4);
+            rack.PlaceEquipment(server, 5, 6);
 
             Assert.AreEqual(rack.TotalEquipments(), 3);
         }
@@ -40,9 +40,9 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 3, 4));
-            rack.PlaceEquipment(new RackPosition(server, 5, 6));
+            rack.PlaceEquipment(server, 1, 2);
+            rack.PlaceEquipment(server, 3, 4);
+            rack.PlaceEquipment(server, 5, 6);
 
             Assert.AreEqual(rack.TotalOccupedSlots(), 6);
         }
@@ -56,10 +56,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 3, 4));
-            rack.PlaceEquipment(new RackPosition(server, 5, 6));
-            rack.PlaceEquipment(new RackPosition(server, 7, 8));
+            rack.PlaceEquipment(server, 1, 2);
+            rack.PlaceEquipment(server, 3, 4);
+            rack.PlaceEquipment(server, 5, 6);
+            rack.PlaceEquipment(server, 7, 8);
 
             var rackValidator = new RackValidator(rack);
             rackValidator.ValidateRackSize();
@@ -77,8 +77,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 3, 4));
+            rack.PlaceEquipment(server, 1, 2);
+            rack.PlaceEquipment(server, 3, 4);
 
             Assert.AreEqual(50.0, rack.PercentUsedSpace());
         }
@@ -92,8 +92,9 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 3, 4));
+            rack.PlaceEquipment(server, 1, 2);
+            rack.PlaceEquipment(server, 3, 4);
+
             Assert.AreEqual(50.0, rack.PercentAvailableSpace());
         }
 
@@ -106,8 +107,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
+            // rack.PlaceEquipment(new RackPosition(server, 1, 2));
+            // rack.PlaceEquipment(new RackPosition(server, 1, 2));
 
             var rackValidator = new RackValidator(rack);
             rackValidator.ValidatePosition();
@@ -125,10 +126,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
 
             var server = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server, 3, 4));
-            rack.PlaceEquipment(new RackPosition(server, 5, 6));
-            rack.PlaceEquipment(new RackPosition(server, 7, 8));
+            rack.PlaceEquipment(server, 1, 2);
+            rack.PlaceEquipment(server, 3, 4);
+            rack.PlaceEquipment(server, 5, 6);
+            rack.PlaceEquipment(server, 7, 8);
 
             Assert.AreEqual(rack.FirstAvailablePosition(), 9);
         }
@@ -146,11 +147,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
             var server4 = new Server(_serverBase, _cpu, _memory, _storage);
             var server5 = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server1, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server2, 3, 4));
-            rack.PlaceEquipment(new RackPosition(server3, 5, 6));
-            rack.PlaceEquipment(new RackPosition(server4, 9, 10));
-            rack.PlaceEquipment(new RackPosition(server5, 11, 12));
+            rack.PlaceEquipment(server1, 1, 2);
+            rack.PlaceEquipment(server2, 3, 4);
+            rack.PlaceEquipment(server3, 5, 6);
+            rack.PlaceEquipment(server4, 9, 10);
+            rack.PlaceEquipment(server5, 11, 12);
 
             CollectionAssert.AreEqual(new int[] { 7, 8 }, rack.AvailablePositions());
         }
@@ -165,8 +166,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
             var server1 = new Server(_serverBase, _cpu, _memory, _storage);
             var server2 = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server1, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server1, 5, 6));
+            rack.PlaceEquipment(server1, 1, 2);
+            rack.PlaceEquipment(server1, 5, 6);
 
             CollectionAssert.AreEqual(new int[] { 3, 4 }, rack.AvailablePositions());
         }
@@ -181,8 +182,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
             var server1 = new Server(_serverBase, _cpu, _memory, _storage);
             var server2 = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server1, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server1, 5, 6));
+            rack.PlaceEquipment(server1, 1, 2);
+            rack.PlaceEquipment(server1, 5, 6);
             rack.RemoveEquipment(1);
 
             CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4 }, rack.AvailablePositions());
@@ -198,8 +199,8 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
             var server1 = new Server(_serverBase, _cpu, _memory, _storage);
             var server2 = new Server(_serverBase, _cpu, _memory, _storage);
 
-            rack.PlaceEquipment(new RackPosition(server1, 1, 2));
-            rack.PlaceEquipment(new RackPosition(server1, 5, 6));
+            rack.PlaceEquipment(server1, 1, 2);
+            rack.PlaceEquipment(server1, 5, 6);
             var totalSlots = rack.TotalEquipments();
             rack.RemoveEquipment(1);
             var updatedTotalSlots = rack.TotalEquipments();

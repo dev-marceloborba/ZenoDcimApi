@@ -1,3 +1,4 @@
+using System.Linq;
 using EvoDcimManager.Domain.ActiveContext.Commands;
 using EvoDcimManager.Domain.ActiveContext.Entities;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
@@ -22,7 +23,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateServerCommand command)
         {
-            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
 
             var equipmentValidator = new BaseEquipmentValidator(equipment);
@@ -46,12 +46,16 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
                 return new CommandResult(false, "Rack was not found", "");
             }
 
-            slot.AddEquipment(server);
-            rack.PlaceEquipment(slot);
+            var slot = rack.Slots
+                .FirstOrDefault(x =>
+                    x.InitialPosition == command.InitialPosition
+                );
 
-            server.AssociateRack(rack);
+            slot.AddEquipment(server);
+            rack.PlaceEquipment(server, command.InitialPosition, command.FinalPosition);
 
             _serverRepository.Save(server);
+            _rackRepository.UpdateRackSlots(rack.Slots);
 
             return new CommandResult(true, "Server succesfull created", server);
         }

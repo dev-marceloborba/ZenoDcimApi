@@ -24,19 +24,19 @@ namespace EvoDcimManager.Infra.Repositories
 
         public Server Find(Guid id)
         {
-            var result = _context.Servers
+            return _context.Servers
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Id == id);
-            return result;
         }
 
-        public IReadOnlyCollection<Server> List()
+        public IEnumerable<Server> List()
         {
-            var result = _context.Servers
+            return _context.Servers
                 .AsNoTracking()
+                .Include(x => x.BaseEquipment)
+                .Include(x => x.Rack)
                 .OrderBy(x => x.Id)
                 .ToList();
-            return result;
         }
 
         public void Save(Server item)
