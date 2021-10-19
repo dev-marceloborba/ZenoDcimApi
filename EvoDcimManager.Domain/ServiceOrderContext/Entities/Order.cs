@@ -7,17 +7,14 @@ namespace EvoDcimManager.Domain.ServiceOrderContext.Entities
 {
     public class Order : Entity
     {
-        public Order(string company, EOrderStatus status, EOrderType type, DateTime createdDate, DateTime openedDate, DateTime finishedDate, DateTime rejectedDate, DateTime cancelledDate)
+        public Order(string company, EOrderStatus status, EOrderType type, DateTime createdDate)
         {
             Company = company;
             Status = status;
             Type = type;
             CreatedDate = createdDate;
-            OpenedDate = openedDate;
-            FinishedDate = finishedDate;
-            RejectedDate = rejectedDate;
-            CancelledDate = cancelledDate;
             Timelines = new List<Timeline>();
+            Activities = new List<Activity>();
         }
 
         public string Company { get; private set; }
@@ -29,6 +26,7 @@ namespace EvoDcimManager.Domain.ServiceOrderContext.Entities
         public DateTime RejectedDate { get; private set; }
         public DateTime CancelledDate { get; private set; }
         public IList<Timeline> Timelines { get; private set; }
+        public IList<Activity> Activities { get; private set; }
 
         public void AnalyseOrder()
         {
@@ -37,6 +35,7 @@ namespace EvoDcimManager.Domain.ServiceOrderContext.Entities
         public void OpenOrder()
         {
             Status = EOrderStatus.OPENED;
+            OpenedDate = DateTime.UtcNow;
         }
         public void StartWorkOnOrder()
         {
@@ -45,16 +44,19 @@ namespace EvoDcimManager.Domain.ServiceOrderContext.Entities
         public void FinishOrder()
         {
             Status = EOrderStatus.FINISHED;
+            FinishedDate = DateTime.UtcNow;
         }
 
         public void RejectOrder()
         {
             Status = EOrderStatus.REJECTED;
+            RejectedDate = DateTime.UtcNow;
         }
 
         public void CancelOrder()
         {
             Status = EOrderStatus.CANCELLED;
+            CancelledDate = DateTime.UtcNow;
         }
 
         public void AddTimeline(Timeline timeline)
