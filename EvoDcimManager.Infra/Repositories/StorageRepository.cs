@@ -8,43 +8,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EvoDcimManager.Infra.Repositories
 {
-    public class ServerRepository : IServerRepository
+    public class StorageRepository : IStorageRepository
     {
         private readonly ActiveContext _context;
 
-        public ServerRepository(ActiveContext context)
+        public StorageRepository(ActiveContext context)
         {
             _context = context;
         }
 
-        public void Delete(Server item)
+        public void Delete(Storage item)
         {
             throw new NotImplementedException();
         }
 
-        public Server Find(Guid id)
+        public Storage Find(Guid id)
         {
-            return _context.Servers
+            return _context.Storages
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Server> List()
+        public IEnumerable<Storage> List()
         {
-            return _context.Servers
-                .AsNoTracking()
-                .Include(x => x.BaseEquipment)
-                .OrderBy(x => x.Id)
-                .ToList();
+            return _context.Storages
+              .AsNoTracking()
+              .Include(x => x.BaseEquipment)
+              .OrderBy(x => x.Id)
+              .ToList();
         }
 
-        public void Save(Server item)
+        public void Save(Storage item)
         {
-            _context.Servers.Add(item);
+            _context.Storages.Add(item);
             _context.SaveChanges();
         }
 
-        public void Update(Server item)
+        public void Update(Storage item)
         {
             throw new NotImplementedException();
         }

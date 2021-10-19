@@ -11,6 +11,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
         public int InitialPosition { get; set; }
         public int FinalPosition { get; set; }
         public int EthPorts { get; set; }
+        public string RackLocalization { get; set; }
 
         public void Validate()
         {

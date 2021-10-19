@@ -1,3 +1,4 @@
+using System.Linq;
 using EvoDcimManager.Domain.ActiveContext.Commands;
 using EvoDcimManager.Domain.ActiveContext.Handlers;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
@@ -11,11 +12,13 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
     {
         private readonly ISwitchRepository _switchRepository;
         private readonly IRackRepository _rackRepository;
+        private CreateSwitchHandler _handler;
 
         public SwitchHandlerTests()
         {
             _switchRepository = new FakeSwitchRepository();
             _rackRepository = new FakeRackRepository();
+            _handler = new CreateSwitchHandler(_switchRepository, _rackRepository);
         }
 
         [TestMethod]
@@ -30,11 +33,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
             command.EthPorts = 10;
             command.InitialPosition = 1;
             command.FinalPosition = 2;
+            command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
 
-            var handler = new CreateSwitchHandler(_switchRepository);
-            handler.Handle(command);
+            _handler.Handle(command);
 
-            Assert.AreEqual(true, handler.Valid);
+            Assert.AreEqual(true, _handler.Valid);
         }
 
         [TestMethod]
@@ -49,11 +52,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
             command.EthPorts = 0;
             command.InitialPosition = 1;
             command.FinalPosition = 2;
+            command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
 
-            var handler = new CreateSwitchHandler(_switchRepository);
-            handler.Handle(command);
+            _handler.Handle(command);
 
-            Assert.AreEqual(true, handler.Invalid);
+            Assert.AreEqual(true, _handler.Invalid);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using EvoDcimManager.Shared.Commands;
 
 namespace EvoDcimManager.Domain.ActiveContext.Commands
@@ -14,7 +13,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
         public string Cpu { get; set; }
         public int Memory { get; set; }
         public int Storage { get; set; }
-        public Guid RackId { get; set; }
+        public string RackLocalization { get; set; }
         public void Validate()
         {
 

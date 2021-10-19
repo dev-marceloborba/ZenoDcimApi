@@ -41,6 +41,8 @@ namespace EvoDcimManager.Infra.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BaseEquipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    InitialPosition = table.Column<int>(type: "int", nullable: false),
+                    FinalPosition = table.Column<int>(type: "int", nullable: false),
                     RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -67,18 +69,11 @@ namespace EvoDcimManager.Infra.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EquipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InitialPosition = table.Column<int>(type: "int", nullable: false),
-                    FinalPosition = table.Column<int>(type: "int", nullable: false),
-                    RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    FinalPosition = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RackPosition", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RackPosition_Rack_RackId",
-                        column: x => x.RackId,
-                        principalTable: "Rack",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_RackPosition_RackEquipment_EquipmentId",
                         column: x => x.EquipmentId,
@@ -126,11 +121,6 @@ namespace EvoDcimManager.Infra.Migrations
                 name: "IX_RackPosition_EquipmentId",
                 table: "RackPosition",
                 column: "EquipmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RackPosition_RackId",
-                table: "RackPosition",
-                column: "RackId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

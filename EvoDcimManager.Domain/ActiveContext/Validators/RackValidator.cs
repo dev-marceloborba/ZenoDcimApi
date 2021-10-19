@@ -1,6 +1,5 @@
 using System.Linq;
 using EvoDcimManager.Domain.ActiveContext.Entities;
-using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using Flunt.Notifications;
 using Flunt.Validations;
 
@@ -21,7 +20,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Validators
 
         public void ValidateRackSize()
         {
-            foreach (var item in Rack.Slots)
+            foreach (var item in Rack.RackEquipments)
             {
                 if (item.InitialPosition > Rack.Size)
                 {
@@ -33,27 +32,13 @@ namespace EvoDcimManager.Domain.ActiveContext.Validators
 
         public void ValidatePosition()
         {
-            var query = Rack.Slots.GroupBy(x => x.InitialPosition)
+            var query = Rack.RackEquipments.GroupBy(x => x.InitialPosition)
               .Where(g => g.Count() > 1)
               .Select(y => y.Key)
               .ToList();
 
             if (query.Count() > 0)
                 AddNotification("Slots", "The specified position is already occuped");
-
-            // var rangeSlots = Rack.Slots.Where(x =>
-            //             x.InitialPosition >= rackPosition.InitialPosition &&
-            //             x.FinalPosition <= rackPosition.FinalPosition)
-            //         .ToList();
-
-            // foreach (var item in rangeSlots)
-            // {
-            //     if (item.IsNotAvailable())
-            //     {
-            //         AddNotification("Slots", "The specified position is already occuped");
-            //         break;
-            //     }
-            // }
         }
     }
 }

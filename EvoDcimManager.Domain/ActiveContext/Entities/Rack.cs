@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using EvoDcimManager.Shared;
@@ -7,7 +6,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
     public class Rack : Entity
     {
-        public List<RackPosition> Slots { get; private set; }
+        public List<RackEquipment> RackEquipments { get; private set; }
         public int Size { get; private set; }
         public string Localization { get; private set; }
 
@@ -19,66 +18,37 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
             Size = size;
             Localization = localization;
-            Slots = new List<RackPosition>();
+            RackEquipments = new List<RackEquipment>();
         }
 
-        public void InitEmptyRack()
-        {
-            for (int i = 1; i <= Size; i++)
-            {
-                Slots.Add(new RackPosition(i, i));
-            }
-        }
-        public void PopulateSlots(List<RackPosition> slots) => Slots = slots;
-        // public void PlaceEquipment(RackPosition rackPosition)
-        // {
-        //     if (rackPosition.FinalPosition > rackPosition.InitialPosition)
-        //     {
-        //         var rangeSlots = Slots.Where(x =>
-        //                 x.InitialPosition >= rackPosition.InitialPosition &&
-        //                 x.FinalPosition <= rackPosition.FinalPosition)
-        //             .ToList();
+        // public void PopulateSlots(List<RackPosition> rackPositions) => RackPositions = rackPositions;
 
-        //         foreach (var item in rangeSlots)
-        //         {
-        //             Slots.Remove(item);
-        //         }
-        //         Slots.Add(rackPosition);
-        //     }
-        // }
-
-        public void PlaceEquipment(RackEquipment equipment, int initialPosition, int finalPosition)
+        public void PlaceEquipment(RackEquipment equipment)
         {
-            if (finalPosition > initialPosition)
+            if (equipment.FinalPosition > equipment.InitialPosition)
             {
-                var rangeSlots = Slots.Where(x =>
-                    x.InitialPosition >= initialPosition &&
-                    x.FinalPosition <= finalPosition
+                var rangeSlots = RackEquipments.Where(x =>
+                    x.InitialPosition >= equipment.InitialPosition &&
+                    x.FinalPosition <= equipment.FinalPosition
                 ).ToList();
 
                 foreach (var item in rangeSlots)
-                    Slots.Remove(item);
+                    RackEquipments.Remove(item);
 
-                var slot = new RackPosition(initialPosition, finalPosition);
-                slot.AddEquipment(equipment);
-                Slots.Add(slot);
+                RackEquipments.Add(equipment);
             }
         }
 
         public void RemoveEquipment(int position)
         {
-            var slot = Slots.Find(x => x.InitialPosition == position);
-            for (int i = slot.InitialPosition; i <= slot.FinalPosition; i++)
-            {
-                Slots.Add(new RackPosition(i, i));
-            }
-            Slots.Remove(slot);
+            var rackPosition = RackEquipments.Find(x => x.InitialPosition == position);
+            RackEquipments.Remove(rackPosition);
         }
 
         public int TotalEquipments()
         {
             var quantity = 0;
-            Slots.ForEach(x =>
+            RackEquipments.ForEach(x =>
             {
                 if (x.IsNotAvailable())
                     quantity++;
@@ -90,7 +60,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         public int TotalOccupedSlots()
         {
             var quantity = 0;
-            Slots.ForEach(x =>
+            RackEquipments.ForEach(x =>
             {
                 if (x.IsNotAvailable())
                     quantity += x.RackUnit();
@@ -101,22 +71,30 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 
         public int[] AvailablePositions()
         {
-            var availablePositions = new List<int>();
-            Slots.ForEach(x =>
-            {
-                if (x.IsAvailable())
-                {
-                    availablePositions.Add(x.InitialPosition);
-                }
-            });
+            var orderedSlots = RackEquipments.OrderBy(x => x.InitialPosition).ToList();
+            var occuppedSlots = new List<int>();
+            var allSlots = new List<int>();
 
-            return availablePositions.OrderBy(x => x).ToArray();
+            for (int i = 1; i <= Size; i++)
+            {
+                allSlots.Add(i);
+            }
+
+            foreach (var item in orderedSlots)
+            {
+                for (int i = item.InitialPosition; i < item.FinalPosition + 1; i++)
+                {
+                    occuppedSlots.Add(i);
+                }
+            }
+
+            return allSlots.Except(occuppedSlots).ToArray();
         }
 
         public int[] OccupedPositions()
         {
             var occupedPositions = new List<int>();
-            Slots.ForEach(x =>
+            RackEquipments.ForEach(x =>
             {
                 if (x.IsNotAvailable())
                 {
@@ -139,9 +117,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 
         public int FirstAvailablePosition()
         {
-            var orderedSlots = Slots.OrderBy(x => x.InitialPosition);
-            var firstAvailableSlot = orderedSlots.FirstOrDefault(x => x.IsAvailable());
-            return firstAvailableSlot.InitialPosition;
+            return AvailablePositions()[0];
         }
     }
 }

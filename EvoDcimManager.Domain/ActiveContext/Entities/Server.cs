@@ -9,7 +9,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 
         }
 
-        public Server(BaseEquipment baseEquipment, string cpu, int memory, int storage) : base(baseEquipment)
+        public Server(BaseEquipment baseEquipment, int initialPosition, int finalPosition, string cpu, int memory, int storage) : base(baseEquipment, initialPosition, finalPosition)
         {
             Cpu = cpu;
             Memory = memory;

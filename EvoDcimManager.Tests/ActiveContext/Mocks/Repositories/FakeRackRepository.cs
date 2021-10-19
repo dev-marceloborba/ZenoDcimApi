@@ -9,17 +9,22 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
     public class FakeRackRepository : IRackRepository
     {
         private List<Rack> _racks = new List<Rack>();
+        private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
+        private readonly Server _server;
+        private Rack _rack;
 
         public FakeRackRepository()
         {
-            _racks.Add(new Rack(16, "Rack-01"));
+            _server = new Server(_serverBase, 1, 2, "Intel xeon", 128, 512);
+            _rack = new Rack(16, "Rack-01");
+            _rack.PlaceEquipment(_server);
+
+            _racks.Add(_rack);
             _racks.Add(new Rack(16, "Rack-02"));
             _racks.Add(new Rack(16, "Rack-03"));
             _racks.Add(new Rack(16, "Rack-04"));
             _racks.Add(new Rack(16, "Rack-05"));
             _racks.Add(new Rack(16, "Rack-06"));
-
-            _racks.ForEach(x => x.InitEmptyRack());
         }
 
         public void Delete(Rack item)
@@ -32,11 +37,6 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             return _racks.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public RackPosition GetRackPosition(Rack rack, RackPosition rackPosition)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Rack> List()
         {
             return _racks.ToList();
@@ -47,13 +47,12 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _racks.Add(item);
         }
 
-        public void Update(Rack item)
+        public Rack FindByLocalization(string localization)
         {
-            // todo
-            throw new System.NotImplementedException();
+            return _racks.FirstOrDefault(x => x.Localization == localization);
         }
 
-        public void UpdateRackSlots(IEnumerable<RackPosition> rackPosition)
+        public void Update(Rack item)
         {
             throw new NotImplementedException();
         }

@@ -8,43 +8,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EvoDcimManager.Infra.Repositories
 {
-    public class ServerRepository : IServerRepository
+    public class SwitchRepository : ISwitchRepository
     {
         private readonly ActiveContext _context;
 
-        public ServerRepository(ActiveContext context)
+        public SwitchRepository(ActiveContext context)
         {
             _context = context;
         }
 
-        public void Delete(Server item)
+        public void Delete(Switch item)
         {
             throw new NotImplementedException();
         }
 
-        public Server Find(Guid id)
+        public Switch Find(Guid id)
         {
-            return _context.Servers
+            return _context.Switches
                 .AsNoTracking()
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Server> List()
+        public IEnumerable<Switch> List()
         {
-            return _context.Servers
+            return _context.Switches
                 .AsNoTracking()
                 .Include(x => x.BaseEquipment)
                 .OrderBy(x => x.Id)
                 .ToList();
         }
 
-        public void Save(Server item)
+        public void Save(Switch item)
         {
-            _context.Servers.Add(item);
+            _context.Switches.Add(item);
             _context.SaveChanges();
         }
 
-        public void Update(Server item)
+        public void Update(Switch item)
         {
             throw new NotImplementedException();
         }

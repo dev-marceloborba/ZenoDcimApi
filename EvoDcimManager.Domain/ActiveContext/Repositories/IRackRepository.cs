@@ -7,6 +7,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Repositories
 {
     public interface IRackRepository : CrudRepository<Rack>
     {
-        void UpdateRackSlots(IEnumerable<RackPosition> rackPosition);
+        Rack FindByLocalization(string localization);
     }
 }

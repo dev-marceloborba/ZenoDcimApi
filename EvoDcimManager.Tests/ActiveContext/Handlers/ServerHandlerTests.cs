@@ -34,7 +34,7 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.Storage = 512;
             command.InitialPosition = 1;
             command.FinalPosition = 2;
-            command.RackId = _rackRepository.List().FirstOrDefault().Id;
+            command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
 
             var handler = new CreateServerHandler(_serverRepository, _rackRepository);
             handler.Handle(command);
@@ -56,7 +56,7 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.Storage = 512;
             command.InitialPosition = 1;
             command.FinalPosition = 2;
-            command.RackId = _rackRepository.List().FirstOrDefault().Id;
+            command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
 
             var handler = new CreateServerHandler(_serverRepository, _rackRepository);
             handler.Handle(command);
@@ -78,7 +78,7 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.Storage = 512;
             command.InitialPosition = 1;
             command.FinalPosition = 2;
-            command.RackId = Guid.NewGuid();
+            command.RackLocalization = "ABC";
 
             var handler = new CreateServerHandler(_serverRepository, _rackRepository);
             handler.Handle(command);

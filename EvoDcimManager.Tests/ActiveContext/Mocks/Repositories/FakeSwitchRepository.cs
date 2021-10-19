@@ -11,11 +11,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
     {
         private IList<Switch> _switches = new List<Switch>();
         private readonly BaseEquipment _baseEquipment = new BaseEquipment("Switch1", "STW1", "Datacom", "12345679");
-        private readonly RackPosition _rackSlot = new RackPosition(1, 2);
 
         public FakeSwitchRepository()
         {
-            _switches.Add(new Switch(_baseEquipment, 4));
+            _switches.Add(new Switch(_baseEquipment, 1, 2, 4));
         }
 
         public void Delete(Switch item)

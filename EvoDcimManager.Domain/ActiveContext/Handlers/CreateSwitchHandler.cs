@@ -12,10 +12,12 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
     public class CreateSwitchHandler : Notifiable, ICommandHandler<CreateSwitchCommand>
     {
         private readonly ISwitchRepository _switchRepository;
+        private readonly IRackRepository _rackRepository;
 
-        public CreateSwitchHandler(ISwitchRepository switchRepository)
+        public CreateSwitchHandler(ISwitchRepository switchRepository, IRackRepository rackRepository)
         {
             _switchRepository = switchRepository;
+            _rackRepository = rackRepository;
         }
 
         public ICommandResult Handle(CreateSwitchCommand command)
@@ -23,17 +25,23 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             var equipment = new BaseEquipment(command.Name, command.Model, command.Manufactor, command.SerialNumber);
             var equipmentValidator = new BaseEquipmentValidator(equipment);
 
-            var slot = new RackPosition(command.InitialPosition, command.FinalPosition);
-            var rackPositionValidator = new RackPositionValidator(slot);
 
-            var sw = new Switch(equipment, command.EthPorts);
+            var sw = new Switch(equipment, command.InitialPosition, command.FinalPosition, command.EthPorts);
             var swValidator = new SwitchValidator(sw);
 
-            AddNotifications(equipmentValidator, rackPositionValidator, swValidator);
+            AddNotifications(equipmentValidator, swValidator);
 
             if (Invalid)
                 return new CommandResult(false, "Error on creating switch", Notifications);
 
+            var rack = _rackRepository.FindByLocalization(command.RackLocalization);
+            if (rack == null)
+            {
+                AddNotification("Rack", "Rack was not found");
+                return new CommandResult(false, "Rack was not found", "");
+            }
+
+            sw.AssociateRackId(rack.Id);
             _switchRepository.Save(sw);
 
             return new CommandResult(true, "Switch succesfull created", equipment);

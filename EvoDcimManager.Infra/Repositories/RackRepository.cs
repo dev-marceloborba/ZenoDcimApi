@@ -17,25 +17,32 @@ namespace EvoDcimManager.Infra.Repositories
         }
         public void Delete(Rack item)
         {
-            throw new NotImplementedException();
+            _context.Racks.Remove(item);
+            _context.SaveChanges();
         }
 
         public Rack Find(Guid id)
         {
             return _context.Racks
                 .AsNoTracking()
-                .Include(x => x.Slots)
+                .Include(x => x.RackEquipments)
                 .FirstOrDefault(x => x.Id == id);
+        }
+
+        public Rack FindByLocalization(string localization)
+        {
+            return _context.Racks
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Localization == localization);
         }
 
         public IEnumerable<Rack> List()
         {
             return _context.Racks
                 .AsNoTracking()
-                .Include(x => x.Slots)
-                .ThenInclude(x => x.Equipment.BaseEquipment)
-                .Include(x => x.Slots)
-                .ThenInclude(x => x.Equipment.Rack)
+                .Include(x => x.RackEquipments)
+                .ThenInclude(x => x.BaseEquipment)
+                // .ThenInclude(x => x.BaseEquipment)
                 .OrderBy(x => x.Id)
                 .ToList();
         }
@@ -49,12 +56,6 @@ namespace EvoDcimManager.Infra.Repositories
         public void Update(Rack item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
-        }
-
-        public void UpdateRackSlots(IEnumerable<RackPosition> positions)
-        {
-            _context.Entry(positions).State = EntityState.Modified;
             _context.SaveChanges();
         }
     }

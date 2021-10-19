@@ -9,7 +9,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
 
         }
-        public Switch(BaseEquipment baseEquipment, int ethPorts) : base(baseEquipment)
+        public Switch(BaseEquipment baseEquipment, int initialPosition, int finalPosition, int ethPorts) : base(baseEquipment, initialPosition, finalPosition)
         {
             EthPorts = ethPorts;
             // AddNotifications(new Contract()

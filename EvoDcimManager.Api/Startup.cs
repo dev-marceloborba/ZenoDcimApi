@@ -45,11 +45,15 @@ namespace EvoDcimManager.Api
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRackRepository, RackRepository>();
             services.AddTransient<IServerRepository, ServerRepository>();
+            services.AddTransient<IStorageRepository, StorageRepository>();
+            services.AddTransient<ISwitchRepository, SwitchRepository>();
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
             services.AddTransient<CreateRackHandler, CreateRackHandler>();
             services.AddTransient<CreateServerHandler, CreateServerHandler>();
+            services.AddTransient<CreateStorageHandler, CreateStorageHandler>();
+            services.AddTransient<CreateSwitchHandler, CreateSwitchHandler>();
 
             services.AddCors();
             services.AddResponseCompression(options =>
@@ -77,9 +81,7 @@ namespace EvoDcimManager.Api
                     ValidateIssuer = false,
                     ValidateAudience = false,
                 };
-            })
-            ;
-
+            });
 
             services.AddSwaggerGen(c =>
             {

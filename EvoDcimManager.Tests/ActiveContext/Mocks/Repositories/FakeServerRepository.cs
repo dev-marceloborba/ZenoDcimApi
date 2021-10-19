@@ -16,11 +16,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
         private readonly Name _serverName = new Name("Server01");
         private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
         private readonly Capacity _occupation = new Capacity(2);
-        private readonly RackPosition _rackSlot = new RackPosition(1, 2);
 
         public FakeServerRepository()
         {
-            _servers.Add(new Server(_serverBase, _cpu, _memory, _storage));
+            _servers.Add(new Server(_serverBase, 1, 2, _cpu, _memory, _storage));
         }
 
         public void Delete(Server item)

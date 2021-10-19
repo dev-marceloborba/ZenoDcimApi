@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EvoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ActiveContext))]
-    [Migration("20211014225223_ActivesInitialCreate")]
+    [Migration("20211019115530_ActivesInitialCreate")]
     partial class ActivesInitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,12 @@ namespace EvoDcimManager.Infra.Migrations
                     b.Property<Guid?>("BaseEquipmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("FinalPosition")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InitialPosition")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("RackId")
                         .HasColumnType("uniqueidentifier");
 
@@ -99,14 +105,9 @@ namespace EvoDcimManager.Infra.Migrations
                     b.Property<int>("InitialPosition")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("RackId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EquipmentId");
-
-                    b.HasIndex("RackId");
 
                     b.ToTable("RackPosition");
                 });
@@ -134,7 +135,7 @@ namespace EvoDcimManager.Infra.Migrations
                         .HasForeignKey("BaseEquipmentId");
 
                     b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.Rack", "Rack")
-                        .WithMany()
+                        .WithMany("RackEquipments")
                         .HasForeignKey("RackId");
 
                     b.Navigation("BaseEquipment");
@@ -147,10 +148,6 @@ namespace EvoDcimManager.Infra.Migrations
                     b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.RackEquipment", "Equipment")
                         .WithMany()
                         .HasForeignKey("EquipmentId");
-
-                    b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.Rack", null)
-                        .WithMany("Slots")
-                        .HasForeignKey("RackId");
 
                     b.Navigation("Equipment");
                 });
@@ -166,7 +163,7 @@ namespace EvoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.Rack", b =>
                 {
-                    b.Navigation("Slots");
+                    b.Navigation("RackEquipments");
                 });
 #pragma warning restore 612, 618
         }
