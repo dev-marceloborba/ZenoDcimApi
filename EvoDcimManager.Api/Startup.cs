@@ -2,6 +2,8 @@ using System.Linq;
 using System.Text;
 using EvoDcimManager.Domain.ActiveContext.Handlers;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
+using EvoDcimManager.Domain.AutomationContext.Handlers;
+using EvoDcimManager.Domain.AutomationContext.Repositories;
 using EvoDcimManager.Domain.UserContext.Handlers;
 using EvoDcimManager.Domain.UserContext.Repositories;
 using EvoDcimManager.Infra.Contexts;
@@ -37,6 +39,7 @@ namespace EvoDcimManager.Api
             // services.AddDbContext<ActiveContext>(opt => opt.UseInMemoryDatabase("Database"));
             services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<ActiveContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
+            services.AddDbContext<AutomationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
 
             // services
             services.AddTransient<IEmailService, EmailService>();
@@ -47,6 +50,9 @@ namespace EvoDcimManager.Api
             services.AddTransient<IServerRepository, ServerRepository>();
             services.AddTransient<IStorageRepository, StorageRepository>();
             services.AddTransient<ISwitchRepository, SwitchRepository>();
+            services.AddTransient<IPlcRepository, PlcRepository>();
+            services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
+            services.AddTransient<IAlarmRepository, AlarmRepository>();
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
@@ -54,6 +60,9 @@ namespace EvoDcimManager.Api
             services.AddTransient<CreateServerHandler, CreateServerHandler>();
             services.AddTransient<CreateStorageHandler, CreateStorageHandler>();
             services.AddTransient<CreateSwitchHandler, CreateSwitchHandler>();
+            services.AddTransient<PlcHandler, PlcHandler>();
+            services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
+            services.AddTransient<AlarmHandler, AlarmHandler>();
 
             services.AddCors();
             services.AddResponseCompression(options =>
