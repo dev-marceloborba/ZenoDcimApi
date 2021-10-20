@@ -8,7 +8,11 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Domain.AutomationContext.Handlers
 {
-    public class PlcHandler : Notifiable, ICommandHandler<PlcCommand>
+    public class PlcHandler :
+        Notifiable,
+        ICommandHandler<PlcCommand>,
+        ICommandHandler<EditPlcCommand>,
+        ICommandHandler<DeletePlcCommand>
     {
         private readonly IPlcRepository _plcRepository;
 
@@ -36,6 +40,32 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
 
             _plcRepository.Save(plc);
             return new CommandResult(false, "Plc successful created", plc);
+        }
+
+        public ICommandResult Handle(EditPlcCommand command)
+        {
+            var plc = _plcRepository.FindById(command.Id);
+            plc.ChangeName(command.Name);
+            plc.ChangeManufactor(command.Manufactor);
+            plc.ChangeModel(command.Model);
+            plc.ChangeIpAddress(command.IpAddress);
+            plc.ChangeNetworkMask(command.NetworkMask);
+            plc.ChangeGateway(command.Gateway);
+
+            _plcRepository.Edit(plc);
+            return new CommandResult(true, "Plc successful edited", plc);
+        }
+
+        public ICommandResult Handle(DeletePlcCommand command)
+        {
+            var plc = _plcRepository.FindById(command.Id);
+
+            if (plc == null)
+                return new CommandResult(false, "Error on deleting plc", new { });
+
+            _plcRepository.Delete(plc);
+
+            return new CommandResult(true, "Plc successful deleted", plc);
         }
     }
 }

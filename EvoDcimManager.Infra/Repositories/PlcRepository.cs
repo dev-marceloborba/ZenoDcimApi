@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EvoDcimManager.Domain.AutomationContext.Entities;
@@ -16,9 +17,29 @@ namespace EvoDcimManager.Infra.Repositories
             _context = context;
         }
 
+        public void Delete(Plc plc)
+        {
+            _context.Remove(plc);
+            _context.SaveChanges();
+        }
+
+        public void Edit(Plc plc)
+        {
+            _context.Entry(plc).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Plc> FindAll()
         {
-            return _context.Plcs.AsNoTracking().ToList();
+            return _context.Plcs
+                .AsNoTracking()
+                .OrderBy(x => x.Name)
+                .ToList();
+        }
+
+        public Plc FindById(Guid id)
+        {
+            return _context.Plcs.FirstOrDefault(x => x.Id == id);
         }
 
         public void Save(Plc plc)

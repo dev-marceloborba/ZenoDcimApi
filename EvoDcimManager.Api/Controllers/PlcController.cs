@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EvoDcimManager.Domain.AutomationContext.Commands;
 using EvoDcimManager.Domain.AutomationContext.Entities;
 using EvoDcimManager.Domain.AutomationContext.Handlers;
@@ -9,12 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace EvoDcimManager.Api.Controllers
 {
     [ApiController]
-    [Route("v1/plcs")]
+    [Route("/v1/plcs")]
     public class PlcController : ControllerBase
     {
         [Route("")]
         [HttpGet]
-        IEnumerable<Plc> FindAll(
+        public IEnumerable<Plc> FindAll(
             [FromServices] IPlcRepository repository
         )
         {
@@ -23,13 +25,34 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        ICommandResult Create(
+        public ICommandResult Create(
             [FromBody] PlcCommand command,
             [FromServices] PlcHandler handler
         )
         {
-            var result = handler.Handle(command);
-            return (ICommandResult)result;
+            return (ICommandResult)handler.Handle(command);
+        }
+
+        [Route("")]
+        [HttpPut("{id}")]
+        public ICommandResult Edit(
+            string id,
+            [FromBody] EditPlcCommand command,
+            [FromServices] PlcHandler handler
+        )
+        {
+            command.Id = Guid.Parse(id);
+            return (ICommandResult)handler.Handle(command);
+        }
+
+        [Route("")]
+        [HttpDelete]
+        public ICommandResult Delete(
+            [FromBody] DeletePlcCommand command,
+            [FromServices] PlcHandler handler
+        )
+        {
+            return (ICommandResult)handler.Handle(command);
         }
     }
 }

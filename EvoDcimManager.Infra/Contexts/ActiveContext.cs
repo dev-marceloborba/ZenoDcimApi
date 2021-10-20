@@ -6,7 +6,7 @@ namespace EvoDcimManager.Infra.Contexts
 {
     public class ActiveContext : DbContext
     {
-        public ActiveContext(DbContextOptions options)
+        public ActiveContext(DbContextOptions<ActiveContext> options)
             : base(options)
         { }
 
