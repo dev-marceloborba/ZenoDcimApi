@@ -8,5 +8,6 @@ namespace EvoDcimManager.Domain.ActiveContext.Repositories
     public interface IRackRepository : CrudRepository<Rack>
     {
         Rack FindByLocalization(string localization);
+        Rack FindById(Guid id);
     }
 }

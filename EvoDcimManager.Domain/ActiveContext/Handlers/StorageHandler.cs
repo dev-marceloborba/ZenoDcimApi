@@ -9,12 +9,12 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Domain.ActiveContext.Handlers
 {
-    public class CreateStorageHandler : Notifiable, ICommandHandler<CreateStorageCommand>
+    public class StorageHandler : Notifiable, ICommandHandler<CreateStorageCommand>
     {
         private readonly IStorageRepository _storageRepository;
         private readonly IRackRepository _rackRepository;
 
-        public CreateStorageHandler(IStorageRepository storageRepository, IRackRepository rackRepository)
+        public StorageHandler(IStorageRepository storageRepository, IRackRepository rackRepository)
         {
             _storageRepository = storageRepository;
             _rackRepository = rackRepository;

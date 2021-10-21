@@ -19,7 +19,7 @@ namespace EvoDcimManager.Api.Controllers
         [HttpPost]
         public ICommandResult Create(
             [FromBody] CreateRackCommand command,
-            [FromServices] CreateRackHandler handler
+            [FromServices] RackHandler handler
         )
         {
             return (CommandResult)handler.Handle(command);
@@ -43,7 +43,6 @@ namespace EvoDcimManager.Api.Controllers
             return context.RackEquipments
                 .AsNoTracking()
                 .Include(x => x.BaseEquipment)
-                // .Include(x => x.Rack)
                 .ToList();
         }
     }

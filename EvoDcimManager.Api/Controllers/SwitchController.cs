@@ -16,7 +16,7 @@ namespace EvoDcimManager.Api.Controllers
         [HttpPost]
         public ICommandResult Create(
             [FromBody] CreateSwitchCommand command,
-            [FromServices] CreateSwitchHandler handler
+            [FromServices] SwitchHandler handler
         )
         {
             var result = handler.Handle(command);

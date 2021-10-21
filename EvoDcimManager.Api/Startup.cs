@@ -1,11 +1,13 @@
 using System.Linq;
 using System.Text;
+using EvoDcimManager.Api.Hubs;
 using EvoDcimManager.Domain.ActiveContext.Handlers;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
 using EvoDcimManager.Domain.AutomationContext.Handlers;
 using EvoDcimManager.Domain.AutomationContext.Repositories;
 using EvoDcimManager.Domain.UserContext.Handlers;
 using EvoDcimManager.Domain.UserContext.Repositories;
+using EvoDcimManager.Domain.UserContext.Services;
 using EvoDcimManager.Infra.Contexts;
 using EvoDcimManager.Infra.Repositories;
 using EvoDcimManager.Infra.Services;
@@ -43,6 +45,7 @@ namespace EvoDcimManager.Api
 
             // services
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ICryptoService, CryptoService>();
 
             // repositories
             services.AddTransient<IUserRepository, UserRepository>();
@@ -56,10 +59,10 @@ namespace EvoDcimManager.Api
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
-            services.AddTransient<CreateRackHandler, CreateRackHandler>();
-            services.AddTransient<CreateServerHandler, CreateServerHandler>();
-            services.AddTransient<CreateStorageHandler, CreateStorageHandler>();
-            services.AddTransient<CreateSwitchHandler, CreateSwitchHandler>();
+            services.AddTransient<RackHandler, RackHandler>();
+            services.AddTransient<ServerHandler, ServerHandler>();
+            services.AddTransient<StorageHandler, StorageHandler>();
+            services.AddTransient<SwitchHandler, SwitchHandler>();
             services.AddTransient<PlcHandler, PlcHandler>();
             services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
             services.AddTransient<AlarmHandler, AlarmHandler>();
@@ -72,6 +75,7 @@ namespace EvoDcimManager.Api
             });
 
             services.AddControllers();
+            services.AddSignalR();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
             services.AddAuthentication(x =>
@@ -123,6 +127,11 @@ namespace EvoDcimManager.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<AlarmHub>("/alarmHub");
             });
         }
     }

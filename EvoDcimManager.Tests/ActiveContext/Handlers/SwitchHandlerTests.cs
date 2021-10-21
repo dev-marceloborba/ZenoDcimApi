@@ -12,13 +12,13 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
     {
         private readonly ISwitchRepository _switchRepository;
         private readonly IRackRepository _rackRepository;
-        private CreateSwitchHandler _handler;
+        private SwitchHandler _handler;
 
         public SwitchHandlerTests()
         {
             _switchRepository = new FakeSwitchRepository();
             _rackRepository = new FakeRackRepository();
-            _handler = new CreateSwitchHandler(_switchRepository, _rackRepository);
+            _handler = new SwitchHandler(_switchRepository, _rackRepository);
         }
 
         [TestMethod]

@@ -34,6 +34,7 @@ namespace EvoDcimManager.Domain.UserContext.Commands
             AddNotifications(new Contract()
                 .Requires()
                 .IsTrue(ValidateRole(), "Role", "Invalid role")
+                .AreNotEquals(Password, PasswordConfirmation, "Password", "Password doenst match")
             );
         }
 

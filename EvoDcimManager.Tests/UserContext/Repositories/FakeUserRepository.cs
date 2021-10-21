@@ -16,10 +16,10 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
         {
             _users = new List<User>();
             _users.Add(
-                new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", "123456798", EUserRole.ADMIN)
+                new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN)
             );
             _users.Add(
-                new User("Juliane", "Mattei", "juliane@marcelo.com", "123456798", "123456798", EUserRole.ADMIN)
+                new User("Juliane", "Mattei", "juliane@marcelo.com", "123456798", EUserRole.ADMIN)
             );
         }
 
@@ -30,6 +30,11 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
         }
 
         public User Find(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User FindUserByEmail(string email)
         {
             throw new NotImplementedException();
         }

@@ -5,18 +5,16 @@ namespace EvoDcimManager.Domain.UserContext.Entities
 {
     public class User : Entity
     {
-
         public User()
         {
 
         }
-        public User(string firstName, string lastName, string email, string password, string confirmationPassword, EUserRole role)
+        public User(string firstName, string lastName, string email, string hashedPassword, EUserRole role)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
-            Password = password;
-            ConfirmationPassword = confirmationPassword;
+            HashedPassword = hashedPassword;
             Role = role;
             Active = true;
         }
@@ -24,8 +22,7 @@ namespace EvoDcimManager.Domain.UserContext.Entities
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Email { get; private set; }
-        public string Password { get; private set; }
-        public string ConfirmationPassword { get; private set; }
+        public string HashedPassword { get; private set; }
         public EUserRole Role { get; private set; }
         public bool Active { get; private set; }
 

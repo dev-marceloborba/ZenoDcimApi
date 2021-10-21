@@ -2,19 +2,18 @@ using EvoDcimManager.Domain.ActiveContext.Commands;
 using EvoDcimManager.Domain.ActiveContext.Entities;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
 using EvoDcimManager.Domain.ActiveContext.Validators;
-using EvoDcimManager.Domain.ActiveContext.ValueObjects;
 using EvoDcimManager.Shared.Commands;
 using EvoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
 
 namespace EvoDcimManager.Domain.ActiveContext.Handlers
 {
-    public class CreateSwitchHandler : Notifiable, ICommandHandler<CreateSwitchCommand>
+    public class SwitchHandler : Notifiable, ICommandHandler<CreateSwitchCommand>
     {
         private readonly ISwitchRepository _switchRepository;
         private readonly IRackRepository _rackRepository;
 
-        public CreateSwitchHandler(ISwitchRepository switchRepository, IRackRepository rackRepository)
+        public SwitchHandler(ISwitchRepository switchRepository, IRackRepository rackRepository)
         {
             _switchRepository = switchRepository;
             _rackRepository = rackRepository;

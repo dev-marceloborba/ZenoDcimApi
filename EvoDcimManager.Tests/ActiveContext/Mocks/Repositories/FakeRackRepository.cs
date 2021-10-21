@@ -56,5 +56,10 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Rack FindById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

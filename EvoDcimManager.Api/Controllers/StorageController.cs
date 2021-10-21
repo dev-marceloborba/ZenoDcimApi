@@ -17,7 +17,7 @@ namespace EvoDcimManager.Api.Controllers
         [HttpPost]
         public ICommandResult Create(
             [FromBody] CreateStorageCommand command,
-            [FromServices] CreateStorageHandler handler
+            [FromServices] StorageHandler handler
         )
         {
             var result = handler.Handle(command);

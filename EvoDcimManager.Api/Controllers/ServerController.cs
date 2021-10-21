@@ -16,7 +16,7 @@ namespace EvoDcimManager.Api.Controllers
         [HttpPost]
         public CommandResult Create(
             [FromBody] CreateServerCommand command,
-            [FromServices] CreateServerHandler handler
+            [FromServices] ServerHandler handler
         )
         {
             return (CommandResult)handler.Handle(command);

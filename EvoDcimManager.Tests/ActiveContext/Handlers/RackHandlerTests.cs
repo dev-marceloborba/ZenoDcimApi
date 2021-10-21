@@ -23,7 +23,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
             var command = new CreateRackCommand();
             command.Size = 0;
             command.Localization = "";
-            var handler = new CreateRackHandler(_repository);
+            var handler = new RackHandler(_repository);
             handler.Handle(command);
             Assert.AreEqual(handler.Invalid, true);
         }
@@ -35,7 +35,7 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
             var command = new CreateRackCommand();
             command.Size = 16;
             command.Localization = "A1-B1-B2-B2";
-            var handler = new CreateRackHandler(_repository);
+            var handler = new RackHandler(_repository);
             handler.Handle(command);
             Assert.AreEqual(handler.Valid, true);
         }

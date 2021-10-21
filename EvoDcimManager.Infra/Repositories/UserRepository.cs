@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EvoDcimManager.Domain.UserContext.Entities;
 using EvoDcimManager.Domain.UserContext.Repositories;
 using EvoDcimManager.Infra.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace EvoDcimManager.Infra.Repositories
 {
@@ -25,9 +27,17 @@ namespace EvoDcimManager.Infra.Repositories
             throw new NotImplementedException();
         }
 
+        public User FindUserByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(x => x.Email == email);
+        }
+
         public IEnumerable<User> List()
         {
-            throw new NotImplementedException();
+            return _context.Users
+                .AsNoTracking()
+                .OrderBy(x => x.FirstName)
+                .ToList();
         }
 
         public void Login(string email, string password)

@@ -13,7 +13,7 @@ namespace EvoDcimManager.Tests.UserContext.Entities
         private readonly Name _name = new Name("Marcelo", "Borba");
         private readonly Email _email = new Email("marcelo@marcelo.com");
         private readonly Password _password = new Password("123456789", "123456789");
-        private readonly User _user = new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", "123456798", EUserRole.ADMIN);
+        private readonly User _user = new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN);
 
         [TestMethod]
         [TestCategory("Entities")]
@@ -66,8 +66,7 @@ namespace EvoDcimManager.Tests.UserContext.Entities
         [TestCategory("Entities")]
         public void ShouldCreateAValidUser()
         {
-            var user = new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", "123456798", EUserRole.ADMIN);
-            var userValidator = new UserValidator(user);
+            var userValidator = new UserValidator(_user);
             Assert.AreEqual(userValidator.Valid, true);
         }
 
@@ -75,7 +74,7 @@ namespace EvoDcimManager.Tests.UserContext.Entities
         [TestCategory("Entities")]
         public void ShouldCreateAnInvalidUser()
         {
-            var user = new User("Marcelo", "", "marcelo@marcelo.com", "123456798", "123456798", EUserRole.ADMIN);
+            var user = new User("Marcelo", "", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN);
             var userValidator = new UserValidator(user);
             Assert.AreEqual(userValidator.Invalid, true);
         }

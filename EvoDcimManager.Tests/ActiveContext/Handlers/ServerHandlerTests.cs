@@ -36,7 +36,7 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.FinalPosition = 2;
             command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
 
-            var handler = new CreateServerHandler(_serverRepository, _rackRepository);
+            var handler = new ServerHandler(_serverRepository, _rackRepository);
             handler.Handle(command);
 
             Assert.AreEqual(handler.Invalid, true);
@@ -58,7 +58,7 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.FinalPosition = 2;
             command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
 
-            var handler = new CreateServerHandler(_serverRepository, _rackRepository);
+            var handler = new ServerHandler(_serverRepository, _rackRepository);
             handler.Handle(command);
 
             Assert.AreEqual(handler.Valid, true);
@@ -80,7 +80,7 @@ namespace EvoDcimManager.Tests.ActiveContext
             command.FinalPosition = 2;
             command.RackLocalization = "ABC";
 
-            var handler = new CreateServerHandler(_serverRepository, _rackRepository);
+            var handler = new ServerHandler(_serverRepository, _rackRepository);
             handler.Handle(command);
 
             Assert.AreEqual(handler.Invalid, true);

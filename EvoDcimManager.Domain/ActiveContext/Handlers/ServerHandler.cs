@@ -9,12 +9,12 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Domain.ActiveContext.Handlers
 {
-    public class CreateServerHandler : Notifiable, ICommandHandler<CreateServerCommand>
+    public class ServerHandler : Notifiable, ICommandHandler<CreateServerCommand>
     {
         private readonly IServerRepository _serverRepository;
         private readonly IRackRepository _rackRepository;
 
-        public CreateServerHandler(IServerRepository serverRepository, IRackRepository rackRepository)
+        public ServerHandler(IServerRepository serverRepository, IRackRepository rackRepository)
         {
             _serverRepository = serverRepository;
             _rackRepository = rackRepository;

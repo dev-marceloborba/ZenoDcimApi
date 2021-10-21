@@ -8,11 +8,14 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Domain.ActiveContext.Handlers
 {
-    public class CreateRackHandler : Notifiable, ICommandHandler<CreateRackCommand>
+    public class RackHandler :
+        Notifiable,
+        ICommandHandler<CreateRackCommand>,
+        ICommandHandler<EditRackCommand>
     {
         private readonly IRackRepository _rackRepository;
 
-        public CreateRackHandler(IRackRepository rackRepository)
+        public RackHandler(IRackRepository rackRepository)
         {
             _rackRepository = rackRepository;
         }
@@ -31,6 +34,17 @@ namespace EvoDcimManager.Domain.ActiveContext.Handlers
             _rackRepository.Save(rack);
 
             return new CommandResult(true, "Rack was sucessful created", rack);
+        }
+
+        public ICommandResult Handle(EditRackCommand command)
+        {
+            var rack = _rackRepository.FindById(command.Id);
+            rack.ChangeLocalization(command.Localization);
+            rack.ChangeSize(command.Size);
+            _rackRepository.Update(rack);
+
+            return new CommandResult(true, "Rack was successful edited", rack);
+
         }
     }
 }

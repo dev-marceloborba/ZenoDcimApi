@@ -29,6 +29,11 @@ namespace EvoDcimManager.Infra.Repositories
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public Rack FindById(Guid id)
+        {
+            return _context.Racks.FirstOrDefault(x => x.Id == id);
+        }
+
         public Rack FindByLocalization(string localization)
         {
             return _context.Racks
@@ -58,5 +63,7 @@ namespace EvoDcimManager.Infra.Repositories
             _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
         }
+
+
     }
 }

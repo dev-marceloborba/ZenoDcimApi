@@ -119,5 +119,8 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         {
             return AvailablePositions()[0];
         }
+
+        public void ChangeLocalization(string localization) => Localization = localization;
+        public void ChangeSize(int size) => Size = size;
     }
 }

@@ -12,13 +12,13 @@ namespace EvoDcimManager.Tests.ActiveContext.Handlers
     {
         private readonly IStorageRepository _storageRepository;
         private readonly IRackRepository _rackRepository;
-        private CreateStorageHandler _handler;
+        private StorageHandler _handler;
 
         public StorageHandlerTests()
         {
             _storageRepository = new FakeStorageRepository();
             _rackRepository = new FakeRackRepository();
-            _handler = new CreateStorageHandler(_storageRepository, _rackRepository);
+            _handler = new StorageHandler(_storageRepository, _rackRepository);
         }
 
         [TestMethod]

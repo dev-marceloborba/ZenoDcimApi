@@ -2,6 +2,7 @@ using EvoDcimManager.Domain.UserContext.Commands;
 using EvoDcimManager.Domain.UserContext.Entities;
 using EvoDcimManager.Domain.UserContext.Enums;
 using EvoDcimManager.Domain.UserContext.Repositories;
+using EvoDcimManager.Domain.UserContext.Services;
 using EvoDcimManager.Domain.UserContext.Validators;
 using EvoDcimManager.Shared.Commands;
 using EvoDcimManager.Shared.Handlers;
@@ -14,11 +15,13 @@ namespace EvoDcimManager.Domain.UserContext.Handlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
+        private readonly ICryptoService _cryptoService;
 
-        public UserHandler(IUserRepository userRepository, IEmailService emailService)
+        public UserHandler(IUserRepository userRepository, IEmailService emailService, ICryptoService cryptoService)
         {
             _userRepository = userRepository;
             _emailService = emailService;
+            _cryptoService = cryptoService;
         }
 
         public ICommandResult Handle(CreateUserCommand command)
@@ -32,7 +35,8 @@ namespace EvoDcimManager.Domain.UserContext.Handlers
             }
 
             var role = (EUserRole)command.Role;
-            var user = new User(command.FirstName, command.LastName, command.Email, command.Password, command.Password, role);
+            var hashedPassword = _cryptoService.EncryptPassword(command.Password);
+            var user = new User(command.FirstName, command.LastName, command.Email, hashedPassword, role);
 
             var userValidator = new UserValidator(user);
 
