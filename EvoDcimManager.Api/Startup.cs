@@ -46,6 +46,7 @@ namespace EvoDcimManager.Api
             // services
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ICryptoService, CryptoService>();
+            services.AddTransient<ITokenService, TokenService>();
 
             // repositories
             services.AddTransient<IUserRepository, UserRepository>();
@@ -59,6 +60,7 @@ namespace EvoDcimManager.Api
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
+            services.AddTransient<LoginHandler, LoginHandler>();
             services.AddTransient<RackHandler, RackHandler>();
             services.AddTransient<ServerHandler, ServerHandler>();
             services.AddTransient<StorageHandler, StorageHandler>();

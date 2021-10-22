@@ -29,6 +29,11 @@ namespace EvoDcimManager.Tests.UserContext.Repositories
             _users.Remove(item);
         }
 
+        public void DeleteByEmail(string email)
+        {
+
+        }
+
         public User Find(Guid id)
         {
             throw new NotImplementedException();

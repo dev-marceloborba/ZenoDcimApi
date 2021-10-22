@@ -39,17 +39,31 @@ namespace EvoDcimManager.Api.Controllers
         }
 
         [Route("")]
-        [HttpDelete]
-        public void Remove()
+        [HttpDelete("{email}")]
+        public ActionResult RemoveUserByEmail(
+            string email,
+            [FromServices] IUserRepository repository
+        )
         {
-
+            try
+            {
+                repository.DeleteByEmail(email);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [Route("login")]
         [HttpPost]
-        public void Login()
+        public ICommandResult Login(
+            [FromBody] LoginCommand command,
+            [FromServices] LoginHandler handler
+        )
         {
-
+            return (ICommandResult)handler.Handle(command);
         }
     }
 }

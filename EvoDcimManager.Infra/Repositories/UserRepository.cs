@@ -22,6 +22,13 @@ namespace EvoDcimManager.Infra.Repositories
             throw new NotImplementedException();
         }
 
+        public void DeleteByEmail(string email)
+        {
+            var user = FindUserByEmail(email);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+        }
+
         public User Find(Guid id)
         {
             throw new NotImplementedException();

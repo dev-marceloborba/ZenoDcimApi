@@ -5,7 +5,8 @@ namespace EvoDcimManager.Domain.UserContext.Repositories
 {
     public interface IUserRepository : CrudRepository<User>
     {
-        void Login(string email, string password);
+        void DeleteByEmail(string email);
         User FindUserByEmail(string email);
+        void Login(string email, string password);
     }
 }
