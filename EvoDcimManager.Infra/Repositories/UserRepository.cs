@@ -31,7 +31,7 @@ namespace EvoDcimManager.Infra.Repositories
 
         public User Find(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Users.FirstOrDefault(x => x.Id == id);
         }
 
         public User FindUserByEmail(string email)

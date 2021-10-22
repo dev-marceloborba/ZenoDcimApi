@@ -11,6 +11,7 @@ using EvoDcimManager.Domain.UserContext.Services;
 using EvoDcimManager.Infra.Contexts;
 using EvoDcimManager.Infra.Repositories;
 using EvoDcimManager.Infra.Services;
+using EvoDcimManager.Shared;
 using EvoDcimManager.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

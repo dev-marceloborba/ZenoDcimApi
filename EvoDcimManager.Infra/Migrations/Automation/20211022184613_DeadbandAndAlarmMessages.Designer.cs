@@ -4,14 +4,16 @@ using EvoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EvoDcimManager.Infra.Migrations.Automation
 {
     [DbContext(typeof(AutomationContext))]
-    partial class AutomationContextModelSnapshot : ModelSnapshot
+    [Migration("20211022184613_DeadbandAndAlarmMessages")]
+    partial class DeadbandAndAlarmMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

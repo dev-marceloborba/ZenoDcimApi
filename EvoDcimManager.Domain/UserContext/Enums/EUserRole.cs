@@ -4,7 +4,8 @@ namespace EvoDcimManager.Domain.UserContext.Enums
     {
         ADMIN = 1,
         OPERATOR = 2,
-        VIEW_ONLY = 3,
-        EXTERNAL_CLIENT = 4
+        TECHNICIAN = 3,
+        VIEW_ONLY = 4,
+        EXTERNAL_CLIENT = 5
     }
 }

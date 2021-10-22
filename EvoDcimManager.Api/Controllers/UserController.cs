@@ -4,6 +4,7 @@ using EvoDcimManager.Domain.UserContext.Entities;
 using EvoDcimManager.Domain.UserContext.Handlers;
 using EvoDcimManager.Domain.UserContext.Repositories;
 using EvoDcimManager.Shared.Commands;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EvoDcimManager.Api.Controllers
@@ -14,6 +15,7 @@ namespace EvoDcimManager.Api.Controllers
     {
         [Route("")]
         [HttpPost]
+        [AllowAnonymous]
         public ICommandResult Create(
             [FromBody] CreateUserCommand command,
             [FromServices] UserHandler handler
@@ -24,6 +26,7 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpGet]
+        [Authorize]
         public IEnumerable<User> GetUsers(
             [FromServices] IUserRepository repository
         )
@@ -33,6 +36,7 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPut]
+        [Authorize]
         public void Update()
         {
 
@@ -40,6 +44,7 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpDelete("{email}")]
+        [Authorize(Roles = "admin")]
         public ActionResult RemoveUserByEmail(
             string email,
             [FromServices] IUserRepository repository
@@ -58,6 +63,7 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("login")]
         [HttpPost]
+        [AllowAnonymous]
         public ICommandResult Login(
             [FromBody] LoginCommand command,
             [FromServices] LoginHandler handler

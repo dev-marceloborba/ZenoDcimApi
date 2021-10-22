@@ -23,7 +23,11 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
 
         public ICommandResult Handle(ModbusTagCommand command)
         {
-            var modbusTag = new ModbusTag(command.Name, command.Address, command.Size);
+            var modbusTag = new ModbusTag(
+                    command.Name,
+                    command.Deadband,
+                    command.Address,
+                    command.Size);
             var modbusTagValidator = new ModbusTagValidator(modbusTag);
 
             AddNotifications(modbusTagValidator);

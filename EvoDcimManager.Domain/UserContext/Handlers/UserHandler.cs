@@ -11,7 +11,10 @@ using Flunt.Notifications;
 
 namespace EvoDcimManager.Domain.UserContext.Handlers
 {
-    public class UserHandler : Notifiable, ICommandHandler<CreateUserCommand>
+    public class UserHandler :
+        Notifiable,
+        ICommandHandler<CreateUserCommand>,
+        ICommandHandler<EditUserCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
@@ -54,6 +57,27 @@ namespace EvoDcimManager.Domain.UserContext.Handlers
 
             return new CommandResult(true, "Usuario criado com sucesso", user);
 
+        }
+
+        public ICommandResult Handle(EditUserCommand command)
+        {
+            command.Validate();
+            if (command.Invalid)
+            {
+                AddNotifications(command);
+                return new CommandResult(false, "Nao foi possivel editar o usuario", command.Notifications);
+            }
+
+            var user = _userRepository.FindUserByEmail(command.Email);
+
+            var role = (EUserRole)command.Role;
+            var editedUser = new User(command.FirstName, command.LastName, command.Email, role);
+
+            user.CopyWith(editedUser);
+
+            _userRepository.Update(user);
+
+            return new CommandResult(true, "Usuario alterado com sucesso", user);
         }
     }
 }

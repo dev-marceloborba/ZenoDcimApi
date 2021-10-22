@@ -7,6 +7,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Commands
         public string Name { get; set; }
         public int Address { get; set; }
         public int Size { get; set; }
+        public double Deadband { get; set; }
         public void Validate()
         {
 

@@ -2,7 +2,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Entities
 {
     public class ModbusTag : Tag
     {
-        public ModbusTag(string name, int address, int size) : base(name)
+        public ModbusTag(string name, double deadband, int address, int size) : base(name, deadband)
         {
             Address = address;
             Size = size;

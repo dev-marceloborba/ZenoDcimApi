@@ -20,6 +20,8 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
         public ICommandResult Handle(AlarmCommand command)
         {
             var alarm = new Alarm(
+                command.MessageIn,
+                command.MessageOff,
                 command.Name,
                 command.AlarmPriority,
                 command.Setpoint
