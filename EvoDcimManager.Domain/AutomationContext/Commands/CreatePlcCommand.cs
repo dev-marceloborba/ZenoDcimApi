@@ -2,7 +2,7 @@ using EvoDcimManager.Shared.Commands;
 
 namespace EvoDcimManager.Domain.AutomationContext.Commands
 {
-    public class PlcCommand : ICommand
+    public class CreatePlcCommand : ICommand
     {
         public string Name { get; set; }
         public string Manufactor { get; set; }
@@ -10,6 +10,8 @@ namespace EvoDcimManager.Domain.AutomationContext.Commands
         public string IpAddress { get; set; }
         public string NetworkMask { get; set; }
         public string Gateway { get; set; }
+        public int TcpPort { get; set; }
+        public int Scan { get; set; }
 
         public void Validate()
         {

@@ -15,10 +15,12 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
         ICommandHandler<DeleteModbusTagCommand>
     {
         private readonly IModbusTagRepository _modbusTagRepository;
+        private readonly IPlcRepository _plcRepository;
 
-        public ModbusTagHandler(IModbusTagRepository modbusTagRepository)
+        public ModbusTagHandler(IModbusTagRepository modbusTagRepository, IPlcRepository plcRepository)
         {
             _modbusTagRepository = modbusTagRepository;
+            _plcRepository = plcRepository;
         }
 
         public ICommandResult Handle(ModbusTagCommand command)
@@ -35,7 +37,17 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
             if (Invalid)
                 return new CommandResult(false, "Error on creating modbus tag", modbusTagValidator.Notifications);
 
-            _modbusTagRepository.Save(modbusTag);
+            var modbusDevice = _plcRepository.FindByName(command.ModbusDevice);
+
+            if (modbusDevice == null)
+            {
+                AddNotification("Plc", "Plc not found");
+                return new CommandResult(false, "Error on creating modbus tag", Notifications);
+            }
+
+            modbusDevice.AddModbusTag(modbusTag);
+
+            _plcRepository.CreateTags(modbusDevice);
             return new CommandResult(true, "Modbus tag successful created", modbusTag);
         }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.AutomationContext.Entities
@@ -10,8 +11,12 @@ namespace EvoDcimManager.Domain.AutomationContext.Entities
         public string IpAddress { get; private set; }
         public string NetworkMask { get; private set; }
         public string Gateway { get; private set; }
+        public int TcpPort { get; private set; }
+        public int Scan { get; private set; }
 
-        public Plc(string name, string manufactor, string model, string ipAddress, string networkMask, string gateway)
+        public List<ModbusTag> ModbusTags { get; private set; }
+
+        public Plc(string name, string manufactor, string model, string ipAddress, string networkMask, string gateway, int tcpPort, int scan)
         {
             Name = name;
             Manufactor = manufactor;
@@ -19,6 +24,9 @@ namespace EvoDcimManager.Domain.AutomationContext.Entities
             IpAddress = ipAddress;
             NetworkMask = networkMask;
             Gateway = gateway;
+            TcpPort = tcpPort;
+            Scan = scan;
+            ModbusTags = new List<ModbusTag>();
         }
 
         public void ChangeName(string name) => Name = name;
@@ -27,6 +35,24 @@ namespace EvoDcimManager.Domain.AutomationContext.Entities
         public void ChangeIpAddress(string ipAddress) => IpAddress = ipAddress;
         public void ChangeNetworkMask(string networkMask) => NetworkMask = networkMask;
         public void ChangeGateway(string gateway) => Gateway = gateway;
+        public void ChangeTcpPort(int tcpPort) => TcpPort = tcpPort;
+        public void AddModbusTag(ModbusTag modbusTag)
+        {
+            ModbusTags.Add(modbusTag);
+        }
+
+        public Plc CopyWith(Plc plc)
+        {
+            Name = plc.Name;
+            Manufactor = plc.Manufactor;
+            Model = plc.Model;
+            IpAddress = plc.IpAddress;
+            NetworkMask = plc.NetworkMask;
+            Gateway = plc.Gateway;
+            TcpPort = plc.TcpPort;
+            Scan = plc.Scan;
+            return this;
+        }
 
     }
 }

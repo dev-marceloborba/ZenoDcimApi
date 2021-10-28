@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EvoDcimManager.Domain.ActiveContext.Entities;
+using EvoDcimManager.Domain.ActiveContext.Enums;
 using EvoDcimManager.Domain.ActiveContext.Repositories;
 
 namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
@@ -10,12 +11,12 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
     {
         private List<Rack> _racks = new List<Rack>();
         private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
-        private readonly Server _server;
+        private readonly RackEquipment _server;
         private Rack _rack;
 
         public FakeRackRepository()
         {
-            _server = new Server(_serverBase, 1, 2, "Intel xeon", 128, 512);
+            _server = new RackEquipment(_serverBase, 1, 2, ERackEquipmentType.SERVER);
             _rack = new Rack(16, "Rack-01");
             _rack.PlaceEquipment(_server);
 
@@ -60,6 +61,11 @@ namespace EvoDcimManager.Tests.ActiveContext.Mocks.Repositories
         public Rack FindById(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddRackEquipments(Rack rack)
+        {
+
         }
     }
 }

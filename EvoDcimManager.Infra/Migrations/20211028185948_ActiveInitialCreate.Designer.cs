@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EvoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ActiveContext))]
-    [Migration("20211019115530_ActivesInitialCreate")]
-    partial class ActivesInitialCreate
+    [Migration("20211028185948_ActiveInitialCreate")]
+    partial class ActiveInitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,9 @@ namespace EvoDcimManager.Infra.Migrations
                     b.Property<int>("InitialPosition")
                         .HasColumnType("int");
 
+                    b.Property<int>("RackEquipmentType")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("RackId")
                         .HasColumnType("uniqueidentifier");
 
@@ -90,75 +93,17 @@ namespace EvoDcimManager.Infra.Migrations
                     b.ToTable("RackEquipment");
                 });
 
-            modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.RackPosition", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("EquipmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("FinalPosition")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InitialPosition")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EquipmentId");
-
-                    b.ToTable("RackPosition");
-                });
-
-            modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.Server", b =>
-                {
-                    b.HasBaseType("EvoDcimManager.Domain.ActiveContext.Entities.RackEquipment");
-
-                    b.Property<string>("Cpu")
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<int>("Memory")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Storage")
-                        .HasColumnType("int");
-
-                    b.ToTable("Server");
-                });
-
             modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.RackEquipment", b =>
                 {
                     b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.BaseEquipment", "BaseEquipment")
                         .WithMany()
                         .HasForeignKey("BaseEquipmentId");
 
-                    b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.Rack", "Rack")
+                    b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.Rack", null)
                         .WithMany("RackEquipments")
                         .HasForeignKey("RackId");
 
                     b.Navigation("BaseEquipment");
-
-                    b.Navigation("Rack");
-                });
-
-            modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.RackPosition", b =>
-                {
-                    b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.RackEquipment", "Equipment")
-                        .WithMany()
-                        .HasForeignKey("EquipmentId");
-
-                    b.Navigation("Equipment");
-                });
-
-            modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.Server", b =>
-                {
-                    b.HasOne("EvoDcimManager.Domain.ActiveContext.Entities.RackEquipment", null)
-                        .WithOne()
-                        .HasForeignKey("EvoDcimManager.Domain.ActiveContext.Entities.Server", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("EvoDcimManager.Domain.ActiveContext.Entities.Rack", b =>

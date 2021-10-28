@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EvoDcimManager.Infra.Migrations
 {
-    public partial class ActivesInitialCreate : Migration
+    public partial class ActiveInitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,6 +43,7 @@ namespace EvoDcimManager.Infra.Migrations
                     BaseEquipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InitialPosition = table.Column<int>(type: "int", nullable: false),
                     FinalPosition = table.Column<int>(type: "int", nullable: false),
+                    RackEquipmentType = table.Column<int>(type: "int", nullable: false),
                     RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -62,46 +63,6 @@ namespace EvoDcimManager.Infra.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "RackPosition",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EquipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    InitialPosition = table.Column<int>(type: "int", nullable: false),
-                    FinalPosition = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RackPosition", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RackPosition_RackEquipment_EquipmentId",
-                        column: x => x.EquipmentId,
-                        principalTable: "RackEquipment",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Server",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Cpu = table.Column<string>(type: "varchar(20)", nullable: true),
-                    Memory = table.Column<int>(type: "int", nullable: false),
-                    Storage = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Server", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Server_RackEquipment_Id",
-                        column: x => x.Id,
-                        principalTable: "RackEquipment",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_BaseEquipment_Name",
                 table: "BaseEquipment",
@@ -116,21 +77,10 @@ namespace EvoDcimManager.Infra.Migrations
                 name: "IX_RackEquipment_RackId",
                 table: "RackEquipment",
                 column: "RackId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RackPosition_EquipmentId",
-                table: "RackPosition",
-                column: "EquipmentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "RackPosition");
-
-            migrationBuilder.DropTable(
-                name: "Server");
-
             migrationBuilder.DropTable(
                 name: "RackEquipment");
 

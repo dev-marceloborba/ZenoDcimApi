@@ -8,7 +8,7 @@ namespace EvoDcimManager.Infra.Migrations.User
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "user",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -21,19 +21,19 @@ namespace EvoDcimManager.Infra.Migrations.User
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_Email",
-                table: "user",
+                name: "IX_User_Email",
+                table: "User",
                 column: "Email");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "user");
+                name: "User");
         }
     }
 }

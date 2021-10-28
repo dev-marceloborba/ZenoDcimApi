@@ -1,27 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
+using EvoDcimManager.Domain.ActiveContext.Enums;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
 {
     public class Rack : Entity
     {
-        public List<RackEquipment> RackEquipments { get; private set; }
         public int Size { get; private set; }
         public string Localization { get; private set; }
+        public List<RackEquipment> RackEquipments { get; private set; }
 
-        public Rack()
-        {
-
-        }
         public Rack(int size, string localization)
         {
             Size = size;
             Localization = localization;
             RackEquipments = new List<RackEquipment>();
         }
-
-        // public void PopulateSlots(List<RackPosition> rackPositions) => RackPositions = rackPositions;
 
         public void PlaceEquipment(RackEquipment equipment)
         {
@@ -37,6 +32,11 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 
                 RackEquipments.Add(equipment);
             }
+        }
+
+        public void AddEquipment(RackEquipment equipment)
+        {
+            RackEquipments.Add(equipment);
         }
 
         public void RemoveEquipment(int position)
@@ -122,5 +122,10 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
 
         public void ChangeLocalization(string localization) => Localization = localization;
         public void ChangeSize(int size) => Size = size;
+
+        public int GetEquipmentCounterByTipe(ERackEquipmentType rackEquipmentType)
+        {
+            return RackEquipments.Where(x => x.RackEquipmentType == rackEquipmentType).Count();
+        }
     }
 }

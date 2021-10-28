@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EvoDcimManager.Infra.Migrations.User
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20211021215611_UserInitialCreate")]
+    [Migration("20211028190049_UserInitialCreate")]
     partial class UserInitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace EvoDcimManager.Infra.Migrations.User
 
                     b.HasIndex("Email");
 
-                    b.ToTable("user");
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }

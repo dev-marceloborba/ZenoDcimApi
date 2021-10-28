@@ -1,4 +1,5 @@
 using System;
+using EvoDcimManager.Domain.ActiveContext.Enums;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.ActiveContext.Entities
@@ -8,40 +9,25 @@ namespace EvoDcimManager.Domain.ActiveContext.Entities
         public BaseEquipment BaseEquipment { get; private set; }
         public int InitialPosition { get; private set; }
         public int FinalPosition { get; private set; }
-        public Rack Rack { get; private set; }
-        public Guid? RackId { get; private set; }
+        public ERackEquipmentType RackEquipmentType { get; private set; }
 
         public RackEquipment()
         {
 
         }
-        public RackEquipment(int initialPosition, int finalPosition)
+        public RackEquipment(int initialPosition, int finalPosition, ERackEquipmentType rackEquipmentType)
         {
             InitialPosition = initialPosition;
             FinalPosition = finalPosition;
+            RackEquipmentType = rackEquipmentType;
         }
-        public RackEquipment(BaseEquipment baseEquipment, int initialPosition, int finalPosition) : this(initialPosition, finalPosition)
+        public RackEquipment(BaseEquipment baseEquipment, int initialPosition, int finalPosition, ERackEquipmentType rackEquipmentType) : this(initialPosition, finalPosition, rackEquipmentType)
         {
             BaseEquipment = baseEquipment;
         }
 
         public bool IsAvailable() => BaseEquipment == null;
         public bool IsNotAvailable() => BaseEquipment != null;
-        public void AddEquipment(BaseEquipment equipment)
-        {
-            BaseEquipment = equipment;
-        }
-
-
-        public void AssociateRack(Rack rack)
-        {
-            Rack = rack;
-        }
-
-        public void AssociateRackId(Guid id)
-        {
-            RackId = id;
-        }
 
         public int RackUnit() => FinalPosition - InitialPosition + 1;
     }

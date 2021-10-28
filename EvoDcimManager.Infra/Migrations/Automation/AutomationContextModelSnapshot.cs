@@ -66,10 +66,15 @@ namespace EvoDcimManager.Infra.Migrations.Automation
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PlcId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlcId");
 
                     b.ToTable("ModbusTag");
                 });
@@ -98,9 +103,27 @@ namespace EvoDcimManager.Infra.Migrations.Automation
                     b.Property<string>("NetworkMask")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Scan")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TcpPort")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Plc");
+                });
+
+            modelBuilder.Entity("EvoDcimManager.Domain.AutomationContext.Entities.ModbusTag", b =>
+                {
+                    b.HasOne("EvoDcimManager.Domain.AutomationContext.Entities.Plc", null)
+                        .WithMany("ModbusTags")
+                        .HasForeignKey("PlcId");
+                });
+
+            modelBuilder.Entity("EvoDcimManager.Domain.AutomationContext.Entities.Plc", b =>
+                {
+                    b.Navigation("ModbusTags");
                 });
 #pragma warning restore 612, 618
         }

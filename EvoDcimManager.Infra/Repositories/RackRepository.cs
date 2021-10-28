@@ -15,6 +15,16 @@ namespace EvoDcimManager.Infra.Repositories
         {
             _context = context;
         }
+
+        public void AddRackEquipments(Rack rack)
+        {
+            foreach (var item in rack.RackEquipments)
+            {
+                _context.RackEquipments.Add(item);
+            }
+            _context.SaveChanges();
+        }
+
         public void Delete(Rack item)
         {
             _context.Racks.Remove(item);
@@ -37,7 +47,7 @@ namespace EvoDcimManager.Infra.Repositories
         public Rack FindByLocalization(string localization)
         {
             return _context.Racks
-                .AsNoTracking()
+                .Include(x => x.RackEquipments)
                 .FirstOrDefault(x => x.Localization == localization);
         }
 
@@ -47,7 +57,6 @@ namespace EvoDcimManager.Infra.Repositories
                 .AsNoTracking()
                 .Include(x => x.RackEquipments)
                 .ThenInclude(x => x.BaseEquipment)
-                // .ThenInclude(x => x.BaseEquipment)
                 .OrderBy(x => x.Id)
                 .ToList();
         }
@@ -63,7 +72,5 @@ namespace EvoDcimManager.Infra.Repositories
             _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
         }
-
-
     }
 }

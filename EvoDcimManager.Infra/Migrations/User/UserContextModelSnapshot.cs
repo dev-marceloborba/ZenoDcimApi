@@ -50,7 +50,7 @@ namespace EvoDcimManager.Infra.Migrations.User
 
                     b.HasIndex("Email");
 
-                    b.ToTable("user");
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }

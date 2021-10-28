@@ -17,8 +17,8 @@ namespace EvoDcimManager.Infra.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Alarm>().ToTable("Alarm");
-            modelBuilder.Entity<ModbusTag>().ToTable("ModbusTag");
             modelBuilder.Entity<Plc>().ToTable("Plc");
+            modelBuilder.Entity<ModbusTag>().ToTable("ModbusTag");
         }
     }
 }

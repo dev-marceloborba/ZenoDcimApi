@@ -17,6 +17,15 @@ namespace EvoDcimManager.Infra.Repositories
             _context = context;
         }
 
+        public void CreateTags(Plc plc)
+        {
+            foreach (var item in plc.ModbusTags)
+            {
+                _context.ModbusTags.Add(item);
+            }
+            _context.SaveChanges();
+        }
+
         public void Delete(Plc plc)
         {
             _context.Remove(plc);
@@ -33,13 +42,23 @@ namespace EvoDcimManager.Infra.Repositories
         {
             return _context.Plcs
                 .AsNoTracking()
-                .OrderBy(x => x.Name)
+                .Include(x => x.ModbusTags.OrderBy(y => y.Address))
+                .OrderBy(x => x.Id)
                 .ToList();
         }
 
         public Plc FindById(Guid id)
         {
-            return _context.Plcs.FirstOrDefault(x => x.Id == id);
+            return _context.Plcs
+                .Include(x => x.ModbusTags.OrderBy(y => y.Address))
+                .FirstOrDefault(x => x.Id == id);
+        }
+
+        public Plc FindByName(string name)
+        {
+            return _context.Plcs
+                .Include(x => x.ModbusTags)
+                .FirstOrDefault(x => x.Name == name);
         }
 
         public void Save(Plc plc)

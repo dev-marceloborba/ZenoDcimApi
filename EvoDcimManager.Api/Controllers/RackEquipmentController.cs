@@ -9,28 +9,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace EvoDcimManager.Api.Controllers
 {
     [ApiController]
-    [Route("/v1/storages")]
-    public class StorageController : ControllerBase
+    [Route("/v1/rack-equipments")]
+    public class RackEquipmentController : ControllerBase
     {
-
         [Route("")]
         [HttpPost]
-        public ICommandResult Create(
-            [FromBody] CreateStorageCommand command,
-            [FromServices] StorageHandler handler
+        public CommandResult CreateRackEquipment(
+            [FromBody] CreateRackEquipmentCommand command,
+            [FromServices] RackEquipmentHandler handler
         )
         {
-            var result = handler.Handle(command);
-            return (ICommandResult)result;
+            return (CommandResult)handler.Handle(command);
         }
 
         [Route("")]
         [HttpGet]
-        public IEnumerable<Storage> List(
-            [FromServices] IStorageRepository _repository
+        public IEnumerable<RackEquipment> GetAllRackEquipments(
+            [FromServices] IRackEquipmentRepository repository
         )
         {
-            return _repository.List();
+            return repository.FindAll();
         }
     }
 }

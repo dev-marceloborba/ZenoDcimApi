@@ -16,16 +16,16 @@ namespace EvoDcimManager.Api.Controllers
     {
         [Route("")]
         [HttpGet]
-        public IEnumerable<Plc> FindAll(
+        public IEnumerable<Plc> GetAllPlcs(
             [FromServices] IPlcRepository repository
         )
         {
             return repository.FindAll();
         }
 
-        [Route("")]
-        [HttpGet("{id}")]
-        public Plc FindPlcById(
+        [Route("{id}")]
+        [HttpGet]
+        public Plc GetPlcById(
             string id,
             [FromServices] IPlcRepository repository
         )
@@ -36,17 +36,17 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        public ICommandResult Create(
-            [FromBody] PlcCommand command,
+        public ICommandResult CreatePlc(
+            [FromBody] CreatePlcCommand command,
             [FromServices] PlcHandler handler
         )
         {
             return (ICommandResult)handler.Handle(command);
         }
 
-        [Route("")]
-        [HttpPut("{id}")]
-        public ICommandResult Edit(
+        [Route("{id}")]
+        [HttpPut]
+        public ICommandResult EditPlc(
             string id,
             [FromBody] EditPlcCommand command,
             [FromServices] PlcHandler handler
@@ -56,9 +56,9 @@ namespace EvoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
-        [HttpDelete]
         [Route("")]
-        public ICommandResult Delete(
+        [HttpDelete]
+        public ICommandResult DeletePlc(
             [FromBody] DeletePlcCommand command,
             [FromServices] PlcHandler handler
         )

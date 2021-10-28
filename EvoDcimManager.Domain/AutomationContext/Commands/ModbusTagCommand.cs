@@ -4,6 +4,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Commands
 {
     public class ModbusTagCommand : ICommand
     {
+        public string ModbusDevice { get; set; }
         public string Name { get; set; }
         public int Address { get; set; }
         public int Size { get; set; }

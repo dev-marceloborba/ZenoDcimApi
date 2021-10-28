@@ -15,7 +15,7 @@ namespace EvoDcimManager.Api.Controllers
     {
         [Route("")]
         [HttpGet]
-        public IEnumerable<ModbusTag> FindAll(
+        public IEnumerable<ModbusTag> GetAllModbusTags(
             [FromServices] IModbusTagRepository repository
         )
         {
@@ -24,7 +24,7 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        public ICommandResult Create(
+        public ICommandResult CreateModbusTag(
             [FromBody] ModbusTagCommand command,
             [FromServices] ModbusTagHandler handler
         )
@@ -34,7 +34,7 @@ namespace EvoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPut]
-        public ICommandResult Edit(
+        public ICommandResult EditModbusTag(
             [FromBody] EditModbusTagCommand command,
             [FromServices] ModbusTagHandler handler
         )
@@ -42,9 +42,9 @@ namespace EvoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
-        [Route("")]
-        [HttpDelete("{id}")]
-        public ActionResult Delete(
+        [Route("{id}")]
+        [HttpDelete]
+        public ActionResult DeleteModbusTag(
             string id,
             [FromServices] IModbusTagRepository repository
         )

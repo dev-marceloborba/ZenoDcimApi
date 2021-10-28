@@ -16,7 +16,7 @@ namespace EvoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult Create(
+        public ICommandResult CreateUser(
             [FromBody] CreateUserCommand command,
             [FromServices] UserHandler handler
         )
@@ -27,7 +27,7 @@ namespace EvoDcimManager.Api.Controllers
         [Route("")]
         [HttpGet]
         [Authorize]
-        public IEnumerable<User> GetUsers(
+        public IEnumerable<User> GetAllUsers(
             [FromServices] IUserRepository repository
         )
         {
@@ -42,8 +42,8 @@ namespace EvoDcimManager.Api.Controllers
 
         }
 
-        [Route("")]
-        [HttpDelete("{email}")]
+        [Route("{email}")]
+        [HttpDelete]
         [Authorize(Roles = "admin")]
         public ActionResult RemoveUserByEmail(
             string email,

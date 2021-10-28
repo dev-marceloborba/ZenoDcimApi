@@ -40,6 +40,7 @@ namespace EvoDcimManager.Api
             // contexts
             // services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Database"));
             // services.AddDbContext<ActiveContext>(opt => opt.UseInMemoryDatabase("Database"));
+            // services.AddDbContext<AutomationContext>(opt => opt.UseInMemoryDatabase("Database"));
             services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<ActiveContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<AutomationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
@@ -52,9 +53,7 @@ namespace EvoDcimManager.Api
             // repositories
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRackRepository, RackRepository>();
-            services.AddTransient<IServerRepository, ServerRepository>();
-            services.AddTransient<IStorageRepository, StorageRepository>();
-            services.AddTransient<ISwitchRepository, SwitchRepository>();
+            services.AddTransient<IRackEquipmentRepository, RackEquipmentRepository>();
             services.AddTransient<IPlcRepository, PlcRepository>();
             services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
             services.AddTransient<IAlarmRepository, AlarmRepository>();
@@ -63,9 +62,7 @@ namespace EvoDcimManager.Api
             services.AddTransient<UserHandler, UserHandler>();
             services.AddTransient<LoginHandler, LoginHandler>();
             services.AddTransient<RackHandler, RackHandler>();
-            services.AddTransient<ServerHandler, ServerHandler>();
-            services.AddTransient<StorageHandler, StorageHandler>();
-            services.AddTransient<SwitchHandler, SwitchHandler>();
+            services.AddTransient<RackEquipmentHandler, RackEquipmentHandler>();
             services.AddTransient<PlcHandler, PlcHandler>();
             services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
             services.AddTransient<AlarmHandler, AlarmHandler>();

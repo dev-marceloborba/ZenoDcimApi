@@ -1,8 +1,9 @@
+using EvoDcimManager.Domain.ActiveContext.Enums;
 using EvoDcimManager.Shared.Commands;
 
 namespace EvoDcimManager.Domain.ActiveContext.Commands
 {
-    public class CreateServerCommand : ICommand
+    public class CreateRackEquipmentCommand : ICommand
     {
         public string Name { get; set; }
         public string Model { get; set; }
@@ -10,9 +11,7 @@ namespace EvoDcimManager.Domain.ActiveContext.Commands
         public string SerialNumber { get; set; }
         public int InitialPosition { get; set; }
         public int FinalPosition { get; set; }
-        public string Cpu { get; set; }
-        public int Memory { get; set; }
-        public int Storage { get; set; }
+        public ERackEquipmentType RackEquipmentType { get; set; }
         public string RackLocalization { get; set; }
         public void Validate()
         {

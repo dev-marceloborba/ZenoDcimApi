@@ -11,10 +11,8 @@ namespace EvoDcimManager.Infra.Contexts
         { }
 
         public DbSet<Rack> Racks { get; set; }
-        public DbSet<Server> Servers { get; set; }
-        public DbSet<Switch> Switches { get; set; }
-        public DbSet<Storage> Storages { get; set; }
         public DbSet<RackEquipment> RackEquipments { get; set; }
+        public DbSet<BaseEquipment> BaseEquipments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,19 +22,6 @@ namespace EvoDcimManager.Infra.Contexts
             // rack
             modelBuilder.Entity<Rack>().ToTable("Rack");
             modelBuilder.Entity<Rack>().Property(x => x.Localization).HasColumnType("varchar(12)");
-            modelBuilder.Entity<Rack>()
-                .HasMany(c => c.RackEquipments)
-                .WithOne(e => e.Rack);
-
-            // server
-            modelBuilder.Entity<Server>().ToTable("Server");
-            modelBuilder.Entity<Server>().Property(x => x.Cpu).HasColumnType("varchar(20)");
-
-            // storage
-            modelBuilder.Entity<Storage>().ToTable("Storage");
-
-            // switch
-            modelBuilder.Entity<Switch>().ToTable("Switch");
 
             // base equipment
             modelBuilder.Entity<BaseEquipment>().ToTable("BaseEquipment");
@@ -48,11 +33,6 @@ namespace EvoDcimManager.Infra.Contexts
 
             // rack equipment
             modelBuilder.Entity<RackEquipment>().ToTable("RackEquipment");
-            modelBuilder.Entity<RackEquipment>()
-                .HasOne(p => p.Rack)
-                .WithMany(b => b.RackEquipments)
-                .HasForeignKey(p => p.RackId);
-            modelBuilder.Entity<RackEquipment>().Ignore(x => x.Rack);
         }
     }
 }

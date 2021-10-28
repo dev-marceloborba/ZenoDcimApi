@@ -10,7 +10,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
 {
     public class PlcHandler :
         Notifiable,
-        ICommandHandler<PlcCommand>,
+        ICommandHandler<CreatePlcCommand>,
         ICommandHandler<EditPlcCommand>,
         ICommandHandler<DeletePlcCommand>
     {
@@ -21,7 +21,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
             _plcRepository = plcRepository;
         }
 
-        public ICommandResult Handle(PlcCommand command)
+        public ICommandResult Handle(CreatePlcCommand command)
         {
             var plc = new Plc(
                 command.Name,
@@ -29,7 +29,10 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
                 command.Model,
                 command.IpAddress,
                 command.NetworkMask,
-                command.Gateway);
+                command.Gateway,
+                command.TcpPort,
+                command.Scan
+                );
 
             var plcValidator = new PlcValidator(plc);
 
@@ -39,7 +42,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on creating Plc", plcValidator.Notifications);
 
             _plcRepository.Save(plc);
-            return new CommandResult(false, "Plc successful created", plc);
+            return new CommandResult(true, "Plc successful created", plc);
         }
 
         public ICommandResult Handle(EditPlcCommand command)

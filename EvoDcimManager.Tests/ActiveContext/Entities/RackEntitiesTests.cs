@@ -1,4 +1,5 @@
 using EvoDcimManager.Domain.ActiveContext.Entities;
+using EvoDcimManager.Domain.ActiveContext.Enums;
 using EvoDcimManager.Domain.ActiveContext.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,28 +8,25 @@ namespace EvoDcimManager.Tests.ActiveContext.Entities
     [TestClass]
     public class RackEntitiesTests
     {
-        private readonly string _cpu = "Intel Xeon 16C 2.4GHz";
-        private readonly int _memory = 32;
-        private readonly int _storage = 512;
         private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
         private readonly BaseEquipment _swBase = new BaseEquipment("Switch01", "SSW", "Datacom", "12345679");
         private readonly BaseEquipment _storageBase = new BaseEquipment("Storage01", "SSG", "Dell", "12345679");
 
-        private Server _server1;
-        private Server _server2;
-        private Server _server3;
-        private Server _server4;
-        private Server _server5;
-        private Server _server6;
+        private RackEquipment _server1;
+        private RackEquipment _server2;
+        private RackEquipment _server3;
+        private RackEquipment _server4;
+        private RackEquipment _server5;
+        private RackEquipment _server6;
 
         public RackEntitiesTests()
         {
-            _server1 = new Server(_serverBase, 1, 2, _cpu, _memory, _storage);
-            _server2 = new Server(_serverBase, 3, 4, _cpu, _memory, _storage);
-            _server3 = new Server(_serverBase, 5, 6, _cpu, _memory, _storage);
-            _server4 = new Server(_serverBase, 7, 8, _cpu, _memory, _storage);
-            _server5 = new Server(_serverBase, 9, 10, _cpu, _memory, _storage);
-            _server6 = new Server(_serverBase, 11, 12, _cpu, _memory, _storage);
+            _server1 = new RackEquipment(_serverBase, 1, 2, ERackEquipmentType.SERVER);
+            _server2 = new RackEquipment(_serverBase, 3, 4, ERackEquipmentType.SERVER);
+            _server3 = new RackEquipment(_serverBase, 5, 6, ERackEquipmentType.SERVER);
+            _server4 = new RackEquipment(_serverBase, 7, 8, ERackEquipmentType.SERVER);
+            _server5 = new RackEquipment(_serverBase, 9, 10, ERackEquipmentType.SERVER);
+            _server6 = new RackEquipment(_serverBase, 11, 12, ERackEquipmentType.SERVER);
         }
 
         [TestMethod]
