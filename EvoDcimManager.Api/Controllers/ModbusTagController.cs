@@ -25,7 +25,7 @@ namespace EvoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         public ICommandResult CreateModbusTag(
-            [FromBody] ModbusTagCommand command,
+            [FromBody] CreateModbusTagCommand command,
             [FromServices] ModbusTagHandler handler
         )
         {

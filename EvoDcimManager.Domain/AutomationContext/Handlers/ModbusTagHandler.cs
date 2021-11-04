@@ -10,7 +10,7 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
 {
     public class ModbusTagHandler :
         Notifiable,
-        ICommandHandler<ModbusTagCommand>,
+        ICommandHandler<CreateModbusTagCommand>,
         ICommandHandler<EditModbusTagCommand>,
         ICommandHandler<DeleteModbusTagCommand>
     {
@@ -23,16 +23,20 @@ namespace EvoDcimManager.Domain.AutomationContext.Handlers
             _plcRepository = plcRepository;
         }
 
-        public ICommandResult Handle(ModbusTagCommand command)
+        public ICommandResult Handle(CreateModbusTagCommand command)
         {
+            command.Validate();
+
             var modbusTag = new ModbusTag(
                     command.Name,
                     command.Deadband,
                     command.Address,
-                    command.Size);
+                    command.Size,
+                    command.DataType);
+
             var modbusTagValidator = new ModbusTagValidator(modbusTag);
 
-            AddNotifications(modbusTagValidator);
+            AddNotifications(command, modbusTagValidator);
 
             if (Invalid)
                 return new CommandResult(false, "Error on creating modbus tag", modbusTagValidator.Notifications);

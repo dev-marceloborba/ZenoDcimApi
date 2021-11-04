@@ -28,6 +28,7 @@ namespace EvoDcimManager.Api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -68,6 +69,19 @@ namespace EvoDcimManager.Api
             services.AddTransient<AlarmHandler, AlarmHandler>();
 
             services.AddCors();
+
+            // services.AddCors();
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy("Default", builder =>
+            //     {
+            //         builder.WithOrigins("http://localhost:4200")
+            //             .AllowAnyMethod()
+            //             .AllowAnyHeader()
+            //             .AllowAnyOrigin()
+            //             .AllowCredentials();
+            //     });
+            // });
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
@@ -111,15 +125,16 @@ namespace EvoDcimManager.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EvoDcimManager.Api v1"));
             }
 
-            app.UseHttpsRedirection();
+            // app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+         );
 
             app.UseRouting();
 
-            app.UseCors(x => x
-               .AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-            );
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();

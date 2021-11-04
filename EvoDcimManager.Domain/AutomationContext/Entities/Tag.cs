@@ -1,3 +1,4 @@
+using EvoDcimManager.Domain.AutomationContext.ValueObjects;
 using EvoDcimManager.Shared;
 
 namespace EvoDcimManager.Domain.AutomationContext.Entities
@@ -12,8 +13,6 @@ namespace EvoDcimManager.Domain.AutomationContext.Entities
 
         public string Name { get; private set; }
         public double Deadband { get; private set; }
-
         public void ChangeName(string name) => Name = name;
-
     }
 }

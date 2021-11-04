@@ -19,10 +19,8 @@ namespace EvoDcimManager.Infra.Repositories
 
         public void CreateTags(Plc plc)
         {
-            foreach (var item in plc.ModbusTags)
-            {
-                _context.ModbusTags.Add(item);
-            }
+            var count = plc.ModbusTags.Count();
+            _context.ModbusTags.Add(plc.ModbusTags.ElementAt(count - 1));
             _context.SaveChanges();
         }
 

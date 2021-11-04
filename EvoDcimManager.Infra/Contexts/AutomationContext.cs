@@ -19,6 +19,7 @@ namespace EvoDcimManager.Infra.Contexts
             modelBuilder.Entity<Alarm>().ToTable("Alarm");
             modelBuilder.Entity<Plc>().ToTable("Plc");
             modelBuilder.Entity<ModbusTag>().ToTable("ModbusTag");
+            modelBuilder.Entity<ModbusTag>().Property(x => x.DataType).HasColumnType("varchar(16)");
         }
     }
 }
