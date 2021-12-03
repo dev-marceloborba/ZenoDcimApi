@@ -68,7 +68,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Nao foi possivel editar o usuario", command.Notifications);
             }
 
-            var user = _userRepository.FindUserByEmail(command.Email);
+            var user = _userRepository.Find(command.Id);
 
             var role = (EUserRole)command.Role;
             var editedUser = new User(command.FirstName, command.LastName, command.Email, role);

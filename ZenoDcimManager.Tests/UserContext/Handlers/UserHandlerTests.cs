@@ -6,6 +6,8 @@ using ZenoDcimManager.Shared.Services;
 using ZenoDcimManager.Tests.UserContext.Repositories;
 using ZenoDcimManager.Tests.UserContext.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ZenoDcimManager.Domain.UserContext.Entities;
+using ZenoDcimManager.Domain.UserContext.Enums;
 
 namespace ZenoDcimManager.Tests.UserContext.Handlers
 {
@@ -52,6 +54,16 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
             // var userCountUpdated = _userRepository.List().Count;
             // Assert.AreNotEqual(userCount, userCountUpdated);
             Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        [TestCategory("Handlers")]
+        public void ShouldCreateUserAsOperator()
+        {
+            var command = new CreateUserCommand("Marcelo", "Borba", "marcelo@marcelo.com", "123456", "123456", 2, true);
+            var result = _handler.Handle(command);
+            var entity = (User)result.Data;
+            Assert.AreEqual(entity.Role, EUserRole.OPERATOR);
         }
     }
 }

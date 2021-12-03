@@ -1,11 +1,10 @@
-using System;
 using ZenoDcimManager.Domain.UserContext.Commands;
 using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Domain.UserContext.Services;
-using ZenoDcimManager.Domain.UserContext.Validators;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
+using ZenoDcimManager.Domain.UserContext.Commands.Output;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
@@ -46,7 +45,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
 
             var token = _tokenService.GenerateToken(user);
 
-            return new CommandResult(true, "Logado com sucesso", new { token = token });
+            return new CommandResult(true, "Logado com sucesso", new AuthenticationOutputCommand(token, user.FirstName, user.Email));
         }
     }
 }

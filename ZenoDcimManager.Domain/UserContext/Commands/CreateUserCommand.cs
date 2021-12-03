@@ -10,7 +10,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         {
 
         }
-        public CreateUserCommand(string firstName, string lastName, string email, string password, string passwordConfirmation, int role, bool status)
+        public CreateUserCommand(string firstName, string lastName, string email, string password, string passwordConfirmation, int role, bool active)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -18,7 +18,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
             Password = password;
             PasswordConfirmation = passwordConfirmation;
             Role = role;
-            Status = status;
+            Active = active;
         }
 
         public string FirstName { get; set; }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         public string Password { get; set; }
         public string PasswordConfirmation { get; set; }
         public int Role { get; set; }
-        public bool Status { get; set; }
+        public bool Active { get; set; }
 
         public void Validate()
         {

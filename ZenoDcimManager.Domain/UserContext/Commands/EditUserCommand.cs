@@ -1,6 +1,7 @@
 using ZenoDcimManager.Shared.Commands;
 using Flunt.Notifications;
 using Flunt.Validations;
+using System;
 
 namespace ZenoDcimManager.Domain.UserContext.Commands
 {
@@ -10,17 +11,8 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         {
 
         }
-        public EditUserCommand(string firstName, string lastName, string email, string password, string passwordConfirmation, int role, bool status)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = password;
-            PasswordConfirmation = passwordConfirmation;
-            Role = role;
-            Status = status;
-        }
 
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

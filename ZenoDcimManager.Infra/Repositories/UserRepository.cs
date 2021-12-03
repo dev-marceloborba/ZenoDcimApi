@@ -31,7 +31,7 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public User Find(Guid id)
         {
-            return _context.Users.FirstOrDefault(x => x.Id == id);
+            return _context.Users.Find(id);
         }
 
         public User FindUserByEmail(string email)

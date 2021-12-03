@@ -78,5 +78,13 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
             var userValidator = new UserValidator(user);
             Assert.AreEqual(userValidator.Invalid, true);
         }
+
+        [TestMethod]
+        [TestCategory("Entities")]
+        public void ShouldCreateUserAsOperator()
+        {
+            var user = new User("Marcelo", "Borba", "marcelo@mindcloud.com", "12345678", EUserRole.OPERATOR);
+            Assert.AreEqual(user.Role, EUserRole.OPERATOR);
+        }
     }
 }
