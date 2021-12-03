@@ -7,13 +7,12 @@ using ZenoDcimManager.Shared.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using ZenoDcimManager.Domain.UserContext.Commands.Output;
 
 namespace ZenoDcimManager.Api.Controllers
 {
     [ApiController]
-    [Route("/v1/users")]
-    public class UserController : ControllerBase
+    [Route("/v2/users")]
+    public class UserControllerv2 : ControllerBase
     {
         [Route("")]
         [HttpPost]
@@ -30,11 +29,12 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         //[Authorize]
         [AllowAnonymous]
-        public IEnumerable<User> GetAllUsers(
+        public ActionResult<IEnumerable<User>> GetAllUsers(
             [FromServices] IUserRepository repository
         )
         {
-            return repository.List();
+            // return repository.List();
+            return Ok(repository.List());
         }
 
         [Route("")]
@@ -67,12 +67,18 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("login")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult Login(
+        public ActionResult<ICommandResult> Login(
             [FromBody] LoginCommand command,
             [FromServices] LoginHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            // return (ICommandResult)handler.Handle(command);
+            // return new ContentResult();
+            var result = (ICommandResult)handler.Handle(command);
+            if (result.Success)
+                return Ok(result);
+            else
+                return Unauthorized(result);
         }
 
         [Route("edit/{id}")]
@@ -89,17 +95,15 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
-        [Route("{email}")]
+        [Route("{id}")]
         [HttpGet]
-        public UserOutputCommand GetUser(
-            string email,
+        public User GetUser(
+            string id,
             [FromServices] IUserRepository repository
         )
         {
-            // var Id = Guid.Parse(id);
-            // return repository.Find(Id);
-            var user = repository.FindUserByEmail(email);
-            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
+            var Id = Guid.Parse(id);
+            return repository.Find(Id);
         }
     }
 }
