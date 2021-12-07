@@ -32,6 +32,16 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
+        [Route("multiple")]
+        [HttpPost]
+        public ICommandResult CraeteMultipleModbusTags(
+            [FromBody] CreateMultipleModbusTagCommand command,
+            [FromServices] ModbusTagHandler handler
+        )
+        {
+            return (ICommandResult)handler.Handle(command);
+        }
+
         [Route("")]
         [HttpPut]
         public ICommandResult EditModbusTag(

@@ -48,5 +48,11 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.ModbusTags.Add(modbusTag);
             _context.SaveChanges();
         }
+
+        public void SaveMultiple(List<ModbusTag> modbusTags)
+        {
+            _context.ModbusTags.AddRange(modbusTags);
+            _context.SaveChanges();
+        }
     }
 }

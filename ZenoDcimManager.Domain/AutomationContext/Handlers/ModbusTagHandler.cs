@@ -5,6 +5,7 @@ using ZenoDcimManager.Domain.AutomationContext.Validators;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
+using System.Collections.Generic;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Handlers
 {
@@ -12,7 +13,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
         Notifiable,
         ICommandHandler<CreateModbusTagCommand>,
         ICommandHandler<EditModbusTagCommand>,
-        ICommandHandler<DeleteModbusTagCommand>
+        ICommandHandler<DeleteModbusTagCommand>,
+        ICommandHandler<CreateMultipleModbusTagCommand>
     {
         private readonly IModbusTagRepository _modbusTagRepository;
         private readonly IPlcRepository _plcRepository;
@@ -84,6 +86,18 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             _modbusTagRepository.Delete(modbusTag);
 
             return new CommandResult(true, "Modbus tag successful deleted", modbusTag);
+        }
+
+        public ICommandResult Handle(CreateMultipleModbusTagCommand command)
+        {
+            var modbusDevice = _plcRepository.FindByName(command.ModbusDevice);
+            List<ModbusTag> modbusTags = new List<ModbusTag>();
+
+            command.ModbusTags.ForEach(x => modbusTags.Add(new ModbusTag(x.Name, x.Deadband, x.Address, x.Size, x.DataType)));
+
+            _modbusTagRepository.SaveMultiple(modbusTags);
+
+            return new CommandResult(true, "Modbus tags successful created", modbusTags);
         }
     }
 }
