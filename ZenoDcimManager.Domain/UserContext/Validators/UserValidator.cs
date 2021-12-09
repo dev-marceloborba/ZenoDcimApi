@@ -1,6 +1,5 @@
 using ZenoDcimManager.Domain.UserContext.Entities;
 using Flunt.Notifications;
-using Flunt.Validations;
 
 namespace ZenoDcimManager.Domain.UserContext.Validators
 {
@@ -8,7 +7,7 @@ namespace ZenoDcimManager.Domain.UserContext.Validators
     {
         public UserValidator(User user)
         {
-            AddNotifications(new Contract()
+            AddNotifications(new Flunt.Validations.Contract()
                 .Requires()
                 .HasMinLen(user.FirstName, 3, "FirstName", "Minimo de 3 caracteres")
                 .HasMaxLen(user.FirstName, 40, "FirstName", "Maximo de 40 caracteres")

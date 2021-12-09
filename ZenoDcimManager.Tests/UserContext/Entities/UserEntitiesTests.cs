@@ -13,7 +13,12 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
         private readonly Name _name = new Name("Marcelo", "Borba");
         private readonly Email _email = new Email("marcelo@marcelo.com");
         private readonly Password _password = new Password("123456789", "123456789");
-        private readonly User _user = new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN);
+        private readonly Company _company = new Company("Mindcloud", "Mindcloud", "12456789123");
+        private readonly User _user;
+        public UserEntitiesTests()
+        {
+            _user = new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN, _company);
+        }
 
         [TestMethod]
         [TestCategory("Entities")]
@@ -74,7 +79,7 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
         [TestCategory("Entities")]
         public void ShouldCreateAnInvalidUser()
         {
-            var user = new User("Marcelo", "", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN);
+            var user = new User("Marcelo", "", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN, _company);
             var userValidator = new UserValidator(user);
             Assert.AreEqual(userValidator.Invalid, true);
         }
@@ -83,7 +88,7 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
         [TestCategory("Entities")]
         public void ShouldCreateUserAsOperator()
         {
-            var user = new User("Marcelo", "Borba", "marcelo@mindcloud.com", "12345678", EUserRole.OPERATOR);
+            var user = new User("Marcelo", "Borba", "marcelo@mindcloud.com", "12345678", EUserRole.OPERATOR, _company);
             Assert.AreEqual(user.Role, EUserRole.OPERATOR);
         }
     }

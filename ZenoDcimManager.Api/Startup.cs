@@ -53,6 +53,7 @@ namespace ZenoDcimManager.Api
 
             // repositories
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IRackRepository, RackRepository>();
             services.AddTransient<IRackEquipmentRepository, RackEquipmentRepository>();
             services.AddTransient<IPlcRepository, PlcRepository>();
@@ -61,6 +62,7 @@ namespace ZenoDcimManager.Api
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
+            services.AddTransient<CompanyHandler, CompanyHandler>();
             services.AddTransient<LoginHandler, LoginHandler>();
             services.AddTransient<RackHandler, RackHandler>();
             services.AddTransient<RackEquipmentHandler, RackEquipmentHandler>();

@@ -4,22 +4,22 @@ using System.Linq;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Enums;
 using ZenoDcimManager.Domain.UserContext.Repositories;
-using ZenoDcimManager.Domain.UserContext.ValueObjects;
 
 namespace ZenoDcimManager.Tests.UserContext.Repositories
 {
     public class FakeUserRepository : IUserRepository
     {
         private readonly List<User> _users;
+        private readonly Company _company = new Company("Mindcloud", "Mindcloud", "12456789123");
 
         public FakeUserRepository()
         {
             _users = new List<User>();
             _users.Add(
-                new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN)
+                new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN, _company)
             );
             _users.Add(
-                new User("Juliane", "Mattei", "juliane@marcelo.com", "123456798", EUserRole.ADMIN)
+                new User("Juliane", "Mattei", "juliane@marcelo.com", "123456798", EUserRole.ADMIN, _company)
             );
         }
 

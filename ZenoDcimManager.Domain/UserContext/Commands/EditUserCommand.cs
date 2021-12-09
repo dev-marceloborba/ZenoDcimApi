@@ -20,6 +20,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         public string PasswordConfirmation { get; set; }
         public int Role { get; set; }
         public bool Status { get; set; }
+        public Guid CompanyId { get; set; }
 
         public void Validate()
         {

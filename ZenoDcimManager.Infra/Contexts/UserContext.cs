@@ -11,6 +11,7 @@ namespace ZenoDcimManager.Infra.Contexts
         { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +32,18 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.Entity<User>().Property(x => x.HashedPassword)
                 .HasColumnType("varchar(80)");
             modelBuilder.Entity<User>().HasIndex(x => x.Email);
+
+            modelBuilder.Entity<Company>().ToTable("company");
+            modelBuilder.Entity<Company>().Property(x => x.CompanyName)
+                .HasColumnType("varchar(80)");
+            modelBuilder.Entity<Company>().Property(x => x.TradingName)
+                .HasColumnType("varchar(80)");
+            modelBuilder.Entity<Company>().Property(x => x.RegistrationNumber)
+                .HasColumnType("varchar(14)");
+
+
+            modelBuilder.Entity<Contract>().ToTable("contract");
+
         }
     }
 }

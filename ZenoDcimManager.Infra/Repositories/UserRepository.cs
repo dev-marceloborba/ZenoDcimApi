@@ -60,7 +60,8 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public void Update(User item)
         {
-            throw new NotImplementedException();
+            _context.Entry(item).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }

@@ -1,6 +1,7 @@
 using ZenoDcimManager.Shared.Commands;
 using Flunt.Notifications;
 using Flunt.Validations;
+using System;
 
 namespace ZenoDcimManager.Domain.UserContext.Commands
 {
@@ -28,6 +29,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         public string PasswordConfirmation { get; set; }
         public int Role { get; set; }
         public bool Active { get; set; }
+        public Guid CompanyId { get; private set; }
 
         public void Validate()
         {

@@ -75,17 +75,14 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
-        [Route("edit/{id}")]
+        [Route("edit")]
         [HttpPost]
         [AllowAnonymous]
         public ICommandResult Edit(
-            string id,
             [FromBody] EditUserCommand command,
             [FromServices] UserHandler handler
         )
         {
-            var Id = Guid.Parse(id);
-            command.Id = Id;
             return (ICommandResult)handler.Handle(command);
         }
 

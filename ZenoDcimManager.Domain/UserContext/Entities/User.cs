@@ -11,21 +11,23 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
         public string HashedPassword { get; private set; }
         public EUserRole Role { get; private set; }
         public bool Active { get; private set; }
+        public Company Company { get; private set; }
 
         public User()
         {
 
         }
 
-        public User(string firstName, string lastName, string email, EUserRole role)
+        public User(string firstName, string lastName, string email, EUserRole role, Company company)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Role = role;
             Active = true;
+            Company = company;
         }
-        public User(string firstName, string lastName, string email, string hashedPassword, EUserRole role) : this(firstName, lastName, email, role)
+        public User(string firstName, string lastName, string email, string hashedPassword, EUserRole role, Company company) : this(firstName, lastName, email, role, company)
         {
             HashedPassword = hashedPassword;
         }
@@ -48,6 +50,7 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
             // HashedPassword = user.HashedPassword;
             Role = user.Role;
             Active = user.Active;
+            Company = user.Company;
             return this;
         }
 
