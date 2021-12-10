@@ -22,11 +22,12 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
         private readonly IEmailService _emailService;
         private readonly ICryptoService _cryptoService;
 
-        public UserHandler(IUserRepository userRepository, IEmailService emailService, ICryptoService cryptoService)
+        public UserHandler(IUserRepository userRepository, IEmailService emailService, ICryptoService cryptoService, ICompanyRepository companyRepository)
         {
             _userRepository = userRepository;
             _emailService = emailService;
             _cryptoService = cryptoService;
+            _companyRepository = companyRepository;
         }
 
         public ICommandResult Handle(CreateUserCommand command)

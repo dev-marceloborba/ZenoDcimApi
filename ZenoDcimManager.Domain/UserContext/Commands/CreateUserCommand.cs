@@ -11,16 +11,6 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         {
 
         }
-        public CreateUserCommand(string firstName, string lastName, string email, string password, string passwordConfirmation, int role, bool active)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = password;
-            PasswordConfirmation = passwordConfirmation;
-            Role = role;
-            Active = active;
-        }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -29,13 +19,15 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         public string PasswordConfirmation { get; set; }
         public int Role { get; set; }
         public bool Active { get; set; }
-        public Guid CompanyId { get; private set; }
+        public Guid CompanyId { get; set; }
 
         public void Validate()
         {
             AddNotifications(new Contract()
                 .Requires()
                 .IsTrue(ValidateRole(), "Role", "Invalid role")
+                .IsTrue(ValidateGuid(CompanyId), "CompanyId", "Company Id is empty")
+                .IsNotNull(CompanyId, "CompanyId", "Company Id is null")
                 .AreNotEquals(Password, PasswordConfirmation, "Password", "Password doenst match")
             );
         }
@@ -43,6 +35,11 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         public bool ValidateRole()
         {
             return ((int)Role <= 4);
+        }
+
+        public bool ValidateGuid(Guid guid)
+        {
+            return Guid.Empty != guid;
         }
     }
 }
