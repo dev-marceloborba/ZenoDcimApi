@@ -20,6 +20,11 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             throw new NotImplementedException();
         }
 
+        public void CreateContract(Company company)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteCompany(Company company)
         {
             throw new NotImplementedException();
@@ -42,6 +47,11 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
         }
 
         public IEnumerable<Company> ListCompaniesWithContract()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Contract> ListContracts()
         {
             throw new NotImplementedException();
         }

@@ -35,7 +35,7 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.ListCompanies();
         }
 
-        [Route("/with-contracts")]
+        [Route("with-contracts")]
         [HttpGet]
         [AllowAnonymous]
         public IEnumerable<Company> ListCompaniesWithContracts(

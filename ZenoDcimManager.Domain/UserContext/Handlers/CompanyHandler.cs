@@ -7,7 +7,10 @@ using ZenoDcimManager.Shared.Handlers;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
-    public class CompanyHandler : Notifiable, ICommandHandler<CreateCompanyCommand>
+    public class CompanyHandler :
+        Notifiable,
+        ICommandHandler<CreateCompanyCommand>,
+        ICommandHandler<CreateContractCommand>
     {
         private readonly ICompanyRepository _companyRepository;
 
@@ -23,6 +26,19 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             _companyRepository.CreateCompany(company);
 
             return new CommandResult(true, "Empresa criada com sucesso", company);
+        }
+
+        public ICommandResult Handle(CreateContractCommand command)
+        {
+            var company = _companyRepository.FindCompanyById(command.CompanyId);
+
+            var contract = new Contract(command.StartDate, command.EndDate, command.PowerConsumptionDailyLimit);
+
+            company.AddContract(contract);
+
+            _companyRepository.CreateContract(company);
+
+            return new CommandResult(true, "Contrato criado com sucesso", company);
         }
     }
 }

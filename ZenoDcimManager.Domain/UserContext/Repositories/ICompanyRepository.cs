@@ -13,5 +13,7 @@ namespace ZenoDcimManager.Domain.UserContext.Repositories
         IEnumerable<Company> ListCompaniesWithContract();
         Company FindCompanyById(Guid id);
         Company FindCompanyByName(string name);
+        void CreateContract(Company company);
+        IEnumerable<Contract> ListContracts();
     }
 }

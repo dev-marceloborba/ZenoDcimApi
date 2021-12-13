@@ -35,7 +35,7 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.List();
         }
 
-        [Route("/statistics/total-equipments/{id}")]
+        [Route("statistics/total-equipments/{id}")]
         [HttpGet]
         public int GetTotalEquipments(
             string id,
@@ -47,7 +47,7 @@ namespace ZenoDcimManager.Api.Controllers
             return rack.TotalEquipments();
         }
 
-        [Route("/statistics/total-occuped-slots/{id}")]
+        [Route("statistics/total-occuped-slots/{id}")]
         [HttpGet]
         public int GetTotalOccupedSlots(
             string id,
@@ -59,7 +59,7 @@ namespace ZenoDcimManager.Api.Controllers
             return rack.TotalOccupedSlots();
         }
 
-        [Route("/statistics/available-positions/{id}")]
+        [Route("statistics/available-positions/{id}")]
         [HttpGet]
         public int[] GetAvailablePositions(
             string id,
@@ -71,7 +71,7 @@ namespace ZenoDcimManager.Api.Controllers
             return rack.AvailablePositions();
         }
 
-        [Route("/statistics/occuped-positions/{id}")]
+        [Route("statistics/occuped-positions/{id}")]
         [HttpGet]
         public int[] GetOccupedPositions(
             string id,
@@ -83,7 +83,7 @@ namespace ZenoDcimManager.Api.Controllers
             return rack.OccupedPositions();
         }
 
-        [Route("/statistics/percentage-used-space/{id}")]
+        [Route("statistics/percentage-used-space/{id}")]
         [HttpGet]
         public double GetPercentageUsedSpace(
             string id,
@@ -95,7 +95,7 @@ namespace ZenoDcimManager.Api.Controllers
             return rack.PercentUsedSpace();
         }
 
-        [Route("/statistics/percentage-available-space/{id}")]
+        [Route("statistics/percentage-available-space/{id}")]
         [HttpGet]
         public double GetPercentageAvailableSpace(
             string id,

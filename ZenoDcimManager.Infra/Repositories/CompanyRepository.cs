@@ -54,5 +54,17 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Companies.Where(x => x.CompanyName == name).FirstOrDefault();
         }
+
+        public void CreateContract(Company company)
+        {
+            var count = company.Contracts.Count();
+            _context.Contracts.Add(company.Contracts.ElementAt(count - 1));
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Contract> ListContracts()
+        {
+            return _context.Contracts.ToList();
+        }
     }
 }
