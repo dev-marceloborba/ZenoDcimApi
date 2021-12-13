@@ -43,6 +43,8 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Users
                 .AsNoTracking()
+                .Include(x => x.Company)
+                .ThenInclude(x => x.Contracts)
                 .OrderBy(x => x.FirstName)
                 .ToList();
         }

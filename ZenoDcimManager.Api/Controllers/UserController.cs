@@ -47,7 +47,8 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("{email}")]
         [HttpDelete]
-        [Authorize(Roles = "admin")]
+        // [Authorize(Roles = "admin")]
+        [AllowAnonymous]
         public ActionResult RemoveUserByEmail(
             string email,
             [FromServices] IUserRepository repository
