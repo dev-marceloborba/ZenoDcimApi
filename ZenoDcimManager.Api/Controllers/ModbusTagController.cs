@@ -71,5 +71,22 @@ namespace ZenoDcimManager.Api.Controllers
                 return BadRequest();
             }
         }
+
+        [Route("delete-by-clp/{id}")]
+        [HttpDelete]
+        public ActionResult DeleteAllByClp(string id, [FromServices] IPlcRepository plcRepository, [FromServices] IModbusTagRepository modbusTagRepository)
+        {
+            try
+            {
+                Guid gid = Guid.Parse(id);
+                var clp = plcRepository.FindById(gid);
+                modbusTagRepository.DeleteAllByClp(clp);
+                return Ok();
+            } catch
+            {
+                return BadRequest();
+            }
+            
+        }
     }
 }

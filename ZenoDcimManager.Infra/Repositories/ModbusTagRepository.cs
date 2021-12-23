@@ -23,6 +23,13 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.SaveChanges();
         }
 
+        public void DeleteAllByClp(Plc plc)
+        {
+            plc.ModbusTags.Clear();
+            _context.Entry(plc).State = EntityState.Deleted;
+            _context.SaveChanges();
+        }
+
         public void Edit(ModbusTag modbusTag)
         {
             _context.Entry(modbusTag).State = EntityState.Modified;

@@ -10,6 +10,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Repositories
         void Edit(ModbusTag modbusTag);
         void Save(ModbusTag modbusTag);
         void SaveMultiple(List<ModbusTag> modbusTags);
+        void DeleteAllByClp(Plc plc);
         ModbusTag FindById(Guid id);
         IEnumerable<ModbusTag> FindAll();
     }
