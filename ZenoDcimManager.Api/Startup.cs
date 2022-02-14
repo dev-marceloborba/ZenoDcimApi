@@ -23,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ZenoDcimManager.Domain.DataCenterContext.Repositories;
+using ZenoDcimManager.Domain.DataCenterContext.Handlers;
 
 namespace ZenoDcimManager.Api
 {
@@ -45,6 +47,7 @@ namespace ZenoDcimManager.Api
             services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<ActiveContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<AutomationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
+            services.AddDbContext<DataCenterContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
 
             // services
             services.AddTransient<IEmailService, EmailService>();
@@ -59,6 +62,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<IPlcRepository, PlcRepository>();
             services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
             services.AddTransient<IAlarmRepository, AlarmRepository>();
+            services.AddTransient<IDataCenterRepository, DataCenterRepository>();
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
@@ -69,6 +73,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<PlcHandler, PlcHandler>();
             services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
             services.AddTransient<AlarmHandler, AlarmHandler>();
+            services.AddTransient<BuildingHandler, BuildingHandler>();
 
             services.AddCors();
 
