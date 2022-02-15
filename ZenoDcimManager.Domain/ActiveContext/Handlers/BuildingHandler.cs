@@ -1,10 +1,10 @@
-using ZenoDcimManager.Domain.DataCenterContext.Commands.Inputs;
-using ZenoDcimManager.Domain.DataCenterContext.Entities;
-using ZenoDcimManager.Domain.DataCenterContext.Repositories;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 
-namespace ZenoDcimManager.Domain.DataCenterContext.Handlers
+namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 {
     public class BuildingHandler : ICommandHandler<CreateBuildingCommand>
     {

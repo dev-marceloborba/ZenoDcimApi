@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.DataCenterContext.Entities
+namespace ZenoDcimManager.Domain.ActiveContext.Entities
 {
     public class Room : Entity
     {

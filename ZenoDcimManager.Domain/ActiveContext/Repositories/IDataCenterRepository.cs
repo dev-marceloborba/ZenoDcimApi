@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
-using ZenoDcimManager.Domain.DataCenterContext.Entities;
+using ZenoDcimManager.Domain.ActiveContext.Entities;
 
-namespace ZenoDcimManager.Domain.DataCenterContext.Repositories
+namespace ZenoDcimManager.Domain.ActiveContext.Repositories
 {
     public interface IDataCenterRepository
     {
         public void AddBuilding(Building building);
         public IEnumerable<Building> FindAllBuildings();
+        public void DeleteBuilding(Guid id);
         public void AddFloor(Floor floor);
         public IEnumerable<Floor> FindAllFloors();
         public void AddRoom(Room room);

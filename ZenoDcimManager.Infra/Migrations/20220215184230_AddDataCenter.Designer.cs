@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ActiveContext))]
-    partial class ActiveContextModelSnapshot : ModelSnapshot
+    [Migration("20220215184230_AddDataCenter")]
+    partial class AddDataCenter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,14 +56,14 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Campus")
-                        .HasColumnType("varchar(28)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Building", (string)null);
+                    b.ToTable("Buildings");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ActiveContext.Entities.Equipment", b =>
@@ -74,13 +76,13 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Component")
-                        .HasColumnType("varchar(16)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ComponentCode")
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("RackId")
                         .HasColumnType("uniqueidentifier");
@@ -99,7 +101,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Equipment", (string)null);
+                    b.ToTable("Equipments");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ActiveContext.Entities.Floor", b =>
@@ -112,13 +114,13 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(12)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BuildingId");
 
-                    b.ToTable("Floor", (string)null);
+                    b.ToTable("Floors");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ActiveContext.Entities.Rack", b =>
@@ -192,13 +194,13 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(12)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FloorId");
 
-                    b.ToTable("Room", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ActiveContext.Entities.Equipment", b =>

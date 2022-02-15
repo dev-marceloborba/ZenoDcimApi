@@ -1,6 +1,8 @@
+using ZenoDcimManager.Shared;
+
 namespace ZenoDcimManager.Domain.ActiveContext.Entities
 {
-    public class RackPdu
+    public class RackPdu : Entity
     {
         public RackPdu(string name)
         {

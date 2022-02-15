@@ -23,8 +23,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ZenoDcimManager.Domain.DataCenterContext.Repositories;
-using ZenoDcimManager.Domain.DataCenterContext.Handlers;
 
 namespace ZenoDcimManager.Api
 {
@@ -47,7 +45,7 @@ namespace ZenoDcimManager.Api
             services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<ActiveContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<AutomationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
-            services.AddDbContext<DataCenterContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
+            // services.AddDbContext<DataCenterContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
 
             // services
             services.AddTransient<IEmailService, EmailService>();

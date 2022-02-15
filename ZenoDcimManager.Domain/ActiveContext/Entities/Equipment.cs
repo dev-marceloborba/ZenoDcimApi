@@ -1,7 +1,7 @@
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.DataCenterContext.Entities
+namespace ZenoDcimManager.Domain.ActiveContext.Entities
 {
     public class Equipment : Entity
     {
@@ -11,6 +11,11 @@ namespace ZenoDcimManager.Domain.DataCenterContext.Entities
         public string Description { get; private set; }
         public Rack Rack { get; private set; }
         public RackPdu RackPdu { get; private set; }
+
+        public Equipment()
+        {
+
+        }
 
         public Equipment(int @class, string component, string componentCode, string description, Rack rack, RackPdu rackPdu)
         {

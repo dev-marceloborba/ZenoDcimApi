@@ -1,6 +1,6 @@
 using ZenoDcimManager.Shared.Commands;
 
-namespace ZenoDcimManager.Domain.DataCenterContext.Commands.Inputs
+namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
 {
     public class CreateBuildingCommand : ICommand
     {
