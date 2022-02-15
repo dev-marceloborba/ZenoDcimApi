@@ -8,6 +8,11 @@ namespace ZenoDcimManager.Domain.DataCenterContext.Entities
         public string Name { get; private set; }
         public List<Room> Rooms { get; private set; } = new List<Room>();
 
+        public Floor(string name)
+        {
+            Name = name;
+        }
+
         public void AddRoom(Room room)
         {
             Rooms.Add(room);

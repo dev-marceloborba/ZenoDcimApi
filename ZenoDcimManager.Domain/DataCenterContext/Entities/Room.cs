@@ -7,5 +7,10 @@ namespace ZenoDcimManager.Domain.DataCenterContext.Entities
     {
         public string Name { get; private set; }
         public List<Equipment> Equipments { get; private set; }
+
+        public Room(string name)
+        {
+            Name = name;
+        }
     }
 }

@@ -5,15 +5,15 @@ namespace ZenoDcimManager.Domain.DataCenterContext.Entities
 {
     public class Building : Entity
     {
+        public string Campus { get; private set; }
+        public string Name { get; private set; }
+        public List<Floor> Floors { get; private set; } = new List<Floor>();
+
         public Building(string campus, string name)
         {
             Campus = campus;
             Name = name;
         }
-
-        public string Campus { get; private set; }
-        public string Name { get; private set; }
-        public List<Floor> Floors { get; private set; } = new List<Floor>();
 
         public void AddFloor(Floor floor)
         {
