@@ -35,6 +35,17 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.FindAllBuildings();
         }
 
+        [Route("building/{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public Building FindBuildingById(
+            Guid id,
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            return repository.FindBuildingById(id);
+        }
+
 
         [Route("building/{id}")]
         [HttpDelete]
@@ -53,7 +64,17 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 return NotFound();
             }
+        }
 
+        [Route("building/floor")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ICommandResult CreateFloor(
+            [FromBody] CreateFloorCommand command,
+            [FromServices] BuildingHandler handler
+        )
+        {
+            return (ICommandResult)handler.Handle(command);
         }
     }
 }

@@ -27,9 +27,13 @@ namespace ZenoDcimManager.Infra.Repositories
             throw new System.NotImplementedException();
         }
 
-        public void AddFloor(Floor floor)
+        public void AddFloor(Building building)
         {
-            throw new System.NotImplementedException();
+            foreach (var item in building.Floors)
+            {
+                _context.Floors.Add(item);
+            }
+            _context.SaveChanges();
         }
 
         public void AddRoom(Room room)
@@ -62,6 +66,11 @@ namespace ZenoDcimManager.Infra.Repositories
         public IEnumerable<Room> FindAllRooms()
         {
             throw new System.NotImplementedException();
+        }
+
+        public Building FindBuildingById(Guid id)
+        {
+            return _context.Buildings.Find(id);
         }
     }
 }
