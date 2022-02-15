@@ -5,7 +5,7 @@ namespace ZenoDcimManager.Infra.Contexts
 {
     public class DataCenterContext : DbContext
     {
-        public DataCenterContext(DbContextOptions options)
+        public DataCenterContext(DbContextOptions<DataCenterContext> options) : base(options)
         {
 
         }
@@ -17,9 +17,20 @@ namespace ZenoDcimManager.Infra.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Building>().ToTable("building");
+            modelBuilder.Entity<Building>().Property(x => x.Campus).HasColumnType("varchar(28)");
+            modelBuilder.Entity<Building>().Property(x => x.Name).HasColumnType("varchar(20)");
+
             modelBuilder.Entity<Floor>().ToTable("floor");
+            modelBuilder.Entity<Floor>().Property(x => x.Name).HasColumnType("varchar(12)");
+
             modelBuilder.Entity<Room>().ToTable("room");
+            modelBuilder.Entity<Room>().Property(x => x.Name).HasColumnType("varchar(12)");
+
             modelBuilder.Entity<Equipment>().ToTable("equipment");
+            modelBuilder.Entity<Equipment>().Property(x => x.ComponentCode).HasColumnType("varchar(30)");
+            modelBuilder.Entity<Equipment>().Property(x => x.Description).HasColumnType("varchar(100)");
+            modelBuilder.Entity<Equipment>().Property(x => x.Component).HasColumnType("varchar(16)");
+
         }
     }
 }
