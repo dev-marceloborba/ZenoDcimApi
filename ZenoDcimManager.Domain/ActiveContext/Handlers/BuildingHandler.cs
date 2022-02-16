@@ -9,7 +9,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 {
     public class BuildingHandler : Notifiable,
         ICommandHandler<CreateBuildingCommand>,
-        ICommandHandler<CreateFloorCommand>
+        ICommandHandler<CreateFloorCommand>,
+        ICommandHandler<CreateRoomCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -36,6 +37,17 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.AddFloor(building);
 
             return new CommandResult(true, "Andar criado com sucesso", null);
+        }
+
+        public ICommandResult Handle(CreateRoomCommand command)
+        {
+            var floor = _dataCenterRepository.FindFloorById(command.FloorId);
+
+            floor.AddRoom(new Room(command.Name));
+
+            _dataCenterRepository.AddRoom(floor);
+
+            return new CommandResult(true, "Sala criada com sucesso", null);
         }
     }
 }
