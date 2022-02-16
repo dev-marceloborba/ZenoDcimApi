@@ -10,7 +10,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
     public class BuildingHandler : Notifiable,
         ICommandHandler<CreateBuildingCommand>,
         ICommandHandler<CreateFloorCommand>,
-        ICommandHandler<CreateRoomCommand>
+        ICommandHandler<CreateRoomCommand>,
+        ICommandHandler<CreateEquipmentCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -48,6 +49,24 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.AddRoom(floor);
 
             return new CommandResult(true, "Sala criada com sucesso", null);
+        }
+
+        public ICommandResult Handle(CreateEquipmentCommand command)
+        {
+            var equipment = new Equipment(
+                command.Class,
+                command.Component,
+                command.ComponentCode,
+                command.Description,
+                null,
+                null);
+
+            var room = _dataCenterRepository.FindRoomById(command.RoomId);
+            room.AddEquipment(equipment);
+
+            _dataCenterRepository.AddEquipment(room);
+
+            return new CommandResult(true, "Equipamento criado com sucesso", null);
         }
     }
 }

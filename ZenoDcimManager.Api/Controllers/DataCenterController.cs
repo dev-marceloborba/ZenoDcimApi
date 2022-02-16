@@ -107,5 +107,26 @@ namespace ZenoDcimManager.Api.Controllers
         {
             return repository.FindAllRooms();
         }
+
+        [Route("building/floor/room/equipment")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ICommandResult CreateEquipment(
+            [FromBody] CreateEquipmentCommand command,
+            [FromServices] BuildingHandler handler
+        )
+        {
+            return (ICommandResult)handler.Handle(command);
+        }
+
+        [Route("building/floor/room/equipment")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IEnumerable<Equipment> FindAllEquipments(
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            return repository.FindAllEquipments();
+        }
     }
 }
