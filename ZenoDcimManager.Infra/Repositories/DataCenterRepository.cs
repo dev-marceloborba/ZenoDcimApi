@@ -50,7 +50,9 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public IEnumerable<Building> FindAllBuildings()
         {
-            return _context.Buildings.Include(x => x.Floors).ToList();
+            return _context.Buildings
+                .Include(x => x.Floors)
+                .ToList();
         }
 
         public IEnumerable<Equipment> FindAllEquipments()
@@ -60,17 +62,22 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public IEnumerable<Floor> FindAllFloors()
         {
-            throw new System.NotImplementedException();
+            return _context.Floors
+                .Include(x => x.Rooms)
+                .ToList();
         }
 
         public IEnumerable<Room> FindAllRooms()
         {
-            throw new System.NotImplementedException();
+            return _context.Rooms
+                .Include(x => x.Equipments)
+                .ToList();
         }
 
         public Building FindBuildingById(Guid id)
         {
-            return _context.Buildings.Find(id);
+            return _context.Buildings
+                .Find(id);
         }
     }
 }

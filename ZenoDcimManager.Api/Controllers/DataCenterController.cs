@@ -76,5 +76,15 @@ namespace ZenoDcimManager.Api.Controllers
         {
             return (ICommandResult)handler.Handle(command);
         }
+
+        [Route("building/floor")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IEnumerable<Floor> FindAllFloors(
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            return repository.FindAllFloors();
+        }
     }
 }
