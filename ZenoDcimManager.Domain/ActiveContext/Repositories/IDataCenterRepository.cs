@@ -12,9 +12,15 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public void DeleteBuilding(Guid id);
         public void AddFloor(Building building);
         public IEnumerable<Floor> FindAllFloors();
-        public void AddRoom(Room room);
+        public Floor FindFloorById(Guid id);
+        public void DeleteFloor(Floor floor);
+        public void AddRoom(Floor floor);
         public IEnumerable<Room> FindAllRooms();
-        public void AddEquipment(Equipment equipment);
+        public Room FindRoomById(Guid id);
+        public void DeleteRoom(Room room);
+        public void AddEquipment(Room room);
         public IEnumerable<Equipment> FindAllEquipments();
+        public Equipment FindEquipmentById(Guid id);
+        public void DeleteEquipment(Equipment equipment);
     }
 }

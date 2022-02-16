@@ -22,9 +22,13 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.SaveChanges();
         }
 
-        public void AddEquipment(Equipment equipment)
+        public void AddEquipment(Room room)
         {
-            throw new System.NotImplementedException();
+            foreach (var equipment in room.Equipments)
+            {
+                _context.Equipments.Add(equipment);
+            }
+            _context.SaveChanges();
         }
 
         public void AddFloor(Building building)
@@ -36,15 +40,38 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.SaveChanges();
         }
 
-        public void AddRoom(Room room)
+        public void AddRoom(Floor floor)
         {
-            throw new System.NotImplementedException();
+            foreach (var room in floor.Rooms)
+            {
+                _context.Rooms.Add(room);
+
+            }
+            _context.SaveChanges();
         }
 
         public void DeleteBuilding(Guid id)
         {
             var building = _context.Buildings.Find(id);
             _context.Entry(building).State = EntityState.Deleted;
+            _context.SaveChanges();
+        }
+
+        public void DeleteEquipment(Equipment equipment)
+        {
+            _context.Entry(equipment).State = EntityState.Deleted;
+            _context.SaveChanges();
+        }
+
+        public void DeleteFloor(Floor floor)
+        {
+            _context.Entry(floor).State = EntityState.Deleted;
+            _context.SaveChanges();
+        }
+
+        public void DeleteRoom(Room room)
+        {
+            _context.Entry(room).State = EntityState.Deleted;
             _context.SaveChanges();
         }
 
@@ -57,7 +84,7 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public IEnumerable<Equipment> FindAllEquipments()
         {
-            throw new System.NotImplementedException();
+            return _context.Equipments.ToList();
         }
 
         public IEnumerable<Floor> FindAllFloors()
@@ -78,6 +105,22 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Buildings
                 .Find(id);
+        }
+
+        public Equipment FindEquipmentById(Guid id)
+        {
+            return _context.Equipments.Find(id);
+        }
+
+        public Floor FindFloorById(Guid id)
+        {
+            return _context.Floors
+                .Find(id);
+        }
+
+        public Room FindRoomById(Guid id)
+        {
+            return _context.Rooms.Find(id);
         }
     }
 }
