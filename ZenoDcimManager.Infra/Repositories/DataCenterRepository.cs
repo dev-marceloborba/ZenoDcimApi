@@ -78,9 +78,10 @@ namespace ZenoDcimManager.Infra.Repositories
         public IEnumerable<Building> FindAllBuildings()
         {
             return _context.Buildings
-                .Include(x => x.Floors)
-                .ThenInclude(x => x.Rooms)
-                .ThenInclude(x => x.Equipments)
+                .Include(x => x.Floors.OrderBy(y => y.Name))
+                .ThenInclude(x => x.Rooms.OrderBy(y => y.Name))
+                .ThenInclude(x => x.Equipments.OrderBy(y => y.Description))
+                .OrderBy(x => x.Name)
                 .ToList();
         }
 
@@ -92,14 +93,16 @@ namespace ZenoDcimManager.Infra.Repositories
         public IEnumerable<Floor> FindAllFloors()
         {
             return _context.Floors
-                .Include(x => x.Rooms)
+                .Include(x => x.Rooms.OrderBy(y => y.Name))
+                .OrderBy(x => x.Name)
                 .ToList();
         }
 
         public IEnumerable<Room> FindAllRooms()
         {
             return _context.Rooms
-                .Include(x => x.Equipments)
+                .Include(x => x.Equipments.OrderBy(y => y.Description))
+                .OrderBy(x => x.Name)
                 .ToList();
         }
 
@@ -111,7 +114,8 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public Equipment FindEquipmentById(Guid id)
         {
-            return _context.Equipments.Find(id);
+            return _context.Equipments
+                .Find(id);
         }
 
         public Floor FindFloorById(Guid id)
@@ -122,7 +126,8 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public Room FindRoomById(Guid id)
         {
-            return _context.Rooms.Find(id);
+            return _context.Rooms
+                .Find(id);
         }
     }
 }

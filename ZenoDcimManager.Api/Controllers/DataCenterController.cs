@@ -35,29 +35,29 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.FindAllBuildings();
         }
 
-        [Route("building/{id}")]
+        [Route("building/{Id}")]
         [HttpGet]
         [AllowAnonymous]
         public Building FindBuildingById(
-            Guid id,
+            Guid Id,
             [FromServices] IDataCenterRepository repository
         )
         {
-            return repository.FindBuildingById(id);
+            return repository.FindBuildingById(Id);
         }
 
 
-        [Route("building/{id}")]
+        [Route("building/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
         public ActionResult DeleteBuilding(
-            Guid id,
+            Guid Id,
             [FromServices] IDataCenterRepository repository
         )
         {
             try
             {
-                repository.DeleteBuilding(id);
+                repository.DeleteBuilding(Id);
                 return Ok();
             }
             catch
