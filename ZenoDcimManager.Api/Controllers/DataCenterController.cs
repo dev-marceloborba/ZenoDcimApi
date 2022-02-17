@@ -62,7 +62,7 @@ namespace ZenoDcimManager.Api.Controllers
             }
             catch
             {
-                return NotFound();
+                return BadRequest();
             }
         }
 
@@ -87,6 +87,26 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.FindAllFloors();
         }
 
+        [Route("building/floor/{Id}")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public ActionResult DeleteFloor(
+            Guid Id,
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            try
+            {
+                var floor = repository.FindFloorById(Id);
+                repository.DeleteFloor(floor);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         [Route("building/floor/room")]
         [HttpPost]
         [AllowAnonymous]
@@ -108,6 +128,26 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.FindAllRooms();
         }
 
+        [Route("building/floor/room/{Id}")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public ActionResult DeleteRoom(
+            Guid Id,
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            try
+            {
+                var room = repository.FindRoomById(Id);
+                repository.DeleteRoom(room);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         [Route("building/floor/room/equipment")]
         [HttpPost]
         [AllowAnonymous]
@@ -127,6 +167,26 @@ namespace ZenoDcimManager.Api.Controllers
         )
         {
             return repository.FindAllEquipments();
+        }
+
+        [Route("building/floor/room/equipment/{Id}")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public ActionResult DeleteEquipment(
+            Guid Id,
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            try
+            {
+                var equipment = repository.FindEquipmentById(Id);
+                repository.DeleteEquipment(equipment);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
