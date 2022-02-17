@@ -79,6 +79,8 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Buildings
                 .Include(x => x.Floors)
+                .ThenInclude(x => x.Rooms)
+                .ThenInclude(x => x.Equipments)
                 .ToList();
         }
 
