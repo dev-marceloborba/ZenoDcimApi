@@ -188,5 +188,16 @@ namespace ZenoDcimManager.Api.Controllers
                 return BadRequest();
             }
         }
+
+        [Route("building/floor/room/equipment/multiple")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ICommandResult CreateMultipleEquipments(
+            [FromBody] CreateMultipleEquipmentsCommand command,
+            [FromServices] BuildingHandler handler
+        )
+        {
+            return (ICommandResult)handler.Handle(command);
+        }
     }
 }

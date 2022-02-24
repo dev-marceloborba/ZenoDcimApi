@@ -1,3 +1,4 @@
+using System.Linq;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
@@ -11,7 +12,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateBuildingCommand>,
         ICommandHandler<CreateFloorCommand>,
         ICommandHandler<CreateRoomCommand>,
-        ICommandHandler<CreateEquipmentCommand>
+        ICommandHandler<CreateEquipmentCommand>,
+        ICommandHandler<CreateMultipleEquipmentsCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -42,7 +44,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateRoomCommand command)
         {
-            var floor = _dataCenterRepository.FindFloorById(command.FloorId);
+            var building = _dataCenterRepository.FindBuildingById(command.BuildingId);
+            var floor = building.Floors.Find(x => x.Id == command.FloorId);
 
             floor.AddRoom(new Room(command.Name));
 
@@ -67,6 +70,39 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.AddEquipment(room);
 
             return new CommandResult(true, "Equipamento criado com sucesso", null);
+        }
+
+        public ICommandResult Handle(CreateMultipleEquipmentsCommand command)
+        {
+            var firstCommand = command.Equipments.ToArray()[0];
+
+            var building = _dataCenterRepository.FindBuildingById(firstCommand.BuildingId);
+            // return new CommandResult(true, "Equipamentos criados com sucesso", command);
+            foreach (var item in command.Equipments)
+            {
+                var floor = building.Floors.Find(x => x.Id == item.FloorId);
+                var room = floor.Rooms.Find(x => x.Id == item.RoomId);
+
+                var equipment = new Equipment(item.Class, item.Component, item.ComponentCode, item.Description, null, null);
+
+                room.AddEquipment(equipment);
+
+            }
+
+            _dataCenterRepository.AddEquipment(building);
+
+            // foreach (var floor in building.Floors)
+            // {
+            //     foreach (var room in floor.Rooms)
+            //     {
+            //         foreach (var equipment in room.Equipments)
+            //         {
+            //             _dataCenterRepository.AddEquipment(equipment);
+            //         }
+            //     }
+            // }
+
+            return new CommandResult(true, "Equipamentos criados com sucesso", building);
         }
     }
 }

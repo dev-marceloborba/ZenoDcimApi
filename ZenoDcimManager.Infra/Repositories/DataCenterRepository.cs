@@ -31,6 +31,22 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.SaveChanges();
         }
 
+        public void AddEquipment(Building building)
+        {
+            foreach (var floor in building.Floors)
+            {
+                foreach (var room in floor.Rooms)
+                {
+                    foreach (var equipment in room.Equipments)
+                    {
+                        _context.Equipments.Add(equipment);
+                    }
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
         public void AddFloor(Building building)
         {
             foreach (var item in building.Floors)
@@ -87,7 +103,8 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public IEnumerable<Equipment> FindAllEquipments()
         {
-            return _context.Equipments.ToList();
+            return _context.Equipments
+                .ToList();
         }
 
         public IEnumerable<Floor> FindAllFloors()
@@ -109,7 +126,10 @@ namespace ZenoDcimManager.Infra.Repositories
         public Building FindBuildingById(Guid id)
         {
             return _context.Buildings
-                .Find(id);
+                .Where(x => x.Id == id)
+                .Include(x => x.Floors)
+                .ThenInclude(x => x.Rooms)
+                .Single();
         }
 
         public Equipment FindEquipmentById(Guid id)
@@ -118,10 +138,31 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Find(id);
         }
 
+        public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId)
+        {
+            return _context.Buildings
+                .FirstOrDefault(x => x.Id == buildingId).Floors
+                .FirstOrDefault(x => x.Id == floorId).Rooms
+                .FirstOrDefault(x => x.Id == roomId).Equipments;
+        }
+
+        public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId)
+        {
+            return _context.Buildings
+                .FirstOrDefault(x => x.Id == buildingId).Floors;
+        }
+
         public Floor FindFloorById(Guid id)
         {
             return _context.Floors
                 .Find(id);
+        }
+
+        public IEnumerable<Room> FindRoomByFloor(Guid floorId, Guid buildingId)
+        {
+            return _context.Buildings
+                .FirstOrDefault(x => x.Id == buildingId).Floors
+                .FirstOrDefault(x => x.Id == floorId).Rooms;
         }
 
         public Room FindRoomById(Guid id)

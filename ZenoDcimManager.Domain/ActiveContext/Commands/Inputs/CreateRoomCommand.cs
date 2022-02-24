@@ -5,6 +5,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
 {
     public class CreateRoomCommand : ICommand
     {
+        public Guid BuildingId { get; set; }
         public Guid FloorId { get; set; }
         public string Name { get; set; }
         public void Validate()
