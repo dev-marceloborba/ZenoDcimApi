@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Shared;
 
@@ -11,6 +12,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public string Description { get; private set; }
         public Rack Rack { get; private set; }
         public RackPdu RackPdu { get; private set; }
+        public List<EquipmentParameter> EquipmentParameters { get; private set; } = new List<EquipmentParameter>();
 
         public Equipment()
         {
@@ -25,6 +27,11 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
             Description = description;
             Rack = rack;
             RackPdu = rackPdu;
+        }
+
+        public void AddEquipmentParameter(EquipmentParameter parameter)
+        {
+            EquipmentParameters.Add(parameter);
         }
     }
 }
