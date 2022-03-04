@@ -67,5 +67,10 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
         {
 
         }
+
+        public void Commit()
+        {
+
+        }
     }
 }

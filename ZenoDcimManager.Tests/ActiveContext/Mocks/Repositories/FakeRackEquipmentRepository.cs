@@ -18,6 +18,12 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _rackEquipments.Add(new RackEquipment(_baseEquipment, 3, 4, ERackEquipmentType.SWITCH));
             _rackEquipments.Add(new RackEquipment(_baseEquipment, 5, 6, ERackEquipmentType.STORAGE));
         }
+
+        public void Commit()
+        {
+
+        }
+
         public void Create(RackEquipment rackEquipment)
         {
 

@@ -1,9 +1,10 @@
 using ZenoDcimManager.Domain.ServiceOrderContext.Entities;
 using ZenoDcimManager.Shared.Repositories;
+using ZenoDcimManager.Shared.UnitOfWork;
 
 namespace ZenoDcimManager.Domain.ServiceOrderContext.Repositories
 {
-    public interface IActivity : CrudRepository<Activity>
+    public interface IActivity : CrudRepository<Activity>, IUnitOfWork
     {
 
     }

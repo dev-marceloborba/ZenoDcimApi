@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
+using ZenoDcimManager.Shared.UnitOfWork;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Repositories
 {
-    public interface IPlcRepository
+    public interface IPlcRepository : IUnitOfWork
     {
         void CreateTags(Plc plc);
         void Delete(Plc plc);

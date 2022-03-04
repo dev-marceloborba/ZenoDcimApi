@@ -51,6 +51,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
             rack.AddEquipment(rackEquipment);
             _rackRepository.AddRackEquipments(rack);
+            _rackEquipmentRepository.Commit();
 
             return new CommandResult(true, "Rack equipment created successful", rackEquipment);
         }

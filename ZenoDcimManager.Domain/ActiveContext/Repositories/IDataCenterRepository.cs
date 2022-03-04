@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Shared.UnitOfWork;
 
 namespace ZenoDcimManager.Domain.ActiveContext.Repositories
 {
-    public interface IDataCenterRepository
+    public interface IDataCenterRepository : IUnitOfWork
     {
         public void AddBuilding(Building building);
         public IEnumerable<Building> FindAllBuildings();
@@ -26,5 +27,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public Equipment FindEquipmentById(Guid id);
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId);
         public void DeleteEquipment(Equipment equipment);
+        public void AddEquipmentParameter(Equipment equipment);
+        public void RemoveEquipmentParameter(Equipment equipment);
     }
 }

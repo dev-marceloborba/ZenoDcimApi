@@ -32,6 +32,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
             // save on repository
             _rackRepository.Save(rack);
+            _rackRepository.Commit();
 
             return new CommandResult(true, "Rack was sucessful created", rack);
         }
@@ -41,7 +42,9 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             var rack = _rackRepository.FindById(command.Id);
             rack.ChangeLocalization(command.Localization);
             rack.ChangeSize(command.Size);
+
             _rackRepository.Update(rack);
+            _rackRepository.Commit();
 
             return new CommandResult(true, "Rack was successful edited", rack);
 

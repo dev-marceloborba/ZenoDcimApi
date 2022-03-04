@@ -42,6 +42,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on creating Plc", plcValidator.Notifications);
 
             _plcRepository.Save(plc);
+            _plcRepository.Commit();
+
             return new CommandResult(true, "Plc successful created", plc);
         }
 
@@ -56,6 +58,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             plc.ChangeGateway(command.Gateway);
 
             _plcRepository.Edit(plc);
+            _plcRepository.Commit();
+
             return new CommandResult(true, "Plc successful edited", plc);
         }
 
@@ -67,6 +71,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on deleting plc", new { });
 
             _plcRepository.Delete(plc);
+            _plcRepository.Commit();
 
             return new CommandResult(true, "Plc successful deleted", plc);
         }

@@ -23,6 +23,9 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             );
         }
 
+        public void Commit()
+        {
+        }
 
         public void Delete(User item)
         {

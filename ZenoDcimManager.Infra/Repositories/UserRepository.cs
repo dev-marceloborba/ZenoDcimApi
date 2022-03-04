@@ -17,16 +17,20 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
         public void Delete(User item)
         {
-            throw new NotImplementedException();
+            _context.Users.Remove(item);
         }
 
         public void DeleteByEmail(string email)
         {
             var user = FindUserByEmail(email);
             _context.Users.Remove(user);
-            _context.SaveChanges();
         }
 
         public User Find(Guid id)
@@ -57,13 +61,11 @@ namespace ZenoDcimManager.Infra.Repositories
         public void Save(User user)
         {
             _context.Users.Add(user);
-            _context.SaveChanges();
         }
 
         public void Update(User item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
         }
     }
 }

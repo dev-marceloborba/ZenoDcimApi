@@ -24,6 +24,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             var company = new Company(command.CompanyName, command.TradingName, command.RegistrationNumber);
 
             _companyRepository.CreateCompany(company);
+            _companyRepository.Commit();
 
             return new CommandResult(true, "Empresa criada com sucesso", company);
         }
@@ -37,6 +38,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             company.AddContract(contract);
 
             _companyRepository.CreateContract(company);
+            _companyRepository.Commit();
 
             return new CommandResult(true, "Contrato criado com sucesso", company);
         }

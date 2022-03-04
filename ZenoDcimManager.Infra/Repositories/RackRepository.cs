@@ -22,13 +22,16 @@ namespace ZenoDcimManager.Infra.Repositories
             {
                 _context.RackEquipments.Add(item);
             }
+        }
+
+        public void Commit()
+        {
             _context.SaveChanges();
         }
 
         public void Delete(Rack item)
         {
             _context.Racks.Remove(item);
-            _context.SaveChanges();
         }
 
         public Rack Find(Guid id)
@@ -64,13 +67,11 @@ namespace ZenoDcimManager.Infra.Repositories
         public void Save(Rack item)
         {
             _context.Racks.Add(item);
-            _context.SaveChanges();
         }
 
         public void Update(Rack item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
         }
     }
 }

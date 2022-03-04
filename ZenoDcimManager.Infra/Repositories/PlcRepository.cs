@@ -17,23 +17,25 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
         public void CreateTags(Plc plc)
         {
             var count = plc.ModbusTags.Count();
             _context.ModbusTags.Add(plc.ModbusTags.ElementAt(count - 1));
-            _context.SaveChanges();
         }
 
         public void Delete(Plc plc)
         {
             _context.Remove(plc);
-            _context.SaveChanges();
         }
 
         public void Edit(Plc plc)
         {
             _context.Entry(plc).State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public IEnumerable<Plc> FindAll()
@@ -62,7 +64,6 @@ namespace ZenoDcimManager.Infra.Repositories
         public void Save(Plc plc)
         {
             _context.Plcs.Add(plc);
-            _context.SaveChanges();
         }
     }
 }

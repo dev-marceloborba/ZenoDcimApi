@@ -54,6 +54,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             modbusDevice.AddModbusTag(modbusTag);
 
             _plcRepository.CreateTags(modbusDevice);
+            _plcRepository.Commit();
+
             return new CommandResult(true, "Modbus tag successful created", modbusTag);
         }
 
@@ -73,6 +75,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             //     return new CommandResult(false, "Error on creating modbus tag", modbusTagValidator.Notifications);
 
             _modbusTagRepository.Edit(modbusTag);
+            _modbusTagRepository.Commit();
+
             return new CommandResult(true, "Modbus tag successful created", modbusTag);
         }
 
@@ -84,6 +88,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on deleting modbus tag", new { });
 
             _modbusTagRepository.Delete(modbusTag);
+            _modbusTagRepository.Commit();
 
             return new CommandResult(true, "Modbus tag successful deleted", modbusTag);
         }
@@ -96,6 +101,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             command.ModbusTags.ForEach(x => modbusTags.Add(new ModbusTag(x.Name, x.Deadband, x.Address, x.Size, x.DataType)));
 
             _modbusTagRepository.SaveMultiple(modbusTags);
+            _modbusTagRepository.Commit();
 
             return new CommandResult(true, "Modbus tags successful created", modbusTags);
         }

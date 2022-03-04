@@ -15,6 +15,11 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             _companies.Add(new Company("Mindcloud", "Mindcloud", "35843118000166"));
         }
 
+        public void Commit()
+        {
+
+        }
+
         public void CreateCompany(Company company)
         {
             throw new NotImplementedException();

@@ -27,6 +27,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             var building = new Building(command.Campus, command.Name);
 
             _dataCenterRepository.AddBuilding(building);
+            _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Prédio criado com sucesso", null);
         }
@@ -38,6 +39,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             building.AddFloor(new Floor(command.Name));
 
             _dataCenterRepository.AddFloor(building);
+            _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Andar criado com sucesso", null);
         }
@@ -50,6 +52,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             floor.AddRoom(new Room(command.Name));
 
             _dataCenterRepository.AddRoom(floor);
+            _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Sala criada com sucesso", null);
         }
@@ -68,6 +71,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             room.AddEquipment(equipment);
 
             _dataCenterRepository.AddEquipment(room);
+            _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Equipamento criado com sucesso", null);
         }
@@ -90,6 +94,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             }
 
             _dataCenterRepository.AddEquipment(building);
+            _dataCenterRepository.Commit();
 
             // foreach (var floor in building.Floors)
             // {

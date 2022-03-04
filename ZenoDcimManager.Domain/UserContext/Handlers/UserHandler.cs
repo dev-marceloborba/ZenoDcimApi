@@ -63,6 +63,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
 
             // save informations
             _userRepository.Save(user);
+            _userRepository.Commit();
 
             // send e-mail
             _emailService.Send(user.ToString(), user.Email, "Welcome to Zeno DCIM", "Your account was created");
@@ -103,6 +104,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             user.CopyWith(editedUser);
 
             _userRepository.Update(user);
+            _userRepository.Commit();
 
             return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active));
         }

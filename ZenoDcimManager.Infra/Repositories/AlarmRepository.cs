@@ -16,6 +16,11 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Alarm> FindAll()
         {
             return _context.Alarms
@@ -26,7 +31,6 @@ namespace ZenoDcimManager.Infra.Repositories
         public void Save(Alarm alarm)
         {
             _context.Alarms.Add(alarm);
-            _context.SaveChanges();
         }
     }
 }

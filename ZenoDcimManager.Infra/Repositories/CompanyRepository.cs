@@ -20,19 +20,16 @@ namespace ZenoDcimManager.Infra.Repositories
         public void CreateCompany(Company company)
         {
             _context.Companies.Add(company);
-            _context.SaveChanges();
         }
 
         public void UpdateCompany(Company company)
         {
             _context.Entry(company).State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public void DeleteCompany(Company company)
         {
             _context.Companies.Remove(company);
-            _context.SaveChanges();
         }
 
         public IEnumerable<Company> ListCompanies()
@@ -59,12 +56,16 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             var count = company.Contracts.Count();
             _context.Contracts.Add(company.Contracts.ElementAt(count - 1));
-            _context.SaveChanges();
         }
 
         public IEnumerable<Contract> ListContracts()
         {
             return _context.Contracts.ToList();
+        }
+
+        public void Commit()
+        {
+            _context.SaveChanges();
         }
     }
 }

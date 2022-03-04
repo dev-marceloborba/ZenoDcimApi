@@ -17,16 +17,19 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
         public void Create(RackEquipment rackEquipment)
         {
             _context.RackEquipments.Add(rackEquipment);
-            _context.SaveChanges();
         }
 
         public void Delete(RackEquipment rackEquipment)
         {
             _context.RackEquipments.Remove(rackEquipment);
-            _context.SaveChanges();
         }
 
         public IEnumerable<RackEquipment> FindAll()
@@ -55,7 +58,6 @@ namespace ZenoDcimManager.Infra.Repositories
         public void Update(RackEquipment rackEquipment)
         {
             _context.Entry(rackEquipment).State = EntityState.Modified;
-            _context.SaveChanges();
         }
     }
 }

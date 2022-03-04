@@ -19,7 +19,6 @@ namespace ZenoDcimManager.Infra.Repositories
         public void AddBuilding(Building building)
         {
             _context.Buildings.Add(building);
-            _context.SaveChanges();
         }
 
         public void AddEquipment(Room room)
@@ -28,7 +27,6 @@ namespace ZenoDcimManager.Infra.Repositories
             {
                 _context.Equipments.Add(equipment);
             }
-            _context.SaveChanges();
         }
 
         public void AddEquipment(Building building)
@@ -43,8 +41,11 @@ namespace ZenoDcimManager.Infra.Repositories
                     }
                 }
             }
+        }
 
-            _context.SaveChanges();
+        public void AddEquipmentParameter(Equipment equipment)
+        {
+            _context.EquipmentParameters.Add(equipment.EquipmentParameters[0]);
         }
 
         public void AddFloor(Building building)
@@ -53,7 +54,6 @@ namespace ZenoDcimManager.Infra.Repositories
             {
                 _context.Floors.Add(item);
             }
-            _context.SaveChanges();
         }
 
         public void AddRoom(Floor floor)
@@ -63,6 +63,10 @@ namespace ZenoDcimManager.Infra.Repositories
                 _context.Rooms.Add(room);
 
             }
+        }
+
+        public void Commit()
+        {
             _context.SaveChanges();
         }
 
@@ -70,25 +74,21 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             var building = _context.Buildings.Find(id);
             _context.Entry(building).State = EntityState.Deleted;
-            _context.SaveChanges();
         }
 
         public void DeleteEquipment(Equipment equipment)
         {
             _context.Entry(equipment).State = EntityState.Deleted;
-            _context.SaveChanges();
         }
 
         public void DeleteFloor(Floor floor)
         {
             _context.Entry(floor).State = EntityState.Deleted;
-            _context.SaveChanges();
         }
 
         public void DeleteRoom(Room room)
         {
             _context.Entry(room).State = EntityState.Deleted;
-            _context.SaveChanges();
         }
 
         public IEnumerable<Building> FindAllBuildings()
@@ -169,6 +169,11 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Rooms
                 .Find(id);
+        }
+
+        public void RemoveEquipmentParameter(Equipment equipment)
+        {
+            throw new NotImplementedException();
         }
     }
 }

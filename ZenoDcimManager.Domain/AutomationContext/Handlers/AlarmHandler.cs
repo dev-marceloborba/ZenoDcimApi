@@ -35,6 +35,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on creating alarm", alarmValidator.Notifications);
 
             _alarmRepository.Save(alarm);
+            _alarmRepository.Commit();
+
             return new CommandResult(true, "Alarm created successful", alarm);
         }
     }

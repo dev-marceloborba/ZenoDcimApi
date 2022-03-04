@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
+using ZenoDcimManager.Shared.UnitOfWork;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Repositories
 {
-    public interface IModbusTagRepository
+    public interface IModbusTagRepository : IUnitOfWork
     {
         void Delete(ModbusTag modbusTag);
         void Edit(ModbusTag modbusTag);
