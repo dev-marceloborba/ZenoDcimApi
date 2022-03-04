@@ -146,6 +146,12 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FirstOrDefault(x => x.Id == roomId).Equipments;
         }
 
+        public EquipmentParameter FindEquipmentParameterById(Guid id)
+        {
+            return _context.EquipmentParameters
+                .First(x => x.Id == id);
+        }
+
         public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId)
         {
             return _context.Buildings

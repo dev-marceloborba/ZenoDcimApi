@@ -29,5 +29,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public void DeleteEquipment(Equipment equipment);
         public void AddEquipmentParameter(Equipment equipment);
         public void RemoveEquipmentParameter(Equipment equipment);
+        public EquipmentParameter FindEquipmentParameterById(Guid id);
     }
 }

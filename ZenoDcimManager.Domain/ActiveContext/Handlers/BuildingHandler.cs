@@ -13,7 +13,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateFloorCommand>,
         ICommandHandler<CreateRoomCommand>,
         ICommandHandler<CreateEquipmentCommand>,
-        ICommandHandler<CreateMultipleEquipmentsCommand>
+        ICommandHandler<CreateMultipleEquipmentsCommand>,
+        ICommandHandler<CreateEquipmentParameterCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -108,6 +109,27 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             // }
 
             return new CommandResult(true, "Equipamentos criados com sucesso", building);
+        }
+
+        public ICommandResult Handle(CreateEquipmentParameterCommand command)
+        {
+            var equipment = _dataCenterRepository.FindEquipmentById(command.EquipmentId);
+
+            var parameter = new EquipmentParameter(
+                command.Name,
+                command.Unit,
+                command.LowLimit,
+                command.HighLimit,
+                command.Scale,
+                command.DataSource,
+                command.Address);
+
+            equipment.AddEquipmentParameter(parameter);
+
+            _dataCenterRepository.AddEquipmentParameter(equipment);
+            _dataCenterRepository.Commit();
+
+            return new CommandResult(true, "Parametro criado com sucesso", null);
         }
     }
 }
