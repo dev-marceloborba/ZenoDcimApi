@@ -79,22 +79,22 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateMultipleEquipmentsCommand command)
         {
-            var firstCommand = command.Equipments.ToArray()[0];
+            // var firstCommand = command.Equipments.ToArray()[0];
 
-            var building = _dataCenterRepository.FindBuildingById(firstCommand.BuildingId);
             // return new CommandResult(true, "Equipamentos criados com sucesso", command);
             foreach (var item in command.Equipments)
             {
+                var building = _dataCenterRepository.FindBuildingById(item.BuildingId);
                 var floor = building.Floors.Find(x => x.Id == item.FloorId);
                 var room = floor.Rooms.Find(x => x.Id == item.RoomId);
 
                 var equipment = new Equipment(item.Class, item.Component, item.ComponentCode, item.Description, null, null);
 
                 room.AddEquipment(equipment);
+                _dataCenterRepository.AddEquipment(building);
 
             }
 
-            _dataCenterRepository.AddEquipment(building);
             _dataCenterRepository.Commit();
 
             // foreach (var floor in building.Floors)
@@ -108,7 +108,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             //     }
             // }
 
-            return new CommandResult(true, "Equipamentos criados com sucesso", building);
+            return new CommandResult(true, "Equipamentos criados com sucesso", null);
         }
 
         public ICommandResult Handle(CreateEquipmentParameterCommand command)

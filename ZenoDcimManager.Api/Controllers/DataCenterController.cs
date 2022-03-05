@@ -58,6 +58,7 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 repository.DeleteBuilding(Id);
+                repository.Commit();
                 return Ok();
             }
             catch
@@ -99,6 +100,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var floor = repository.FindFloorById(Id);
                 repository.DeleteFloor(floor);
+                repository.Commit();
                 return Ok();
             }
             catch
@@ -140,6 +142,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var room = repository.FindRoomById(Id);
                 repository.DeleteRoom(room);
+                repository.Commit();
                 return Ok();
             }
             catch
@@ -181,6 +184,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var equipment = repository.FindEquipmentById(Id);
                 repository.DeleteEquipment(equipment);
+                repository.Commit();
                 return Ok();
             }
             catch

@@ -61,6 +61,7 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 repository.DeleteByEmail(email);
+                repository.Commit();
                 return Ok();
             }
             catch

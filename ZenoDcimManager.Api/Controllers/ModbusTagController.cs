@@ -64,6 +64,7 @@ namespace ZenoDcimManager.Api.Controllers
                 Guid gid = Guid.Parse(id);
                 var modbusTag = repository.FindById(gid);
                 repository.Delete(modbusTag);
+                repository.Commit();
                 return Ok();
             }
             catch
@@ -81,12 +82,14 @@ namespace ZenoDcimManager.Api.Controllers
                 Guid gid = Guid.Parse(id);
                 var clp = plcRepository.FindById(gid);
                 modbusTagRepository.DeleteAllByClp(clp);
+                modbusTagRepository.Commit();
                 return Ok();
-            } catch
+            }
+            catch
             {
                 return BadRequest();
             }
-            
+
         }
     }
 }

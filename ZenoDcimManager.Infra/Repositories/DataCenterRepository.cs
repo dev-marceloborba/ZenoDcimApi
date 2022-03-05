@@ -129,7 +129,7 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Where(x => x.Id == id)
                 .Include(x => x.Floors)
                 .ThenInclude(x => x.Rooms)
-                .Single();
+                .First();
         }
 
         public Equipment FindEquipmentById(Guid id)

@@ -48,10 +48,11 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.Entity<Room>().ToTable("Room");
             modelBuilder.Entity<Room>().Property(x => x.Name).HasColumnType("varchar(12)");
 
+            //equipment
             modelBuilder.Entity<Equipment>().ToTable("Equipment");
             modelBuilder.Entity<Equipment>().Property(x => x.ComponentCode).HasColumnType("varchar(30)");
             modelBuilder.Entity<Equipment>().Property(x => x.Description).HasColumnType("varchar(100)");
-            modelBuilder.Entity<Equipment>().Property(x => x.Component).HasColumnType("varchar(16)");
+            modelBuilder.Entity<Equipment>().Property(x => x.Component).HasColumnType("varchar(64)");
 
             modelBuilder.Entity<EquipmentParameter>().ToTable("EquipmentParameter");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.Name).HasColumnType("varchar(50)");
