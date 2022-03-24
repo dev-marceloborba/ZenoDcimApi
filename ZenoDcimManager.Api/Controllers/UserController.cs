@@ -58,6 +58,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var user = repository.FindUserById(Id);
                 repository.DeleteUser(user);
+                repository.Commit();
                 return Ok();
             }
             catch (Exception ex)

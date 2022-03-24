@@ -44,7 +44,7 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public User FindUserById(Guid id)
         {
-            throw _context.Users.Find(id);
+            return _context.Users.Find(id);
         }
 
         public IEnumerable<User> List()
