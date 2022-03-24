@@ -32,9 +32,9 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             _users.Remove(item);
         }
 
-        public void DeleteByEmail(string email)
+        public void DeleteUser(User user)
         {
-
+            throw new NotImplementedException();
         }
 
         public User Find(Guid id)
@@ -43,6 +43,11 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
         }
 
         public User FindUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User FindUserById(Guid id)
         {
             throw new NotImplementedException();
         }
