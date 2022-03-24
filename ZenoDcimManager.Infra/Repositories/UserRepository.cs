@@ -27,10 +27,9 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Users.Remove(item);
         }
 
-        public void DeleteByEmail(string email)
+        public void DeleteUser(User user)
         {
-            var user = FindUserByEmail(email);
-            _context.Users.Remove(user);
+            _context.Remove(user);
         }
 
         public User Find(Guid id)
@@ -41,6 +40,11 @@ namespace ZenoDcimManager.Infra.Repositories
         public User FindUserByEmail(string email)
         {
             return _context.Users.FirstOrDefault(x => x.Email == email);
+        }
+
+        public User FindUserById(Guid id)
+        {
+            throw _context.Users.Find(id);
         }
 
         public IEnumerable<User> List()

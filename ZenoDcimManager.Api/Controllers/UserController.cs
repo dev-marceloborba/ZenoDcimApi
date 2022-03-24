@@ -49,22 +49,18 @@ namespace ZenoDcimManager.Api.Controllers
 
         }
 
-        [Route("{email}")]
         [HttpDelete]
-        // [Authorize(Roles = "admin")]
+        [Route("{Id}")]
         [AllowAnonymous]
-        public ActionResult RemoveUserByEmail(
-            string email,
-            [FromServices] IUserRepository repository
-        )
+        public ActionResult RemoveUserById(Guid Id, [FromServices] IUserRepository repository)
         {
             try
             {
-                repository.DeleteByEmail(email);
-                repository.Commit();
+                var user = repository.FindUserById(Id);
+                repository.DeleteUser(user);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }
