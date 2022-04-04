@@ -1,5 +1,6 @@
+using System;
 using System.Collections.Generic;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Domain.ActiveContext.Enums;
 using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.ActiveContext.Entities
@@ -13,13 +14,17 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public Rack Rack { get; private set; }
         public RackPdu RackPdu { get; private set; }
         public List<EquipmentParameter> EquipmentParameters { get; private set; } = new List<EquipmentParameter>();
+        public DateTime CreatedDate{get; private set;}
+        public EEquipmentGroup Group { get; private set; }
+        public EEquipmentStatus Status { get; private set; }
+        public int Alarms { get; private set; }
 
         public Equipment()
         {
 
         }
 
-        public Equipment(int @class, string component, string componentCode, string description, Rack rack, RackPdu rackPdu)
+        public Equipment(int @class, string component, string componentCode, string description, Rack rack, RackPdu rackPdu, EEquipmentGroup group, EEquipmentStatus status, int alarms)
         {
             Class = @class;
             Component = component;
@@ -27,6 +32,10 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
             Description = description;
             Rack = rack;
             RackPdu = rackPdu;
+            CreatedDate = DateTime.UtcNow;
+            Group = group;
+            Status = status;
+            Alarms = alarms;
         }
 
         public void AddEquipmentParameter(EquipmentParameter parameter)

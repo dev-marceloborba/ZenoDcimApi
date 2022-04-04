@@ -61,7 +61,7 @@ namespace ZenoDcimManager.Api.Controllers
                 repository.Commit();
                 return Ok();
             }
-            catch (Exception ex)
+            catch
             {
                 return BadRequest();
             }

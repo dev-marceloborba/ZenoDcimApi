@@ -66,7 +66,11 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 command.ComponentCode,
                 command.Description,
                 null,
-                null);
+                null,
+                command.Group,
+                command.Status,
+                command.Alarms
+                );
 
             var room = _dataCenterRepository.FindRoomById(command.RoomId);
             room.AddEquipment(equipment);
@@ -88,7 +92,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 var floor = building.Floors.Find(x => x.Id == item.FloorId);
                 var room = floor.Rooms.Find(x => x.Id == item.RoomId);
 
-                var equipment = new Equipment(item.Class, item.Component, item.ComponentCode, item.Description, null, null);
+                var equipment = new Equipment(item.Class, item.Component, item.ComponentCode, item.Description, null, null, item.Group, item.Status, item.Alarms);
 
                 room.AddEquipment(equipment);
                 _dataCenterRepository.AddEquipment(building);

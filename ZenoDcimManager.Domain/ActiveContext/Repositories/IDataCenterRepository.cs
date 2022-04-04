@@ -30,5 +30,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public void AddEquipmentParameter(Equipment equipment);
         public void RemoveEquipmentParameter(Equipment equipment);
         public EquipmentParameter FindEquipmentParameterById(Guid id);
+        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
     }
 }
