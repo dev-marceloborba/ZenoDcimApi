@@ -97,6 +97,7 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Include(x => x.Floors.OrderBy(y => y.Name))
                 .ThenInclude(x => x.Rooms.OrderBy(y => y.Name))
                 .ThenInclude(x => x.Equipments.OrderBy(y => y.Description))
+                .ThenInclude(x => x.EquipmentParameters.OrderBy(y => y.Name))
                 .OrderBy(x => x.Name)
                 .ToList();
         }
@@ -104,6 +105,7 @@ namespace ZenoDcimManager.Infra.Repositories
         public IEnumerable<Equipment> FindAllEquipments()
         {
             return _context.Equipments
+                .Include(x => x.EquipmentParameters)
                 .ToList();
         }
 
@@ -162,6 +164,16 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Floors
                 .Find(id);
+        }
+
+        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
+        {
+            //return _context.Equipments
+            //    .Find(id).EquipmentParameters;
+            return _context.Equipments
+                    .Where(x => x.Id == id)
+                    .Include(x => x.EquipmentParameters)                
+                    .Single().EquipmentParameters.OrderBy(x => x.Name);
         }
 
         public IEnumerable<Room> FindRoomByFloor(Guid floorId, Guid buildingId)
