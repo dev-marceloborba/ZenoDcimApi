@@ -1,9 +1,10 @@
 using System;
 using Flunt.Notifications;
+using ZenoDcimManager.Shared.ValueObjects;
 
 namespace ZenoDcimManager.Shared
 {
-    public abstract class Entity : IEquatable<Entity>
+    public abstract class Entity : DateTracker, IEquatable<Entity>
     {
         public Entity()
         {

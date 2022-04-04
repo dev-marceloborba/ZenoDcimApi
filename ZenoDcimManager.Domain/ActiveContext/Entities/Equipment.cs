@@ -14,7 +14,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public Rack Rack { get; private set; }
         public RackPdu RackPdu { get; private set; }
         public List<EquipmentParameter> EquipmentParameters { get; private set; } = new List<EquipmentParameter>();
-        public DateTime CreatedDate{get; private set;}
         public EEquipmentGroup Group { get; private set; }
         public EEquipmentStatus Status { get; private set; }
         public int Alarms { get; private set; }
@@ -32,7 +31,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
             Description = description;
             Rack = rack;
             RackPdu = rackPdu;
-            CreatedDate = DateTime.UtcNow;
             Group = group;
             Status = status;
             Alarms = alarms;

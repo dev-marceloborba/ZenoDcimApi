@@ -137,7 +137,9 @@ namespace ZenoDcimManager.Infra.Repositories
         public Equipment FindEquipmentById(Guid id)
         {
             return _context.Equipments
-                .Find(id);
+                .Where(x => x.Id == id)
+                .Include(x => x.EquipmentParameters)
+                .First();
         }
 
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId)
@@ -173,7 +175,7 @@ namespace ZenoDcimManager.Infra.Repositories
             return _context.Equipments
                     .Where(x => x.Id == id)
                     .Include(x => x.EquipmentParameters)                
-                    .Single().EquipmentParameters.OrderBy(x => x.Name);
+                    .First().EquipmentParameters.OrderBy(x => x.Name);
         }
 
         public IEnumerable<Room> FindRoomByFloor(Guid floorId, Guid buildingId)
