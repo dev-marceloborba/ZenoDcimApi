@@ -128,6 +128,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 command.DataSource,
                 command.Address);
 
+            //equipment.ClearList();
+
             equipment.AddEquipmentParameter(parameter);
 
             _dataCenterRepository.AddEquipmentParameter(equipment);

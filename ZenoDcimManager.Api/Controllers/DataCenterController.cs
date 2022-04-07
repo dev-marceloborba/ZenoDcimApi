@@ -227,7 +227,29 @@ namespace ZenoDcimManager.Api.Controllers
         }
 
         [Route("building/floor/room/equipment/parameter/{Id}")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public ActionResult DeleteEquipmentParameter(
+            Guid Id,
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            try
+            {
+                var parameter = repository.FindEquipmentParameterById(Id);
+                repository.DeleteEquipmentParameter(parameter);
+                repository.Commit();
+                return Ok();
+            }
+            catch 
+            {
+                return BadRequest();
+            }
+        }
+
+        [Route("building/floor/room/equipment/parameter/{Id}")]
         [HttpGet]
+        [AllowAnonymous]
         public EquipmentParameter FindEquipmentParameterById(
             Guid Id,
             [FromServices] IDataCenterRepository repository
@@ -238,11 +260,13 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("building/floor/room/equipmentParameterById/{Id}")]
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(
             Guid Id,
             [FromServices] IDataCenterRepository repository)
         {
             return repository.FindParametersByEquipmentId(Id);
         }
+
     }
 }

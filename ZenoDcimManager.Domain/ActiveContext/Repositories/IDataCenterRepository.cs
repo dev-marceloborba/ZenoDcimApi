@@ -28,8 +28,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId);
         public void DeleteEquipment(Equipment equipment);
         public void AddEquipmentParameter(Equipment equipment);
-        public void RemoveEquipmentParameter(Equipment equipment);
         public EquipmentParameter FindEquipmentParameterById(Guid id);
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
+        public void DeleteEquipmentParameter(EquipmentParameter parameter);
     }
 }

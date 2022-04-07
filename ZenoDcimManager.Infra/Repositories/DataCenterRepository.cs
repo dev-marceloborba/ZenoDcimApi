@@ -81,6 +81,11 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Entry(equipment).State = EntityState.Deleted;
         }
 
+        public void DeleteEquipmentParameter(EquipmentParameter parameter)
+        {
+            _context.Entry(parameter).State = EntityState.Deleted;
+        }
+
         public void DeleteFloor(Floor floor)
         {
             _context.Entry(floor).State = EntityState.Deleted;
@@ -191,9 +196,5 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Find(id);
         }
 
-        public void RemoveEquipmentParameter(Equipment equipment)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -40,5 +40,10 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         {
             EquipmentParameters.Add(parameter);
         }
+
+        public void ClearList()
+        {
+            EquipmentParameters.Clear();
+        }
     }
 }
