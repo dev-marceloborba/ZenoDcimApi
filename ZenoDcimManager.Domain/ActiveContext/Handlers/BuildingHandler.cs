@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
@@ -14,7 +15,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateRoomCommand>,
         ICommandHandler<CreateEquipmentCommand>,
         ICommandHandler<CreateMultipleEquipmentsCommand>,
-        ICommandHandler<CreateEquipmentParameterCommand>
+        ICommandHandler<CreateEquipmentParameterCommand>,
+        ICommandHandler<CreateMultipleParametersCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -136,6 +138,29 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Parametro criado com sucesso", null);
+        }
+
+        public ICommandResult Handle(CreateMultipleParametersCommand command)
+        {
+
+            Equipment equipment = new Equipment();
+
+            foreach (var item in command.Parameters)
+            {
+                if (equipment is null)
+                {
+                    equipment = _dataCenterRepository.FindEquipmentById(item.EquipmentId);
+                } else
+                {
+                    var parameter = new EquipmentParameter(item.Name, item.Unit, item.LowLimit, item.HighLimit, item.Scale, item.DataSource, item.Address);
+                    equipment.AddEquipmentParameter(parameter);
+                }
+            }
+
+            _dataCenterRepository.AddEquipmentParameter(equipment);
+            _dataCenterRepository.Commit();
+
+            return new CommandResult(true, "Parametros criados com sucesso", null);
         }
     }
 }
