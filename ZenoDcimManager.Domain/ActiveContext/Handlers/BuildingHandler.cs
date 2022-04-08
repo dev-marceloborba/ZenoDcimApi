@@ -143,12 +143,12 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         public ICommandResult Handle(CreateMultipleParametersCommand command)
         {
 
-            Equipment equipment = new Equipment();
+            Equipment equipment = null;
 
             foreach (var item in command.Parameters)
             {
                 if (equipment is null)
-                {
+                { 
                     equipment = _dataCenterRepository.FindEquipmentById(item.EquipmentId);
                 } else
                 {
@@ -160,7 +160,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.AddEquipmentParameter(equipment);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Parametros criados com sucesso", null);
+            return new CommandResult(true, "Parametros criados com sucesso", equipment);
         }
     }
 }

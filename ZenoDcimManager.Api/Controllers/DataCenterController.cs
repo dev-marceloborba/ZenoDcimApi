@@ -226,6 +226,17 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
+        [Route("building/floor/room/equipment/parameter/multiple")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ICommandResult CreateMultipleEquipmentParameter(
+        [FromBody] CreateMultipleParametersCommand command,
+        [FromServices] BuildingHandler handler
+    )
+        {
+            return (ICommandResult)handler.Handle(command);
+        }
+
         [Route("building/floor/room/equipment/parameter/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
