@@ -48,6 +48,11 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.EquipmentParameters.Add(equipment.EquipmentParameters[0]);
         }
 
+        public void AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
+        {
+            _context.EquipmentParameterGroups.Add(equipmentParameterGroup);
+        }
+
         public void AddFloor(Building building)
         {
             foreach (var item in building.Floors)
@@ -105,6 +110,11 @@ namespace ZenoDcimManager.Infra.Repositories
                 .ThenInclude(x => x.EquipmentParameters.OrderBy(y => y.Name))
                 .OrderBy(x => x.Name)
                 .ToList();
+        }
+
+        public IEnumerable<EquipmentParameterGroup> FindAllEquipmentParameterGroups()
+        {
+            return _context.EquipmentParameterGroups.ToList();
         }
 
         public IEnumerable<Equipment> FindAllEquipments()

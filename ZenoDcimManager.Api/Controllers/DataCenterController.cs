@@ -252,7 +252,7 @@ namespace ZenoDcimManager.Api.Controllers
                 repository.Commit();
                 return Ok();
             }
-            catch 
+            catch
             {
                 return BadRequest();
             }
@@ -279,5 +279,17 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.FindParametersByEquipmentId(Id);
         }
 
+
+        // Equipment parameter group
+        [Route("building/floor/room/equipment/parameter/group")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ICommandResult CreateEquipmentParameterGroup(
+            [FromBody] CreateEquipmentParameterGroupCommand command,
+            [FromServices] BuildingHandler handler
+            )
+        {
+            return (ICommandResult)handler.Handle(command);
+        }
     }
 }

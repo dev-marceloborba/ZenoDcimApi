@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
@@ -16,7 +14,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateEquipmentCommand>,
         ICommandHandler<CreateMultipleEquipmentsCommand>,
         ICommandHandler<CreateEquipmentParameterCommand>,
-        ICommandHandler<CreateMultipleParametersCommand>
+        ICommandHandler<CreateMultipleParametersCommand>,
+        ICommandHandler<CreateEquipmentParameterGroupCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -85,16 +84,23 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateMultipleEquipmentsCommand command)
         {
-            // var firstCommand = command.Equipments.ToArray()[0];
-
-            // return new CommandResult(true, "Equipamentos criados com sucesso", command);
             foreach (var item in command.Equipments)
             {
                 var building = _dataCenterRepository.FindBuildingById(item.BuildingId);
                 var floor = building.Floors.Find(x => x.Id == item.FloorId);
                 var room = floor.Rooms.Find(x => x.Id == item.RoomId);
 
-                var equipment = new Equipment(item.Class, item.Component, item.ComponentCode, item.Description, null, null, item.Group, item.Status, item.Alarms);
+                var equipment = new Equipment(
+                    item.Class,
+                    item.Component,
+                    item.ComponentCode,
+                    item.Description,
+                    null,
+                    null,
+                    item.Group,
+                    item.Status,
+                    item.Alarms
+                    );
 
                 room.AddEquipment(equipment);
                 _dataCenterRepository.AddEquipment(building);
@@ -161,6 +167,16 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Parametros criados com sucesso", equipment);
+        }
+
+        public ICommandResult Handle(CreateEquipmentParameterGroupCommand command)
+        {
+            var equipmentParameterGroup = new EquipmentParameterGroup(command.Name);
+
+            _dataCenterRepository.AddEquipmentParameterGroup(equipmentParameterGroup);
+            _dataCenterRepository.Commit();
+
+            return new CommandResult(true, "Grupo de parâmetros criado com sucesso", null);
         }
     }
 }

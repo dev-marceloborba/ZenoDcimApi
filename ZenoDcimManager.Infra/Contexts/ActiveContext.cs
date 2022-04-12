@@ -18,6 +18,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<EquipmentParameter> EquipmentParameters { get; set; }
+        public DbSet<EquipmentParameterGroup> EquipmentParameterGroups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,9 +43,11 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.Entity<Building>().Property(x => x.Campus).HasColumnType("varchar(28)");
             modelBuilder.Entity<Building>().Property(x => x.Name).HasColumnType("varchar(20)");
 
+            // floor
             modelBuilder.Entity<Floor>().ToTable("Floor");
             modelBuilder.Entity<Floor>().Property(x => x.Name).HasColumnType("varchar(12)");
 
+            // room
             modelBuilder.Entity<Room>().ToTable("Room");
             modelBuilder.Entity<Room>().Property(x => x.Name).HasColumnType("varchar(12)");
 
@@ -54,11 +57,16 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.Entity<Equipment>().Property(x => x.Description).HasColumnType("varchar(100)");
             modelBuilder.Entity<Equipment>().Property(x => x.Component).HasColumnType("varchar(64)");
 
+            // equipment parameter
             modelBuilder.Entity<EquipmentParameter>().ToTable("EquipmentParameter");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.Name).HasColumnType("varchar(50)");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.Address).HasColumnType("varchar(10)");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.DataSource).HasColumnType("varchar(20)");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.Unit).HasColumnType("varchar(5)");
+
+            // equipment parameter group
+            modelBuilder.Entity<EquipmentParameterGroup>().ToTable("EquipmentParameterGroup");
+            modelBuilder.Entity<EquipmentParameterGroup>().Property(x => x.Name).HasColumnType("varchar(30)");
         }
     }
 }
