@@ -11,7 +11,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public int FinalPosition { get; private set; }
         public ERackEquipmentType RackEquipmentType { get; private set; }
         // Navigation property
-        public Guid RackId { get; private set; }
+        public Guid? RackId { get; private set; }
 
         public RackEquipment()
         {

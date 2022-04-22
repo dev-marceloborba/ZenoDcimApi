@@ -13,8 +13,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public string DataSource { get; private set; }
         public string Address { get; private set; }
         // Navigations Property
-        public Guid EquipmentParameterGroupId { get; private set; }
-        public Guid EquipmentId { get; private set; }
+        public Guid? EquipmentParameterGroupId { get; private set; }
+        public Guid? EquipmentId { get; private set; }
 
         public EquipmentParameter(string name, string unit, double lowLimit, double highLimit, int scale, string dataSource, string address)
         {

@@ -9,7 +9,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public string Name { get; private set; }
         public List<Equipment> Equipments { get; private set; } = new List<Equipment>();
         // Navigation property
-        public Guid FloorId { get; private set; }
+        public Guid? FloorId { get; private set; }
 
         public Room(string name)
         {

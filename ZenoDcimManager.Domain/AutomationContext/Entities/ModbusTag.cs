@@ -8,7 +8,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
         public int Size { get; private set; }
         public string DataType { get; private set; }
         // Navigation property
-        public Guid PlcId { get; private set; }
+        public Guid? PlcId { get; private set; }
 
         public ModbusTag(string name, double deadband, int address, int size, string dataType) : base(name, deadband)
         {

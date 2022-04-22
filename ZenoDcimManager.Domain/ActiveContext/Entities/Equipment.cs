@@ -17,6 +17,9 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public EEquipmentGroup Group { get; private set; }
         public EEquipmentStatus Status { get; private set; }
         public int Alarms { get; private set; }
+        public Guid? RackId { get; private set; }
+        public Guid? RackPduId { get; private set; }
+        public Guid? RoomId { get; private set; }
 
         public Equipment()
         {
