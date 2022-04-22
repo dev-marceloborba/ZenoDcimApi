@@ -34,13 +34,18 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public Equipment FindEquipmentById(Guid id);
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId);
         public void DeleteEquipment(Equipment equipment);
+
+        // Equipment parameter
         public void AddEquipmentParameter(Equipment equipment);
         public EquipmentParameter FindEquipmentParameterById(Guid id);
+        public IEnumerable<EquipmentParameter> FindAllEquipmentParameters();
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
+        public IEnumerable<EquipmentParameter> FindParametersByIdRange(Guid[] id);
         public void DeleteEquipmentParameter(EquipmentParameter parameter);
 
-        // EquipmentParameterGroup
+        // Equipment parameter group
         public void AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
         public IEnumerable<EquipmentParameterGroup> FindAllEquipmentParameterGroups();
+        
     }
 }

@@ -173,6 +173,13 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         {
             var equipmentParameterGroup = new EquipmentParameterGroup(command.Name);
 
+            foreach (var item in equipmentParameterGroup.Parameters)
+            {
+                //var parameter = _dataCenterRepository.FindParametersByEquipmentId(item.Id);
+                var parameter = _dataCenterRepository.FindEquipmentParameterById(item.Id);
+                equipmentParameterGroup.AddParameter(parameter);
+            }
+
             _dataCenterRepository.AddEquipmentParameterGroup(equipmentParameterGroup);
             _dataCenterRepository.Commit();
 

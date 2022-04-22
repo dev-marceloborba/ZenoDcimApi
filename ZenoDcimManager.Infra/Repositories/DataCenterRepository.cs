@@ -117,6 +117,13 @@ namespace ZenoDcimManager.Infra.Repositories
             return _context.EquipmentParameterGroups.ToList();
         }
 
+        public IEnumerable<EquipmentParameter> FindAllEquipmentParameters()
+        {
+            return _context.EquipmentParameters
+                .ToList()
+                .OrderBy(x => x.Name);
+        }
+
         public IEnumerable<Equipment> FindAllEquipments()
         {
             return _context.Equipments
@@ -191,6 +198,11 @@ namespace ZenoDcimManager.Infra.Repositories
                     .Where(x => x.Id == id)
                     .Include(x => x.EquipmentParameters)                
                     .First().EquipmentParameters.OrderBy(x => x.Name);
+        }
+
+        public IEnumerable<EquipmentParameter> FindParametersByIdRange(Guid[] id)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Room> FindRoomByFloor(Guid floorId, Guid buildingId)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZenoDcimManager.Domain.ActiveContext.Enums;
@@ -10,6 +11,10 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public int Size { get; private set; }
         public string Localization { get; private set; }
         public List<RackEquipment> RackEquipments { get; private set; }
+        // Navigation property
+        public Guid RackId { get; private set; }
+        public Guid RackPduId { get; private set; }
+        public Guid RoomId { get; private set; }
 
         public Rack(int size, string localization)
         {

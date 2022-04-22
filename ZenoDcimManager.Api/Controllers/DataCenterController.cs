@@ -291,5 +291,15 @@ namespace ZenoDcimManager.Api.Controllers
         {
             return (ICommandResult)handler.Handle(command);
         }
+
+        [Route("building/floor/room/equipment/parameters")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IEnumerable<EquipmentParameter> FindAllParameters(
+            [FromServices] IDataCenterRepository repository
+            )
+        {
+            return repository.FindAllEquipmentParameters();
+        }
     }
 }
