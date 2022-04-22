@@ -20,6 +20,16 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20220422224003_NavigationPropertiesOnActiveContext.cs" />
+    <Compile Remove="Migrations\20220422224003_NavigationPropertiesOnActiveContext.Designer.cs" />
+    <Compile Remove="Migrations\20220422225348_NullableNavigationPropertiesOnActiveContext.cs" />
+    <Compile Remove="Migrations\20220422225348_NullableNavigationPropertiesOnActiveContext.Designer.cs" />
+    <Compile Remove="Migrations\Automation\20220422224043_NavigationPropertiesOnAutomationContext.cs" />
+    <Compile Remove="Migrations\Automation\20220422224043_NavigationPropertiesOnAutomationContext.Designer.cs" />
+    <Compile Remove="Migrations\Automation\20220422225150_NullableNavigationPropertiesOnAutomationContext.cs" />
+    <Compile Remove="Migrations\Automation\20220422225150_NullableNavigationPropertiesOnAutomationContext.Designer.cs" />
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
