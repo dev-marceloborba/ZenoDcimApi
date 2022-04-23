@@ -7,6 +7,12 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
 {
     public interface IDataCenterRepository : IUnitOfWork
     {
+        // Site
+        public void AddSite(Site site);
+        public void DeleteSite(Site site);
+        public IEnumerable<Site> FindAllSites();
+        public Site FindSiteById(Guid id);
+
         // Building
         public void AddBuilding(Building building);
         public IEnumerable<Building> FindAllBuildings();

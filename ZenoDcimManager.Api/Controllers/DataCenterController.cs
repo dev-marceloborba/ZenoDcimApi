@@ -14,6 +14,47 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/data-center")]
     public class DataCenterController : ControllerBase
     {
+
+        [Route("site")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ICommandResult CreateSite(
+            [FromBody] CreateSiteCommand command,
+            [FromServices] BuildingHandler handler
+        )
+        {
+            return (ICommandResult)handler.Handle(command);
+        }
+
+        [Route("site")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IEnumerable<Site> FindAllSites(
+            [FromServices] IDataCenterRepository repository)
+        {
+            return repository.FindAllSites();
+        }
+
+        [Route("site")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public ActionResult DeleteSite(
+            Guid id,
+            [FromServices] IDataCenterRepository repository
+        )
+        {
+            try
+            {
+                var site = repository.FindSiteById(id);
+                repository.DeleteSite(site);
+                repository.Commit();
+                return Ok();
+            } catch
+            {
+                return BadRequest();
+            }
+        }
+
         [Route("building")]
         [HttpPost]
         [AllowAnonymous]

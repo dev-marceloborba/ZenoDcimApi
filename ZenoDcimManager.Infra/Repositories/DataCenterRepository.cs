@@ -70,6 +70,11 @@ namespace ZenoDcimManager.Infra.Repositories
             }
         }
 
+        public void AddSite(Site site)
+        {
+            _context.Sites.Add(site);
+        }
+
         public void Commit()
         {
             _context.SaveChanges();
@@ -99,6 +104,11 @@ namespace ZenoDcimManager.Infra.Repositories
         public void DeleteRoom(Room room)
         {
             _context.Entry(room).State = EntityState.Deleted;
+        }
+
+        public void DeleteSite(Site site)
+        {
+            _context.Entry(site).State = EntityState.Deleted;
         }
 
         public IEnumerable<Building> FindAllBuildings()
@@ -143,6 +153,14 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return _context.Rooms
                 .Include(x => x.Equipments.OrderBy(y => y.Description))
+                .OrderBy(x => x.Name)
+                .ToList();
+        }
+
+        public IEnumerable<Site> FindAllSites()
+        {
+            return _context.Sites
+                .Include(x => x.Buildings)
                 .OrderBy(x => x.Name)
                 .ToList();
         }
@@ -218,5 +236,9 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Find(id);
         }
 
+        public Site FindSiteById(Guid id)
+        {
+            return _context.Sites.Find(id);
+        }
     }
 }

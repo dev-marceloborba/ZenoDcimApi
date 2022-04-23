@@ -15,7 +15,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateMultipleEquipmentsCommand>,
         ICommandHandler<CreateEquipmentParameterCommand>,
         ICommandHandler<CreateMultipleParametersCommand>,
-        ICommandHandler<CreateEquipmentParameterGroupCommand>
+        ICommandHandler<CreateEquipmentParameterGroupCommand>,
+        ICommandHandler<CreateSiteCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -184,6 +185,16 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Grupo de parâmetros criado com sucesso", null);
+        }
+
+        public ICommandResult Handle(CreateSiteCommand command)
+        {
+            var site = new Site(command.Name);
+
+            _dataCenterRepository.AddSite(site);
+            _dataCenterRepository.Commit();
+
+            return new CommandResult(true, "Site criado com sucesso", null);
         }
     }
 }
