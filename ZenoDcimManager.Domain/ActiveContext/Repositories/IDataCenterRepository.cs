@@ -20,29 +20,28 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         public void DeleteBuilding(Guid id);
 
         // Floor
-        public void AddFloor(Building building);
+        public void AddFloor(Floor floor);
         public IEnumerable<Floor> FindAllFloors();
         public Floor FindFloorById(Guid id);
         public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId);
 
         // Room
+        public void AddRoom(Room room);
         public void DeleteFloor(Floor floor);
-        public void AddRoom(Floor floor);
         public IEnumerable<Room> FindAllRooms();
         public Room FindRoomById(Guid id);
         public IEnumerable<Room> FindRoomByFloor(Guid floorId, Guid buildingId);
         public void DeleteRoom(Room room);
 
         //Equipment
-        public void AddEquipment(Room room);
-        public void AddEquipment(Building building);
+        public void AddEquipment(Equipment equipment);
         public IEnumerable<Equipment> FindAllEquipments();
         public Equipment FindEquipmentById(Guid id);
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId);
         public void DeleteEquipment(Equipment equipment);
 
         // Equipment parameter
-        public void AddEquipmentParameter(Equipment equipment);
+        public void AddEquipmentParameter(EquipmentParameter parameter);
         public EquipmentParameter FindEquipmentParameterById(Guid id);
         public IEnumerable<EquipmentParameter> FindAllEquipmentParameters();
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);

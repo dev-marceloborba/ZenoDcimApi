@@ -6,8 +6,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
 {
     public class CreateEquipmentCommand : ICommand
     {
-        public Guid BuildingId { get; set; }
-        public Guid FloorId { get; set; }
         public Guid RoomId { get; set; }
         public int Class { get; set; }
         public string Component { get; set; }

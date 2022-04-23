@@ -8,7 +8,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
 	public class CreateEquipmentParameterGroupCommand : ICommand
 	{
         public string Name { get; set; }
-        public List<EquipmentParameter> Parameters { get; set; }
+        public List<Guid> ParametersId { get; set; }
 
         public CreateEquipmentParameterGroupCommand()
 		{

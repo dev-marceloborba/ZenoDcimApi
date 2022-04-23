@@ -11,9 +11,10 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         // Navigation property
         public Guid? BuildingId { get; private set; }
 
-        public Floor(string name)
+        public Floor(string name, Guid buildingId)
         {
             Name = name;
+            BuildingId = buildingId;
         }
 
         public void AddRoom(Room room)

@@ -26,7 +26,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
 
         }
 
-        public Equipment(int @class, string component, string componentCode, string description, Rack rack, RackPdu rackPdu, EEquipmentGroup group, EEquipmentStatus status, int alarms)
+        public Equipment(int @class, string component, string componentCode, string description, Rack rack, RackPdu rackPdu, EEquipmentGroup group, EEquipmentStatus status, int alarms, Guid roomId)
         {
             Class = @class;
             Component = component;
@@ -37,6 +37,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
             Group = group;
             Status = status;
             Alarms = alarms;
+            RoomId = roomId;
         }
 
         public void AddEquipmentParameter(EquipmentParameter parameter)

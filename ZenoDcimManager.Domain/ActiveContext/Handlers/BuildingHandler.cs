@@ -27,37 +27,34 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public ICommandResult Handle(CreateBuildingCommand command)
         {
-            var building = new Building(command.Campus, command.Name);
+            var building = new Building(command.Campus, command.Name, command.SiteId);
 
             _dataCenterRepository.AddBuilding(building);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Prédio criado com sucesso", null);
+            return new CommandResult(true, "Prédio criado com sucesso", building);
         }
 
         public ICommandResult Handle(CreateFloorCommand command)
         {
-            var building = _dataCenterRepository.FindBuildingById(command.BuildingId);
 
-            building.AddFloor(new Floor(command.Name));
+            var floor = new Floor(command.Name, command.BuildingId);
 
-            _dataCenterRepository.AddFloor(building);
+            _dataCenterRepository.AddFloor(floor);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Andar criado com sucesso", null);
+            return new CommandResult(true, "Andar criado com sucesso", floor);
         }
 
         public ICommandResult Handle(CreateRoomCommand command)
         {
-            var building = _dataCenterRepository.FindBuildingById(command.BuildingId);
-            var floor = building.Floors.Find(x => x.Id == command.FloorId);
 
-            floor.AddRoom(new Room(command.Name));
+            var room = new Room(command.Name, command.FloorId);
 
-            _dataCenterRepository.AddRoom(floor);
+            _dataCenterRepository.AddRoom(room);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Sala criada com sucesso", null);
+            return new CommandResult(true, "Sala criada com sucesso", room);
         }
 
         public ICommandResult Handle(CreateEquipmentCommand command)
@@ -71,26 +68,20 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 null,
                 command.Group,
                 command.Status,
-                command.Alarms
-                );
+                command.Alarms,
+                command.RoomId
+                ); ;
 
-            var room = _dataCenterRepository.FindRoomById(command.RoomId);
-            room.AddEquipment(equipment);
-
-            _dataCenterRepository.AddEquipment(room);
+            _dataCenterRepository.AddEquipment(equipment);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Equipamento criado com sucesso", null);
+            return new CommandResult(true, "Equipamento criado com sucesso", equipment);
         }
 
         public ICommandResult Handle(CreateMultipleEquipmentsCommand command)
         {
             foreach (var item in command.Equipments)
             {
-                var building = _dataCenterRepository.FindBuildingById(item.BuildingId);
-                var floor = building.Floors.Find(x => x.Id == item.FloorId);
-                var room = floor.Rooms.Find(x => x.Id == item.RoomId);
-
                 var equipment = new Equipment(
                     item.Class,
                     item.Component,
@@ -100,33 +91,21 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                     null,
                     item.Group,
                     item.Status,
-                    item.Alarms
+                    item.Alarms,
+                    item.RoomId
                     );
 
-                room.AddEquipment(equipment);
-                _dataCenterRepository.AddEquipment(building);
+                _dataCenterRepository.AddEquipment(equipment);
 
             }
 
             _dataCenterRepository.Commit();
-
-            // foreach (var floor in building.Floors)
-            // {
-            //     foreach (var room in floor.Rooms)
-            //     {
-            //         foreach (var equipment in room.Equipments)
-            //         {
-            //             _dataCenterRepository.AddEquipment(equipment);
-            //         }
-            //     }
-            // }
 
             return new CommandResult(true, "Equipamentos criados com sucesso", null);
         }
 
         public ICommandResult Handle(CreateEquipmentParameterCommand command)
         {
-            var equipment = _dataCenterRepository.FindEquipmentById(command.EquipmentId);
 
             var parameter = new EquipmentParameter(
                 command.Name,
@@ -135,49 +114,47 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 command.HighLimit,
                 command.Scale,
                 command.DataSource,
-                command.Address);
+                command.Address,
+                command.EquipmentId
+                );
 
-            //equipment.ClearList();
-
-            equipment.AddEquipmentParameter(parameter);
-
-            _dataCenterRepository.AddEquipmentParameter(equipment);
+            _dataCenterRepository.AddEquipmentParameter(parameter);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Parametro criado com sucesso", null);
+            return new CommandResult(true, "Parametro criado com sucesso", parameter);
         }
 
         public ICommandResult Handle(CreateMultipleParametersCommand command)
         {
 
-            Equipment equipment = null;
-
             foreach (var item in command.Parameters)
             {
-                if (equipment is null)
-                { 
-                    equipment = _dataCenterRepository.FindEquipmentById(item.EquipmentId);
-                } else
-                {
-                    var parameter = new EquipmentParameter(item.Name, item.Unit, item.LowLimit, item.HighLimit, item.Scale, item.DataSource, item.Address);
-                    equipment.AddEquipmentParameter(parameter);
-                }
+                var parameter = new EquipmentParameter(
+                       item.Name,
+                       item.Unit,
+                       item.LowLimit,
+                       item.HighLimit,
+                       item.Scale,
+                       item.DataSource,
+                       item.Address,
+                       item.EquipmentId
+                       );
+
+                _dataCenterRepository.AddEquipmentParameter(parameter);
             }
 
-            _dataCenterRepository.AddEquipmentParameter(equipment);
             _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Parametros criados com sucesso", equipment);
+            return new CommandResult(true, "Parametros criados com sucesso", null);
         }
 
         public ICommandResult Handle(CreateEquipmentParameterGroupCommand command)
         {
             var equipmentParameterGroup = new EquipmentParameterGroup(command.Name);
 
-            foreach (var item in equipmentParameterGroup.Parameters)
+            foreach (var item in command.ParametersId)
             {
-                //var parameter = _dataCenterRepository.FindParametersByEquipmentId(item.Id);
-                var parameter = _dataCenterRepository.FindEquipmentParameterById(item.Id);
+                var parameter = _dataCenterRepository.FindEquipmentParameterById(item);
                 equipmentParameterGroup.AddParameter(parameter);
             }
 

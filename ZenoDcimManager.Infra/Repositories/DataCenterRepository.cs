@@ -21,31 +21,14 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Buildings.Add(building);
         }
 
-        public void AddEquipment(Room room)
+        public void AddEquipment(Equipment equipment)
         {
-            foreach (var equipment in room.Equipments)
-            {
-                _context.Equipments.Add(equipment);
-            }
+            _context.Equipments.Add(equipment);
         }
 
-        public void AddEquipment(Building building)
+        public void AddEquipmentParameter(EquipmentParameter parameter)
         {
-            foreach (var floor in building.Floors)
-            {
-                foreach (var room in floor.Rooms)
-                {
-                    foreach (var equipment in room.Equipments)
-                    {
-                        _context.Equipments.Add(equipment);
-                    }
-                }
-            }
-        }
-
-        public void AddEquipmentParameter(Equipment equipment)
-        {
-            _context.EquipmentParameters.Add(equipment.EquipmentParameters[0]);
+            _context.EquipmentParameters.Add(parameter);
         }
 
         public void AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
@@ -53,21 +36,14 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.EquipmentParameterGroups.Add(equipmentParameterGroup);
         }
 
-        public void AddFloor(Building building)
+        public void AddFloor(Floor floor)
         {
-            foreach (var item in building.Floors)
-            {
-                _context.Floors.Add(item);
-            }
+            _context.Floors.Add(floor);   
         }
 
-        public void AddRoom(Floor floor)
+        public void AddRoom(Room room)
         {
-            foreach (var room in floor.Rooms)
-            {
-                _context.Rooms.Add(room);
-
-            }
+            _context.Rooms.Add(room);            
         }
 
         public void AddSite(Site site)
