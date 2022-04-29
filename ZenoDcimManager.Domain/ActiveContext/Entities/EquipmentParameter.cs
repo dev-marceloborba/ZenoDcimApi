@@ -16,6 +16,11 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public Guid? EquipmentParameterGroupId { get; private set; }
         public Guid? EquipmentId { get; private set; }
 
+        public EquipmentParameter ()
+        {
+
+        }
+
         public EquipmentParameter(string name, string unit, double lowLimit, double highLimit, int scale, string dataSource, string address, Guid equipmentId)
         {
             Name = name;

@@ -11,6 +11,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         // Navigation property
         public Guid? FloorId { get; private set; }
 
+        public Room () { }
+
         public Room(string name, Guid floorId)
         {
             Name = name;

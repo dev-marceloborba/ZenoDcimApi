@@ -12,6 +12,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         // Navigation property
         public Guid SiteId { get; private set; }
 
+        public Building() { }
+
         public Building(string campus, string name, Guid siteId)
         {
             Campus = campus;
