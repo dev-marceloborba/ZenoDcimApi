@@ -41,6 +41,18 @@ namespace ZenoDcimManager.Api.Controllers
             return repository.List();
         }
 
+        [Route("{Id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public UserOutputCommand FindUserById(
+            Guid Id,
+            [FromServices] IUserRepository repository
+        )
+        {
+            var user = repository.FindUserById(Id);
+            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
+        }
+
         [Route("")]
         [HttpPut]
         [Authorize]
@@ -89,17 +101,17 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
-        [Route("{email}")]
-        [HttpGet]
-        public UserOutputCommand GetUser(
-            string email,
-            [FromServices] IUserRepository repository
-        )
-        {
-            // var Id = Guid.Parse(id);
-            // return repository.Find(Id);
-            var user = repository.FindUserByEmail(email);
-            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
-        }
+        //[Route("{email}")]
+        //[HttpGet]
+        //public UserOutputCommand GetUser(
+        //    string email,
+        //    [FromServices] IUserRepository repository
+        //)
+        //{
+        //    // var Id = Guid.Parse(id);
+        //    // return repository.Find(Id);
+        //    var user = repository.FindUserByEmail(email);
+        //    return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
+        //}
     }
 }
