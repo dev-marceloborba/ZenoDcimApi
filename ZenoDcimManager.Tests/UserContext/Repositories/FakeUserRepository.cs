@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Enums;
 using ZenoDcimManager.Domain.UserContext.Repositories;
@@ -23,7 +24,7 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             );
         }
 
-        public void Commit()
+        public async Task Commit()
         {
         }
 
@@ -32,37 +33,33 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             _users.Remove(item);
         }
 
-        public void DeleteUser(User user)
+
+        public async Task<User> Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public User Find(Guid id)
+        public async Task<User> FindUserByEmail(string email)
         {
             throw new NotImplementedException();
         }
 
-        public User FindUserByEmail(string email)
+        public async Task<User> FindUserById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public User FindUserById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<User> List()
+        public async Task<IEnumerable<User>> List()
         {
             return _users.ToList();
         }
 
-        public void Login(string email, string password)
+        public Task Login(string email, string password)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Save(User item)
+        public async Task Save(User item)
         {
             _users.Add(item);
         }

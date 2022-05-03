@@ -1,10 +1,11 @@
-using ZenoDcimManager.Domain.ActiveContext.Commands;
+﻿using ZenoDcimManager.Domain.ActiveContext.Commands;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Validators;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 {
@@ -21,7 +22,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _rackRepository = rackRepository;
         }
 
-        public ICommandResult Handle(CreateRackEquipmentCommand command)
+        public async Task<ICommandResult> Handle(CreateRackEquipmentCommand command)
         {
             var baseEquipment = new BaseEquipment(
                     command.Name,
@@ -42,7 +43,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             if (Invalid)
                 return new CommandResult(false, "Error on creating rack equipment", Notifications);
 
-            var rack = _rackRepository.FindByLocalization(command.RackLocalization);
+            var rack = await _rackRepository.FindByLocalization(command.RackLocalization);
             if (rack == null)
             {
                 AddNotification("Rack", "Rack doesnt exists");
@@ -50,8 +51,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             }
 
             rack.AddEquipment(rackEquipment);
-            _rackRepository.AddRackEquipments(rack);
-            _rackEquipmentRepository.Commit();
+            await _rackRepository.AddRackEquipments(rack);
+            await _rackEquipmentRepository.Commit();
 
             return new CommandResult(true, "Rack equipment created successful", rackEquipment);
         }

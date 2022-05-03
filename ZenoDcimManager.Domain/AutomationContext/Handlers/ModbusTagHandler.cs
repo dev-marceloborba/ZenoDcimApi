@@ -1,4 +1,4 @@
-using ZenoDcimManager.Domain.AutomationContext.Commands;
+﻿using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.Validators;
@@ -6,6 +6,7 @@ using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Handlers
 {
@@ -25,16 +26,17 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             _plcRepository = plcRepository;
         }
 
-        public ICommandResult Handle(CreateModbusTagCommand command)
+        public async Task<ICommandResult> Handle(CreateModbusTagCommand command)
         {
             command.Validate();
 
-            var modbusTag = new ModbusTag(
-                    command.Name,
-                    command.Deadband,
-                    command.Address,
-                    command.Size,
-                    command.DataType);
+            var modbusTag = new ModbusTag() {
+                    Name = command.Name,
+                    Address = command.Address,
+                    DataSize = command.DataSize,
+                    DataType = command.DataType,
+                    Deadband = command.Deadband
+            };
 
             var modbusTagValidator = new ModbusTagValidator(modbusTag);
 
@@ -54,12 +56,12 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             modbusDevice.AddModbusTag(modbusTag);
 
             _plcRepository.CreateTags(modbusDevice);
-            _plcRepository.Commit();
+            await _plcRepository.Commit();
 
             return new CommandResult(true, "Modbus tag successful created", modbusTag);
         }
 
-        public ICommandResult Handle(EditModbusTagCommand command)
+        public async Task<ICommandResult> Handle(EditModbusTagCommand command)
         {
             // var modbusTag = new ModbusTag(command.Name, command.Address, command.Size);
             // var modbusTagValidator = new ModbusTagValidator(modbusTag);
@@ -67,20 +69,17 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             // AddNotifications(modbusTagValidator);
 
             var modbusTag = _modbusTagRepository.FindById(command.Id);
-            modbusTag.ChangeAddress(command.Address);
-            modbusTag.ChangeSize(command.Size);
-            modbusTag.ChangeName(command.Name);
 
             // if (Invalid)
             //     return new CommandResult(false, "Error on creating modbus tag", modbusTagValidator.Notifications);
 
             _modbusTagRepository.Edit(modbusTag);
-            _modbusTagRepository.Commit();
+            await _modbusTagRepository.Commit();
 
             return new CommandResult(true, "Modbus tag successful created", modbusTag);
         }
 
-        public ICommandResult Handle(DeleteModbusTagCommand command)
+        public async Task<ICommandResult> Handle(DeleteModbusTagCommand command)
         {
             var modbusTag = _modbusTagRepository.FindById(command.Id);
 
@@ -88,20 +87,29 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on deleting modbus tag", new { });
 
             _modbusTagRepository.Delete(modbusTag);
-            _modbusTagRepository.Commit();
+            await _modbusTagRepository.Commit();
 
             return new CommandResult(true, "Modbus tag successful deleted", modbusTag);
         }
 
-        public ICommandResult Handle(CreateMultipleModbusTagCommand command)
+        public async Task<ICommandResult> Handle(CreateMultipleModbusTagCommand command)
         {
             var modbusDevice = _plcRepository.FindByName(command.ModbusDevice);
             List<ModbusTag> modbusTags = new List<ModbusTag>();
 
-            command.ModbusTags.ForEach(x => modbusTags.Add(new ModbusTag(x.Name, x.Deadband, x.Address, x.Size, x.DataType)));
+            command.ModbusTags.ForEach(x => modbusTags.Add(
+                new ModbusTag() {
+                    Name = x.Name,
+                    Deadband = x.Deadband,
+                    DataType = x.DataType,
+                    DataSize = x.DataSize,
+                    Address = x.Address,
+                    Scan = x.Scan
+                }
+            ));
 
             _modbusTagRepository.SaveMultiple(modbusTags);
-            _modbusTagRepository.Commit();
+            await _modbusTagRepository.Commit();
 
             return new CommandResult(true, "Modbus tags successful created", modbusTags);
         }

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Infra.Repositories
 {
@@ -17,54 +18,49 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Delete(User item)
         {
-            _context.Users.Remove(item);
+            _context.Entry(item).State = EntityState.Deleted;
         }
 
-        public void DeleteUser(User user)
+        public async Task<User> Find(Guid id)
         {
-            _context.Remove(user);
+            return await _context.Users.FindAsync(id);
         }
 
-        public User Find(Guid id)
+        public async Task<User> FindUserByEmail(string email)
         {
-            return _context.Users.Find(id);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public User FindUserByEmail(string email)
+        public async Task<User> FindUserById(Guid id)
         {
-            return _context.Users.FirstOrDefault(x => x.Email == email);
+            return await _context.Users.FindAsync(id);
         }
 
-        public User FindUserById(Guid id)
+        public async Task<IEnumerable<User>> List()
         {
-            return _context.Users.Find(id);
-        }
-
-        public IEnumerable<User> List()
-        {
-            return _context.Users
+            return await _context.Users
                 .AsNoTracking()
                 .Include(x => x.Company)
                 .ThenInclude(x => x.Contracts)
                 .OrderBy(x => x.FirstName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public void Login(string email, string password)
+        public Task Login(string email, string password)
         {
             throw new NotImplementedException();
         }
 
-        public void Save(User user)
+        public async Task Save(User user)
         {
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
         }
 
         public void Update(User item)

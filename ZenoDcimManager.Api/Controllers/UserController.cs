@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ZenoDcimManager.Domain.UserContext.Commands;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Handlers;
@@ -8,13 +8,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using ZenoDcimManager.Domain.UserContext.Commands.Output;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Api.Controllers
-{
+{           
     [ApiController]
     [Route("/v1/users")]
     public class UserController : ControllerBase
     {
+
+        private readonly IUserRepository _repository;
+
+        public UserController(IUserRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Route("")]
         [HttpPost]
         [AllowAnonymous]
@@ -34,22 +43,17 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         //[Authorize]
         [AllowAnonymous]
-        public IEnumerable<User> GetAllUsers(
-            [FromServices] IUserRepository repository
-        )
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            return repository.List();
+            return await _repository.List();
         }
 
         [Route("{Id}")]
         [HttpGet]
         [AllowAnonymous]
-        public UserOutputCommand FindUserById(
-            Guid Id,
-            [FromServices] IUserRepository repository
-        )
+        public async Task<UserOutputCommand> FindUserById(Guid Id)
         {
-            var user = repository.FindUserById(Id);
+            var user = await _repository.FindUserById(Id);
             return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
         }
 
@@ -64,14 +68,14 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpDelete]
         [Route("{Id}")]
         [AllowAnonymous]
-        public ActionResult RemoveUserById(Guid Id, [FromServices] IUserRepository repository)
+        public async Task<ActionResult> RemoveUserById(Guid Id)
         {
             try
             {
-                var user = repository.FindUserById(Id);
-                repository.DeleteUser(user);
-                repository.Commit();
-                return Ok();
+                var user = await _repository.FindUserById(Id);
+                _repository.Delete(user);
+                await _repository.Commit();
+                return Ok(user);
             }
             catch
             {

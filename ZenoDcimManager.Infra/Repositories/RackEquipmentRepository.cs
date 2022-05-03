@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Infra.Repositories
 {
@@ -17,42 +18,42 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Create(RackEquipment rackEquipment)
+        public async Task Create(RackEquipment rackEquipment)
         {
-            _context.RackEquipments.Add(rackEquipment);
+            await _context.RackEquipments.AddAsync(rackEquipment);
         }
 
         public void Delete(RackEquipment rackEquipment)
         {
-            _context.RackEquipments.Remove(rackEquipment);
+            _context.Entry(rackEquipment).State = EntityState.Deleted;
         }
 
-        public IEnumerable<RackEquipment> FindAll()
+        public async Task<IEnumerable<RackEquipment>> FindAll()
         {
-            return _context.RackEquipments
+            return await _context.RackEquipments
                 .AsNoTracking()
                 .Include(x => x.BaseEquipment)
                 .OrderBy(x => x.InitialPosition)
-                .ToList();
+                .ToListAsync();
         }
 
-        public RackEquipment FindById(Guid id)
+        public async Task<RackEquipment> FindById(Guid id)
         {
-            return _context.RackEquipments
+            return await _context.RackEquipments
                 .Include(x => x.BaseEquipment)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public RackEquipment FindByName(string name)
+        public async Task<RackEquipment> FindByName(string name)
         {
-            return _context.RackEquipments
+            return await _context.RackEquipments
                 .Include(x => x.BaseEquipment)
-                .FirstOrDefault(x => x.BaseEquipment.Name == name);
+                .FirstOrDefaultAsync(x => x.BaseEquipment.Name == name);
         }
 
         public void Update(RackEquipment rackEquipment)

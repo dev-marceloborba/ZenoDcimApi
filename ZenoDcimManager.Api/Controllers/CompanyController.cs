@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.UserContext.Commands.Input;
@@ -27,23 +28,23 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Company> ListCompanies(
+        public async Task<IEnumerable<Company>> ListCompanies(
 
             [FromServices] ICompanyRepository repository
         )
         {
-            return repository.ListCompanies();
+            return await repository.ListCompanies();
         }
 
         [Route("with-contracts")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Company> ListCompaniesWithContracts(
+        public async Task<IEnumerable<Company>> ListCompaniesWithContracts(
 
             [FromServices] ICompanyRepository repository
         )
         {
-            return repository.ListCompaniesWithContract();
+            return await repository.ListCompaniesWithContract();
         }
     }
 }

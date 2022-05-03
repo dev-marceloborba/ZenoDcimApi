@@ -1,10 +1,11 @@
-using ZenoDcimManager.Domain.ActiveContext.Commands;
+﻿using ZenoDcimManager.Domain.ActiveContext.Commands;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Validators;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 {
@@ -20,7 +21,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             _rackRepository = rackRepository;
         }
 
-        public ICommandResult Handle(CreateRackCommand command)
+        public async Task<ICommandResult> Handle(CreateRackCommand command)
         {
             var rack = new Rack(command.Size, command.Localization);
             var rackValidator = new RackValidator(rack);
@@ -31,20 +32,18 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 return new CommandResult(false, "Error on create rack", Notifications);
 
             // save on repository
-            _rackRepository.Save(rack);
-            _rackRepository.Commit();
+            await _rackRepository.Save(rack);
+            await _rackRepository.Commit();
 
             return new CommandResult(true, "Rack was sucessful created", rack);
         }
 
-        public ICommandResult Handle(EditRackCommand command)
+        public async Task<ICommandResult> Handle(EditRackCommand command)
         {
-            var rack = _rackRepository.FindById(command.Id);
-            rack.ChangeLocalization(command.Localization);
-            rack.ChangeSize(command.Size);
+            var rack = await _rackRepository.FindById(command.Id);
 
             _rackRepository.Update(rack);
-            _rackRepository.Commit();
+            await _rackRepository.Commit();
 
             return new CommandResult(true, "Rack was successful edited", rack);
 

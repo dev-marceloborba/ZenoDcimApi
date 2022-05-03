@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Enums;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
@@ -33,22 +34,22 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _racks.Remove(item);
         }
 
-        public Rack Find(Guid id)
+        public async Task<Rack> Find(Guid id)
         {
             return _racks.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<Rack> List()
+        public async Task<IEnumerable<Rack>> List()
         {
             return _racks.ToList();
         }
 
-        public void Save(Rack item)
+        public async Task Save(Rack item)
         {
             _racks.Add(item);
         }
 
-        public Rack FindByLocalization(string localization)
+        public async Task<Rack> FindByLocalization(string localization)
         {
             return _racks.FirstOrDefault(x => x.Localization == localization);
         }
@@ -58,17 +59,17 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
             throw new NotImplementedException();
         }
 
-        public Rack FindById(Guid id)
+        public async Task<Rack> FindById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public void AddRackEquipments(Rack rack)
+        public async Task AddRackEquipments(Rack rack)
         {
 
         }
 
-        public void Commit()
+        public async Task Commit()
         {
 
         }

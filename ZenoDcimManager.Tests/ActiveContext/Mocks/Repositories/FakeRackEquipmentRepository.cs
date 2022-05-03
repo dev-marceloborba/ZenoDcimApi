@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Enums;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
@@ -19,12 +20,12 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _rackEquipments.Add(new RackEquipment(_baseEquipment, 5, 6, ERackEquipmentType.STORAGE));
         }
 
-        public void Commit()
+        public async Task Commit()
         {
 
         }
 
-        public void Create(RackEquipment rackEquipment)
+        public async Task Create(RackEquipment rackEquipment)
         {
 
         }
@@ -34,17 +35,17 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
 
         }
 
-        public IEnumerable<RackEquipment> FindAll()
+        public async Task<IEnumerable<RackEquipment>> FindAll()
         {
             return _rackEquipments.ToList();
         }
 
-        public RackEquipment FindById(Guid id)
+        public async Task<RackEquipment> FindById(Guid id)
         {
             return _rackEquipments.FirstOrDefault(x => x.Id == id);
         }
 
-        public RackEquipment FindByName(string name)
+        public async Task<RackEquipment> FindByName(string name)
         {
             return new RackEquipment();
             // return _rackEquipments.FirstOrDefault(x => x.BaseEquipment.Name == name);

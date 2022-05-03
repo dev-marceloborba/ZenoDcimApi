@@ -1,10 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.UserContext.Commands.Input;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Handlers;
-using ZenoDcimManager.Infra.Repositories;
+using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -13,6 +14,13 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/contracts")]
     public class ContractController : ControllerBase
     {
+        private readonly ICompanyRepository _repository;
+
+        public ContractController(ICompanyRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Route("")]
         [HttpPost]
         [AllowAnonymous]
@@ -27,11 +35,9 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Contract> ListContracts(
-          [FromServices] CompanyRepository repository
-        )
+        public async Task<IEnumerable<Contract>> ListContracts()
         {
-            return repository.ListContracts();
+            return await _repository.ListContracts();
         }
     }
 }

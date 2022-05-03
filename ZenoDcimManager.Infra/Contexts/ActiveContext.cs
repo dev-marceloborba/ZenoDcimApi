@@ -1,4 +1,4 @@
-using ZenoDcimManager.Domain.ActiveContext.Entities;
+﻿using ZenoDcimManager.Domain.ActiveContext.Entities;
 using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +20,8 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<EquipmentParameter> EquipmentParameters { get; set; }
         public DbSet<EquipmentParameterGroup> EquipmentParameterGroups { get; set; }
+        public DbSet<Parameter> Parameters { get; set; }
+        public DbSet<ParameterGroupAssignment> ParameterGroupAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,10 +44,10 @@ namespace ZenoDcimManager.Infra.Contexts
 
             // Site
             modelBuilder.Entity<Site>().ToTable("Site");
+            modelBuilder.Entity<Site>().Property(x => x.Name).HasColumnType("varchar(20)");
 
             // Building
             modelBuilder.Entity<Building>().ToTable("Building");
-            modelBuilder.Entity<Building>().Property(x => x.Campus).HasColumnType("varchar(28)");
             modelBuilder.Entity<Building>().Property(x => x.Name).HasColumnType("varchar(20)");
 
             // Floor
@@ -65,13 +67,22 @@ namespace ZenoDcimManager.Infra.Contexts
             // Equipment parameter
             modelBuilder.Entity<EquipmentParameter>().ToTable("EquipmentParameter");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.Name).HasColumnType("varchar(50)");
-            modelBuilder.Entity<EquipmentParameter>().Property(x => x.Address).HasColumnType("varchar(10)");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.DataSource).HasColumnType("varchar(20)");
             modelBuilder.Entity<EquipmentParameter>().Property(x => x.Unit).HasColumnType("varchar(5)");
 
             // Equipment parameter group
             modelBuilder.Entity<EquipmentParameterGroup>().ToTable("EquipmentParameterGroup");
             modelBuilder.Entity<EquipmentParameterGroup>().Property(x => x.Name).HasColumnType("varchar(30)");
+
+            // Parameters
+            modelBuilder.Entity<Parameter>().ToTable("Parameter");
+            modelBuilder.Entity<Parameter>().Property(x => x.Name).HasColumnType("varchar(30)");
+            modelBuilder.Entity<Parameter>().Property(x => x.Unit).HasColumnType("varchar(5)");
+
+            // Parameter group asignments
+            modelBuilder.Entity<ParameterGroupAssignment>().ToTable("ParameterGroupAssignment");
+            modelBuilder.Entity<ParameterGroupAssignment>().HasKey(
+                x => new { x.ParameterId, x.EquipmentParameterGroupId });
         }
     }
 }

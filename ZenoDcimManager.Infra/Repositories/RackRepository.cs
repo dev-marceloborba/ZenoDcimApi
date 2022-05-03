@@ -1,72 +1,74 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Infra.Repositories
 {
     public class RackRepository : IRackRepository
     {
         private readonly ActiveContext _context;
+
         public RackRepository(ActiveContext context)
         {
             _context = context;
         }
 
-        public void AddRackEquipments(Rack rack)
+        public async Task AddRackEquipments(Rack rack)
         {
             foreach (var item in rack.RackEquipments)
             {
-                _context.RackEquipments.Add(item);
+                await _context.RackEquipments.AddAsync(item);
             }
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Delete(Rack item)
         {
-            _context.Racks.Remove(item);
+            _context.Entry(item).State = EntityState.Deleted;
         }
 
-        public Rack Find(Guid id)
+        public async Task<Rack> Find(Guid id)
         {
-            return _context.Racks
+            return await _context.Racks
                 .AsNoTracking()
                 .Include(x => x.RackEquipments)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Rack FindById(Guid id)
+        public async Task<Rack> FindById(Guid id)
         {
-            return _context.Racks.FirstOrDefault(x => x.Id == id);
+            return await _context.Racks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Rack FindByLocalization(string localization)
+        public async Task<Rack> FindByLocalization(string localization)
         {
-            return _context.Racks
+            return await _context.Racks
                 .Include(x => x.RackEquipments)
-                .FirstOrDefault(x => x.Localization == localization);
+                .FirstOrDefaultAsync(x => x.Localization == localization);
         }
 
-        public IEnumerable<Rack> List()
+        public async Task<IEnumerable<Rack>> List()
         {
-            return _context.Racks
+            return await _context.Racks
                 .AsNoTracking()
                 .Include(x => x.RackEquipments)
                 .ThenInclude(x => x.BaseEquipment)
                 .OrderBy(x => x.Id)
-                .ToList();
+                .ToListAsync();
         }
 
-        public void Save(Rack item)
+        public async Task Save(Rack item)
         {
-            _context.Racks.Add(item);
+            await _context.Racks.AddAsync(item);
         }
 
         public void Update(Rack item)

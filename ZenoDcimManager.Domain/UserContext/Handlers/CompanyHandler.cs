@@ -1,3 +1,4 @@
+﻿using System.Threading.Tasks;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.UserContext.Commands.Input;
 using ZenoDcimManager.Domain.UserContext.Entities;
@@ -19,26 +20,26 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             _companyRepository = companyRepository;
         }
 
-        public ICommandResult Handle(CreateCompanyCommand command)
+        public async Task<ICommandResult> Handle(CreateCompanyCommand command)
         {
             var company = new Company(command.CompanyName, command.TradingName, command.RegistrationNumber);
 
-            _companyRepository.CreateCompany(company);
-            _companyRepository.Commit();
+            await _companyRepository.CreateCompany(company);
+            await _companyRepository.Commit();
 
             return new CommandResult(true, "Empresa criada com sucesso", company);
         }
 
-        public ICommandResult Handle(CreateContractCommand command)
+        public async Task<ICommandResult> Handle(CreateContractCommand command)
         {
-            var company = _companyRepository.FindCompanyById(command.CompanyId);
+            var company = await _companyRepository.FindCompanyById(command.CompanyId);
 
             var contract = new Contract(command.StartDate, command.EndDate, command.PowerConsumptionDailyLimit);
 
             company.AddContract(contract);
 
-            _companyRepository.CreateContract(company);
-            _companyRepository.Commit();
+            await _companyRepository.CreateContract(contract);
+            await _companyRepository.Commit();
 
             return new CommandResult(true, "Contrato criado com sucesso", company);
         }

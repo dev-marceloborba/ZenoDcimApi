@@ -1,10 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
+using ZenoDcimManager.Shared.UnitOfWork;
 
 namespace ZenoDcimManager.Infra.Repositories
 {
@@ -16,44 +18,44 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             _context = context;
         }
-        public void AddBuilding(Building building)
+        public async Task AddBuilding(Building building)
         {
-            _context.Buildings.Add(building);
+            await _context.Buildings.AddAsync(building);
         }
 
-        public void AddEquipment(Equipment equipment)
+        public async Task AddEquipment(Equipment equipment)
         {
-            _context.Equipments.Add(equipment);
+            await _context.Equipments.AddAsync(equipment);
         }
 
-        public void AddEquipmentParameter(EquipmentParameter parameter)
+        public async Task AddEquipmentParameter(EquipmentParameter parameter)
         {
-            _context.EquipmentParameters.Add(parameter);
+            await _context.EquipmentParameters.AddAsync(parameter);
         }
 
-        public void AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
+        public async Task AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
         {
-            _context.EquipmentParameterGroups.Add(equipmentParameterGroup);
+            await _context.EquipmentParameterGroups.AddAsync(equipmentParameterGroup);
         }
 
-        public void AddFloor(Floor floor)
+        public async Task AddFloor(Floor floor)
         {
-            _context.Floors.Add(floor);   
+            await _context.Floors.AddAsync(floor);   
         }
 
-        public void AddRoom(Room room)
+        public async Task AddRoom(Room room)
         {
-            _context.Rooms.Add(room);            
+            await _context.Rooms.AddAsync(room);            
         }
 
-        public void AddSite(Site site)
+        public async Task AddSite(Site site)
         {
-            _context.Sites.Add(site);
+            await _context.Sites.AddAsync(site);
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteBuilding(Guid id)
@@ -77,6 +79,11 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Entry(floor).State = EntityState.Deleted;
         }
 
+        public void DeleteParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
+        {
+            _context.Entry(equipmentParameterGroup).State = EntityState.Deleted;
+        }
+
         public void DeleteRoom(Room room)
         {
             _context.Entry(room).State = EntityState.Deleted;
@@ -87,89 +94,87 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Entry(site).State = EntityState.Deleted;
         }
 
-        public IEnumerable<Building> FindAllBuildings()
+        public async Task<IEnumerable<Building>> FindAllBuildings()
         {
-            return _context.Buildings
+            return await _context.Buildings
                 .Include(x => x.Floors.OrderBy(y => y.Name))
                 .ThenInclude(x => x.Rooms.OrderBy(y => y.Name))
                 .ThenInclude(x => x.Equipments.OrderBy(y => y.Description))
                 .ThenInclude(x => x.EquipmentParameters.OrderBy(y => y.Name))
                 .OrderBy(x => x.Name)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<EquipmentParameterGroup> FindAllEquipmentParameterGroups()
+        public async Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups()
         {
-            return _context.EquipmentParameterGroups.ToList();
+            return await _context.EquipmentParameterGroups.ToListAsync();
         }
 
-        public IEnumerable<EquipmentParameter> FindAllEquipmentParameters()
+        public async Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters()
         {
-            return _context.EquipmentParameters
-                .ToList()
-                .OrderBy(x => x.Name);
+            return await _context.EquipmentParameters
+                .OrderBy(x => x.Name)
+                .ToListAsync();
         }
 
-        public IEnumerable<Equipment> FindAllEquipments()
+        public async Task<IEnumerable<Equipment>> FindAllEquipments()
         {
-            return _context.Equipments
+            return await _context.Equipments
                 .Include(x => x.EquipmentParameters)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<Floor> FindAllFloors()
+        public async Task<IEnumerable<Floor>> FindAllFloors()
         {
-            return _context.Floors
+            return await _context.Floors
                 .Include(x => x.Rooms.OrderBy(y => y.Name))
                 .OrderBy(x => x.Name)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<Room> FindAllRooms()
+        public async Task<IEnumerable<Room>> FindAllRooms()
         {
-            return _context.Rooms
+            return await _context.Rooms
                 .Include(x => x.Equipments.OrderBy(y => y.Description))
                 .OrderBy(x => x.Name)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<Site> FindAllSites()
+        public async Task<IEnumerable<Site>> FindAllSites()
         {
-            return _context.Sites
+            return await _context.Sites
                 .Include(x => x.Buildings)
                 .OrderBy(x => x.Name)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Building FindBuildingById(Guid id)
+        public async Task<Building> FindBuildingById(Guid id)
         {
-            return _context.Buildings
+            return await _context.Buildings
                 .Where(x => x.Id == id)
                 .Include(x => x.Floors)
                 .ThenInclude(x => x.Rooms)
-                .First();
+                .FirstAsync();
         }
 
-        public Equipment FindEquipmentById(Guid id)
+        public async Task<Equipment> FindEquipmentById(Guid id)
         {
-            return _context.Equipments
+            return await _context.Equipments
                 .Where(x => x.Id == id)
                 .Include(x => x.EquipmentParameters)
-                .First();
+                .FirstAsync();
         }
 
-        public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId, Guid floorId, Guid buildingId)
+        public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId)
         {
-            return _context.Buildings
-                .FirstOrDefault(x => x.Id == buildingId).Floors
-                .FirstOrDefault(x => x.Id == floorId).Rooms
+            return _context.Rooms
                 .FirstOrDefault(x => x.Id == roomId).Equipments;
         }
 
-        public EquipmentParameter FindEquipmentParameterById(Guid id)
+        public async Task<EquipmentParameter> FindEquipmentParameterById(Guid id)
         {
-            return _context.EquipmentParameters
-                .First(x => x.Id == id);
+            return await _context.EquipmentParameters
+                .FirstAsync(x => x.Id == id);
         }
 
         public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId)
@@ -178,10 +183,10 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FirstOrDefault(x => x.Id == buildingId).Floors;
         }
 
-        public Floor FindFloorById(Guid id)
+        public async Task<Floor> FindFloorById(Guid id)
         {
-            return _context.Floors
-                .Find(id);
+            return await _context.Floors
+                .FindAsync(id);
         }
 
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
@@ -199,22 +204,31 @@ namespace ZenoDcimManager.Infra.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Room> FindRoomByFloor(Guid floorId, Guid buildingId)
+        public IEnumerable<Room> FindRoomByFloor(Guid floorId)
         {
-            return _context.Buildings
-                .FirstOrDefault(x => x.Id == buildingId).Floors
+            return _context.Floors
                 .FirstOrDefault(x => x.Id == floorId).Rooms;
         }
 
-        public Room FindRoomById(Guid id)
+        public async Task<Room> FindRoomById(Guid id)
         {
-            return _context.Rooms
-                .Find(id);
+            return await _context.Rooms
+                .FindAsync(id);
         }
 
-        public Site FindSiteById(Guid id)
+        public async Task<Site> FindSiteById(Guid id)
         {
-            return _context.Sites.Find(id);
+            return await _context.Sites.FindAsync(id);
+        }
+
+        Task IUnitOfWork.Commit()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<EquipmentParameter>> IDataCenterRepository.FindParametersByIdRange(Guid[] id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

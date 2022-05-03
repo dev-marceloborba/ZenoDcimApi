@@ -1,4 +1,4 @@
-namespace ZenoDcimManager.Shared.Commands
+﻿namespace ZenoDcimManager.Shared.Commands
 {
     public interface ICommandResult
     {

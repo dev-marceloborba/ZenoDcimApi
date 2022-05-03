@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
@@ -14,6 +15,12 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/data-center")]
     public class DataCenterController : ControllerBase
     {
+        private readonly IDataCenterRepository _repository;
+
+        public DataCenterController(IDataCenterRepository repository)
+        {
+            _repository = repository;
+        }
 
         [Route("site")]
         [HttpPost]
@@ -29,27 +36,24 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("site")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Site> FindAllSites(
-            [FromServices] IDataCenterRepository repository)
+        public async Task<IEnumerable<Site>> FindAllSites()
         {
-            return repository.FindAllSites();
+            return await _repository.FindAllSites();
         }
 
         [Route("site")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteSite(
-            Guid id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<ActionResult> DeleteSite(Guid id)
         {
             try
             {
-                var site = repository.FindSiteById(id);
-                repository.DeleteSite(site);
-                repository.Commit();
-                return Ok();
-            } catch
+                var site = await _repository.FindSiteById(id);
+                _repository.DeleteSite(site);
+                await _repository.Commit();
+                return Ok(site);
+            }
+            catch
             {
                 return BadRequest();
             }
@@ -69,37 +73,29 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Building> FindAllBuildings(
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<IEnumerable<Building>> FindAllBuildings()
         {
-            return repository.FindAllBuildings();
+            return await _repository.FindAllBuildings();
         }
 
         [Route("building/{Id}")]
         [HttpGet]
         [AllowAnonymous]
-        public Building FindBuildingById(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<Building> FindBuildingById(Guid Id)
         {
-            return repository.FindBuildingById(Id);
+            return await _repository.FindBuildingById(Id);
         }
 
 
         [Route("building/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteBuilding(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public ActionResult DeleteBuilding(Guid Id)
         {
             try
             {
-                repository.DeleteBuilding(Id);
-                repository.Commit();
+                _repository.DeleteBuilding(Id);
+                _repository.Commit();
                 return Ok();
             }
             catch
@@ -122,27 +118,22 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Floor> FindAllFloors(
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<IEnumerable<Floor>> FindAllFloors()
         {
-            return repository.FindAllFloors();
+            return await _repository.FindAllFloors();
         }
 
         [Route("building/floor/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteFloor(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<ActionResult> DeleteFloor(Guid Id)
         {
             try
             {
-                var floor = repository.FindFloorById(Id);
-                repository.DeleteFloor(floor);
-                repository.Commit();
-                return Ok();
+                var floor = await _repository.FindFloorById(Id);
+                _repository.DeleteFloor(floor);
+                await _repository.Commit();
+                return Ok(floor);
             }
             catch
             {
@@ -164,26 +155,21 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Room> FindAllRooms(
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<IEnumerable<Room>> FindAllRooms()
         {
-            return repository.FindAllRooms();
+            return await _repository.FindAllRooms();
         }
 
         [Route("building/floor/room/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteRoom(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<ActionResult> DeleteRoom(Guid Id)
         {
             try
             {
-                var room = repository.FindRoomById(Id);
-                repository.DeleteRoom(room);
-                repository.Commit();
+                var room = await _repository.FindRoomById(Id);
+                _repository.DeleteRoom(room);
+                await _repository.Commit();
                 return Ok();
             }
             catch
@@ -206,37 +192,29 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Equipment> FindAllEquipments(
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<IEnumerable<Equipment>> FindAllEquipments()
         {
-            return repository.FindAllEquipments();
+            return await _repository.FindAllEquipments();
         }
 
         [Route("building/floor/room/equipment/{Id}")]
         [HttpGet]
         [AllowAnonymous]
-        public Equipment FindEquipmentById(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-            )
+        public async Task<Equipment> FindEquipmentById(Guid Id)
         {
-            return repository.FindEquipmentById(Id);
+            return await _repository.FindEquipmentById(Id);
         }
 
         [Route("building/floor/room/equipment/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteEquipment(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<ActionResult> DeleteEquipment(Guid Id)
         {
             try
             {
-                var equipment = repository.FindEquipmentById(Id);
-                repository.DeleteEquipment(equipment);
-                repository.Commit();
+                var equipment = await _repository.FindEquipmentById(Id);
+                _repository.DeleteEquipment(equipment);
+                await _repository.Commit();
                 return Ok();
             }
             catch
@@ -281,16 +259,13 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment/parameter/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteEquipmentParameter(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<ActionResult> DeleteEquipmentParameter(Guid Id)
         {
             try
             {
-                var parameter = repository.FindEquipmentParameterById(Id);
-                repository.DeleteEquipmentParameter(parameter);
-                repository.Commit();
+                var parameter = await _repository.FindEquipmentParameterById(Id);
+                _repository.DeleteEquipmentParameter(parameter);
+                await _repository.Commit();
                 return Ok();
             }
             catch
@@ -302,24 +277,18 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment/parameter/{Id}")]
         [HttpGet]
         [AllowAnonymous]
-        public EquipmentParameter FindEquipmentParameterById(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository
-        )
+        public async Task<EquipmentParameter> FindEquipmentParameterById(Guid Id)
         {
-            return repository.FindEquipmentParameterById(Id);
+            return await _repository.FindEquipmentParameterById(Id);
         }
 
         [Route("building/floor/room/equipmentParameterById/{Id}")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(
-            Guid Id,
-            [FromServices] IDataCenterRepository repository)
+        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid Id)
         {
-            return repository.FindParametersByEquipmentId(Id);
+            return _repository.FindParametersByEquipmentId(Id);
         }
-
 
         // Equipment parameter group
         [Route("building/floor/room/equipment/parameter/group")]
@@ -336,11 +305,9 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment/parameters")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<EquipmentParameter> FindAllParameters(
-            [FromServices] IDataCenterRepository repository
-            )
+        public async Task<IEnumerable<EquipmentParameter>> FindAllParameters()
         {
-            return repository.FindAllEquipmentParameters();
+            return await _repository.FindAllEquipmentParameters();
         }
     }
 }

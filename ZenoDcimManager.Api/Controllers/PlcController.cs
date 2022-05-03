@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
@@ -14,24 +14,26 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/plcs")]
     public class PlcController : ControllerBase
     {
+        private readonly IPlcRepository _repository;
+
+        public PlcController(IPlcRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Route("")]
         [HttpGet]
-        public IEnumerable<Plc> GetAllPlcs(
-            [FromServices] IPlcRepository repository
-        )
+        public IEnumerable<Plc> GetAllPlcs()
         {
-            return repository.FindAll();
+            return _repository.FindAll();
         }
 
         [Route("{id}")]
         [HttpGet]
-        public Plc GetPlcById(
-            string id,
-            [FromServices] IPlcRepository repository
-        )
+        public Plc GetPlcById(string id)
         {
             var Id = Guid.Parse(id);
-            return repository.FindById(Id);
+            return _repository.FindById(Id);
         }
 
         [Route("")]

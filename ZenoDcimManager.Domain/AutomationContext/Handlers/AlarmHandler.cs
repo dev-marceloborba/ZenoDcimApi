@@ -1,10 +1,11 @@
-using ZenoDcimManager.Domain.AutomationContext.Commands;
+﻿using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.Validators;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Handlers
 {
@@ -17,15 +18,17 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
             _alarmRepository = alarmRepository;
         }
 
-        public ICommandResult Handle(AlarmCommand command)
+        public async Task<ICommandResult> Handle(AlarmCommand command)
         {
-            var alarm = new Alarm(
-                command.MessageIn,
-                command.MessageOff,
-                command.Name,
-                command.AlarmPriority,
-                command.Setpoint
-            );
+            var alarm = new Alarm()
+            {
+                MessageOn = command.MessageIn,
+                MessageOff = command.MessageOff,
+                Name = command.Name,
+                AlarmPriority = command.AlarmPriority,
+                Setpoint = command.Setpoint
+            };
+                
 
             var alarmValidator = new AlarmValidator(alarm);
 
@@ -35,7 +38,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 return new CommandResult(false, "Error on creating alarm", alarmValidator.Notifications);
 
             _alarmRepository.Save(alarm);
-            _alarmRepository.Commit();
+            await _alarmRepository.Commit();
 
             return new CommandResult(true, "Alarm created successful", alarm);
         }

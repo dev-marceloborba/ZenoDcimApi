@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Repositories;
@@ -17,9 +18,9 @@ namespace ZenoDcimManager.Infra.Repositories
             _context = context;
         }
 
-        public void CreateCompany(Company company)
+        public async Task CreateCompany(Company company)
         {
-            _context.Companies.Add(company);
+            await _context.Companies.AddAsync(company);
         }
 
         public void UpdateCompany(Company company)
@@ -29,43 +30,48 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public void DeleteCompany(Company company)
         {
-            _context.Companies.Remove(company);
+            _context.Entry(company).State = EntityState.Deleted;
         }
 
-        public IEnumerable<Company> ListCompanies()
+        public async Task<IEnumerable<Company>> ListCompanies()
         {
-            return _context.Companies.ToList();
+            return await _context.Companies
+                .ToListAsync();
         }
 
-        public IEnumerable<Company> ListCompaniesWithContract()
+        public async Task<IEnumerable<Company>> ListCompaniesWithContract()
         {
-            return _context.Companies.Include(x => x.Contracts).ToList();
+            return await _context.Companies
+                .Include(x => x.Contracts)
+                .ToListAsync();
         }
 
-        public Company FindCompanyById(Guid id)
+        public async Task<Company> FindCompanyById(Guid id)
         {
-            return _context.Companies.Find(id);
+            return await _context.Companies
+                .FindAsync(id);
         }
 
-        public Company FindCompanyByName(string name)
+        public async Task<Company> FindCompanyByName(string name)
         {
-            return _context.Companies.Where(x => x.CompanyName == name).FirstOrDefault();
+            return await _context.Companies
+                .Where(x => x.CompanyName == name)
+                .FirstOrDefaultAsync();
         }
 
-        public void CreateContract(Company company)
+        public async Task CreateContract(Contract contract)
         {
-            var count = company.Contracts.Count();
-            _context.Contracts.Add(company.Contracts.ElementAt(count - 1));
+            await _context.Contracts.AddAsync(contract);
         }
 
-        public IEnumerable<Contract> ListContracts()
+        public async Task<IEnumerable<Contract>> ListContracts()
         {
-            return _context.Contracts.ToList();
+            return await _context.Contracts.ToListAsync();
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

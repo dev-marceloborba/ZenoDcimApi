@@ -1,4 +1,4 @@
-using ZenoDcimManager.Domain.UserContext.Commands;
+﻿using ZenoDcimManager.Domain.UserContext.Commands;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Enums;
 using ZenoDcimManager.Domain.UserContext.Repositories;
@@ -9,6 +9,7 @@ using ZenoDcimManager.Shared.Handlers;
 using ZenoDcimManager.Shared.Services;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.UserContext.Commands.Output;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
@@ -30,7 +31,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             _companyRepository = companyRepository;
         }
 
-        public ICommandResult Handle(CreateUserCommand command)
+        public async Task<ICommandResult> Handle(CreateUserCommand command)
         {
             // Fail fast validations
             command.Validate();
@@ -41,7 +42,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             }
 
             // find company
-            var company = _companyRepository.FindCompanyById(command.CompanyId);
+            var company = await _companyRepository.FindCompanyById(command.CompanyId);
 
             if (company == null)
             {
@@ -62,8 +63,8 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Nao foi possivel criar o usuario", "");
 
             // save informations
-            _userRepository.Save(user);
-            _userRepository.Commit();
+            await _userRepository.Save(user);
+            await _userRepository.Commit();
 
             // send e-mail
             _emailService.Send(user.ToString(), user.Email, "Welcome to Zeno DCIM", "Your account was created");
@@ -72,7 +73,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
 
         }
 
-        public ICommandResult Handle(EditUserCommand command)
+        public async Task<ICommandResult> Handle(EditUserCommand command)
         {
             command.Validate();
             if (command.Invalid)
@@ -82,7 +83,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             }
 
             // find company
-            var company = _companyRepository.FindCompanyById(command.CompanyId);
+            var company = await _companyRepository.FindCompanyById(command.CompanyId);
 
             if (company == null)
             {
@@ -90,7 +91,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Não foi possível criar o usuário", Notifications);
             }
 
-            var user = _userRepository.Find(command.Id);
+            var user = await _userRepository.Find(command.Id);
 
             if (user == null)
             {
@@ -104,7 +105,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             user.CopyWith(editedUser);
 
             _userRepository.Update(user);
-            _userRepository.Commit();
+            await _userRepository.Commit();
 
             return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active));
         }

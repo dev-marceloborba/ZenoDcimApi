@@ -1,10 +1,11 @@
-using ZenoDcimManager.Domain.UserContext.Commands;
+﻿using ZenoDcimManager.Domain.UserContext.Commands;
 using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Domain.UserContext.Services;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.UserContext.Commands.Output;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
@@ -21,13 +22,13 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             _tokenService = tokenService;
         }
 
-        public ICommandResult Handle(LoginCommand command)
+        public async Task<ICommandResult> Handle(LoginCommand command)
         {
             command.Validate();
             if (command.Invalid)
                 return new CommandResult(false, "Error on login", command.Notifications);
 
-            var user = _userRepository.FindUserByEmail(command.Email);
+            var user = await _userRepository.FindUserByEmail(command.Email);
 
             if (user == null)
             {

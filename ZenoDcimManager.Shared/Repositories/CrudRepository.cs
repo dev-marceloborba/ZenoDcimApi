@@ -1,14 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Shared.Repositories
 {
     public interface CrudRepository<T> where T : class
     {
-        void Save(T item);
-        IEnumerable<T> List();
+        Task Save(T item);
+        Task<IEnumerable<T>> List();
         void Update(T item);
         void Delete(T item);
-        T Find(Guid id);
+        Task<T> Find(Guid id);
     }
 }

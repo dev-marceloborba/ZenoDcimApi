@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Repositories;
 
@@ -15,17 +16,17 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             _companies.Add(new Company("Mindcloud", "Mindcloud", "35843118000166"));
         }
 
-        public void Commit()
+        public async Task Commit()
         {
 
         }
 
-        public void CreateCompany(Company company)
+        public async Task CreateCompany(Company company)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateContract(Company company)
+        public async Task CreateContract(Contract contract)
         {
             throw new NotImplementedException();
         }
@@ -35,28 +36,28 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             throw new NotImplementedException();
         }
 
-        public Company FindCompanyById(Guid id)
+        public async Task<Company> FindCompanyById(Guid id)
         {
             var firstCompany = _companies.FirstOrDefault();
             return firstCompany;
         }
 
-        public Company FindCompanyByName(string name)
+        public async Task<Company> FindCompanyByName(string name)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Company> ListCompanies()
+        public async Task<IEnumerable<Company>> ListCompanies()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Company> ListCompaniesWithContract()
+        public async Task<IEnumerable<Company>> ListCompaniesWithContract()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Contract> ListContracts()
+        public async Task<IEnumerable<Contract>> ListContracts()
         {
             throw new NotImplementedException();
         }

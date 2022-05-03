@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
@@ -13,13 +13,18 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/modbusTags")]
     public class ModbusTagController : ControllerBase
     {
+        private readonly IModbusTagRepository _repository;
+
+        public ModbusTagController(IModbusTagRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Route("")]
         [HttpGet]
-        public IEnumerable<ModbusTag> GetAllModbusTags(
-            [FromServices] IModbusTagRepository repository
-        )
+        public IEnumerable<ModbusTag> GetAllModbusTags()
         {
-            return repository.FindAll();
+            return _repository.FindAll();
         }
 
         [Route("")]
@@ -54,17 +59,14 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public ActionResult DeleteModbusTag(
-            string id,
-            [FromServices] IModbusTagRepository repository
-        )
+        public ActionResult DeleteModbusTag(string id)
         {
             try
             {
                 Guid gid = Guid.Parse(id);
-                var modbusTag = repository.FindById(gid);
-                repository.Delete(modbusTag);
-                repository.Commit();
+                var modbusTag = _repository.FindById(gid);
+                _repository.Delete(modbusTag);
+                _repository.Commit();
                 return Ok();
             }
             catch

@@ -1,4 +1,4 @@
-using ZenoDcimManager.Domain.UserContext.Commands;
+﻿using ZenoDcimManager.Domain.UserContext.Commands;
 using ZenoDcimManager.Domain.UserContext.Handlers;
 using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Domain.UserContext.Services;
@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ZenoDcimManager.Domain.UserContext.Enums;
 using System;
 using ZenoDcimManager.Domain.UserContext.Commands.Output;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Tests.UserContext.Handlers
 {
@@ -77,7 +78,7 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
 
         [TestMethod]
         [TestCategory("Handlers")]
-        public void ShouldCreateUserAsOperator()
+        public async Task ShouldCreateUserAsOperator()
         {
             var command = new CreateUserCommand();
             command.FirstName = "Marcelo";
@@ -88,7 +89,7 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
             command.Role = 2;
             command.Active = true;
             command.CompanyId = Guid.Parse("bde6ab74-81be-448c-9abf-709e60a221b0");
-            var result = _handler.Handle(command);
+            var result = await _handler.Handle(command);
             var entity = (UserOutputCommand)result.Data;
             Assert.AreEqual(entity.Role, EUserRole.OPERATOR);
         }

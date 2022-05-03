@@ -6,10 +6,17 @@
 
   <ItemGroup>
     <PackageReference Include="flunt" Version="1.0.3" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ZenoDcimManager.Shared\ZenoDcimManager.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="AutomationContext\Entities\Tag.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+  </ItemGroup>
 </Project>

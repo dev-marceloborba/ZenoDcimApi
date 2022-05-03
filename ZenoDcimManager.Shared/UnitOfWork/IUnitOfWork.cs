@@ -1,7 +1,9 @@
+﻿using System.Threading.Tasks;
+
 namespace ZenoDcimManager.Shared.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        void Commit();
+        Task Commit();
     }
 }

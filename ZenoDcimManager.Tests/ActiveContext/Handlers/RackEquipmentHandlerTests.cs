@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using ZenoDcimManager.Domain.ActiveContext.Commands;
 using ZenoDcimManager.Domain.ActiveContext.Enums;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
@@ -29,7 +29,7 @@ namespace ZenoDcimManager.Tests.ActiveContext
             _command.InitialPosition = 1;
             _command.FinalPosition = 2;
             _command.RackEquipmentType = ERackEquipmentType.SERVER;
-            _command.RackLocalization = _rackRepository.List().FirstOrDefault().Localization;
+            _command.RackLocalization = "RackLocalization";
 
             _handler = new RackEquipmentHandler(_rackEquipmentRepository, _rackRepository);
         }

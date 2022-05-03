@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations.Automation
 {
     [DbContext(typeof(AutomationContext))]
-    partial class AutomationContextModelSnapshot : ModelSnapshot
+    [Migration("20220503132522_ModbusTagRelationWithEquipmentParameter")]
+    partial class ModbusTagRelationWithEquipmentParameter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,16 +40,16 @@ namespace ZenoDcimManager.Infra.Migrations.Automation
                         .HasColumnType("bit");
 
                     b.Property<string>("MessageOff")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MessageOn")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Setpoint")
                         .HasColumnType("float");
@@ -81,14 +83,11 @@ namespace ZenoDcimManager.Infra.Migrations.Automation
                     b.Property<double>("Deadband")
                         .HasColumnType("float");
 
-                    b.Property<string>("EquipmentParameterName")
-                        .HasColumnType("varchar(50)");
-
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("PlcId")
                         .HasColumnType("uniqueidentifier");
@@ -113,19 +112,19 @@ namespace ZenoDcimManager.Infra.Migrations.Automation
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IpAddress")
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Manufactor")
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TcpPort")
                         .HasColumnType("int");

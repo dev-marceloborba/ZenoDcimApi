@@ -1,10 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ZenoDcimManager.Domain.ActiveContext.Commands;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -12,23 +13,28 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/rack-equipments")]
     public class RackEquipmentController : ControllerBase
     {
+        private readonly IRackEquipmentRepository _repository;
+
+        public RackEquipmentController(IRackEquipmentRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Route("")]
         [HttpPost]
-        public CommandResult CreateRackEquipment(
+        public async Task<ICommandResult> CreateRackEquipment(
             [FromBody] CreateRackEquipmentCommand command,
             [FromServices] RackEquipmentHandler handler
         )
         {
-            return (CommandResult)handler.Handle(command);
+            return (ICommandResult)handler.Handle(command);
         }
 
         [Route("")]
         [HttpGet]
-        public IEnumerable<RackEquipment> GetAllRackEquipments(
-            [FromServices] IRackEquipmentRepository repository
-        )
+        public async Task<IEnumerable<RackEquipment>> GetAllRackEquipments()
         {
-            return repository.FindAll();
+            return await _repository.FindAll();
         }
     }
 }
