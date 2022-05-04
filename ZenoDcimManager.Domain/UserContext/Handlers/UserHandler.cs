@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
-    public class UserHandler :
+    public class  UserHandler :
         Notifiable,
         ICommandHandler<CreateUserCommand>,
         ICommandHandler<EditUserCommand>

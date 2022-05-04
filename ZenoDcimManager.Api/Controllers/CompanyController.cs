@@ -17,12 +17,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateCompany(
+        public async Task<ICommandResult> CreateCompany(
            [FromBody] CreateCompanyCommand command,
            [FromServices] CompanyHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult) await handler.Handle(command);
         }
 
         [Route("")]

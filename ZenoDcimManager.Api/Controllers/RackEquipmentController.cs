@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
             [FromServices] RackEquipmentHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("")]

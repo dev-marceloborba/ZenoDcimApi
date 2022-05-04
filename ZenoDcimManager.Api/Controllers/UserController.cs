@@ -27,16 +27,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult<ICommandResult> CreateUser(
+        public async Task<ICommandResult> CreateUser(
             [FromBody] CreateUserCommand command,
             [FromServices] UserHandler handler
         )
         {
-            var result = (ICommandResult)handler.Handle(command);
-            if (result.Success)
-                return Ok(result);
-            else
-                return BadRequest(result);
+            return await handler.Handle(command);
         }
 
         [Route("")]

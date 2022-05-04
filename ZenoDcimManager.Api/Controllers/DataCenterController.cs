@@ -25,12 +25,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("site")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateSite(
+        public async Task<ICommandResult> CreateSite(
             [FromBody] CreateSiteCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("site")]
@@ -62,12 +62,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateBuilding(
+        public async Task<ICommandResult> CreateBuilding(
             [FromBody] CreateBuildingCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building")]
@@ -107,12 +107,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateFloor(
+        public async Task<ICommandResult> CreateFloor(
             [FromBody] CreateFloorCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor")]
@@ -144,12 +144,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateRoom(
+        public async Task<ICommandResult> CreateRoom(
             [FromBody] CreateRoomCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor/room")]
@@ -181,12 +181,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateEquipment(
+        public async Task<ICommandResult> CreateEquipment(
             [FromBody] CreateEquipmentCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor/room/equipment")]
@@ -226,34 +226,34 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment/multiple")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateMultipleEquipments(
+        public async Task<ICommandResult> CreateMultipleEquipments(
             [FromBody] CreateMultipleEquipmentsCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor/room/equipment/parameter")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateEquipmentParameter(
+        public async Task<ICommandResult> CreateEquipmentParameter(
             [FromBody] CreateEquipmentParameterCommand command,
             [FromServices] BuildingHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor/room/equipment/parameter/multiple")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateMultipleEquipmentParameter(
+        public async Task<ICommandResult> CreateMultipleEquipmentParameter(
         [FromBody] CreateMultipleParametersCommand command,
         [FromServices] BuildingHandler handler
     )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor/room/equipment/parameter/{Id}")]
@@ -294,12 +294,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("building/floor/room/equipment/parameter/group")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateEquipmentParameterGroup(
+        public async Task<ICommandResult> CreateEquipmentParameterGroup(
             [FromBody] CreateEquipmentParameterGroupCommand command,
             [FromServices] BuildingHandler handler
             )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("building/floor/room/equipment/parameter/group")]
@@ -326,7 +326,7 @@ namespace ZenoDcimManager.Api.Controllers
             [FromServices] BuildingHandler handler
         )
         {
-            return await handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("parameters")]

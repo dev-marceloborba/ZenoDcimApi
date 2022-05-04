@@ -38,12 +38,12 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        public ICommandResult CreatePlc(
+        public async Task<ICommandResult> CreatePlc(
             [FromBody] CreatePlcCommand command,
             [FromServices] PlcHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("{id}")]

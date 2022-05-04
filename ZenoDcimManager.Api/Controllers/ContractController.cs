@@ -24,12 +24,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult CreateContract(
+        public async Task<ICommandResult> CreateContract(
           [FromBody] CreateContractCommand command,
           [FromServices] CompanyHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("")]

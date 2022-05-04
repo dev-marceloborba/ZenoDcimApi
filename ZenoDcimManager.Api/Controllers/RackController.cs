@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ZenoDcimManager.Domain.ActiveContext.Commands;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
-using ZenoDcimManager.Infra.Contexts;
 using ZenoDcimManager.Shared.Commands;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -32,7 +29,7 @@ namespace ZenoDcimManager.Api.Controllers
             [FromServices] RackHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("")]

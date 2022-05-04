@@ -6,6 +6,7 @@ using ZenoDcimManager.Domain.AutomationContext.Handlers;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -29,22 +30,22 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        public ICommandResult CreateModbusTag(
+        public async Task<ICommandResult> CreateModbusTag(
             [FromBody] CreateModbusTagCommand command,
             [FromServices] ModbusTagHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("multiple")]
         [HttpPost]
-        public ICommandResult CraeteMultipleModbusTags(
+        public async Task<ICommandResult> CreateMultipleModbusTags(
             [FromBody] CreateMultipleModbusTagCommand command,
             [FromServices] ModbusTagHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("")]
