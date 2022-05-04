@@ -95,6 +95,8 @@ namespace ZenoDcimManager.Api
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
             });
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers()
                 .AddJsonOptions(
                     options =>
