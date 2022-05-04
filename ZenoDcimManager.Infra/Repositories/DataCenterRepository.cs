@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
-using ZenoDcimManager.Shared.UnitOfWork;
 
 namespace ZenoDcimManager.Infra.Repositories
 {
@@ -43,6 +42,11 @@ namespace ZenoDcimManager.Infra.Repositories
             await _context.Floors.AddAsync(floor);   
         }
 
+        public async Task AddParameter(Parameter parameter)
+        {
+            await _context.Parameters.AddAsync(parameter);
+        }
+
         public async Task AddRoom(Room room)
         {
             await _context.Rooms.AddAsync(room);            
@@ -77,6 +81,11 @@ namespace ZenoDcimManager.Infra.Repositories
         public void DeleteFloor(Floor floor)
         {
             _context.Entry(floor).State = EntityState.Deleted;
+        }
+
+        public void DeleteParameter(Parameter parameter)
+        {
+            _context.Entry(parameter).State = EntityState.Deleted;
         }
 
         public void DeleteParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
@@ -129,6 +138,12 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Floors
                 .Include(x => x.Rooms.OrderBy(y => y.Name))
                 .OrderBy(x => x.Name)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Parameter>> FindAllParameters()
+        {
+            return await _context.Parameters
                 .ToListAsync();
         }
 
@@ -189,6 +204,12 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FindAsync(id);
         }
 
+        public async Task<Parameter> FindParameterById(Guid id)
+        {
+            return await _context.Parameters
+                .FindAsync(id);
+        }
+
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
         {
             //return _context.Equipments
@@ -197,11 +218,6 @@ namespace ZenoDcimManager.Infra.Repositories
                     .Where(x => x.Id == id)
                     .Include(x => x.EquipmentParameters)                
                     .First().EquipmentParameters.OrderBy(x => x.Name);
-        }
-
-        public IEnumerable<EquipmentParameter> FindParametersByIdRange(Guid[] id)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<Room> FindRoomByFloor(Guid floorId)
@@ -219,16 +235,6 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<Site> FindSiteById(Guid id)
         {
             return await _context.Sites.FindAsync(id);
-        }
-
-        Task IUnitOfWork.Commit()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<EquipmentParameter>> IDataCenterRepository.FindParametersByIdRange(Guid[] id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

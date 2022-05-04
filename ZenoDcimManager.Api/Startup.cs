@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using ZenoDcimManager.Api.Hubs;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
@@ -23,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 namespace ZenoDcimManager.Api
 {
@@ -94,7 +95,11 @@ namespace ZenoDcimManager.Api
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
             });
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(
+                    options =>
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+                 );
             services.AddSignalR();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);

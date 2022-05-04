@@ -5,12 +5,12 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
 {
     public class Parameter : Entity
     {
-        public string Name{ get; private set; }
-        public string Unit{ get; private set; }
-        public int LowLimit{ get; private set; }
-        public int HighLimit{ get; private set; }
-        public int Scale{ get; private set; }
-        public List<ParameterGroupAssignment> ParameterGroupAssignments { get; private set; } = new List<ParameterGroupAssignment>();
+        public string Name{ get; set; }
+        public string Unit{ get; set; }
+        public int LowLimit{ get; set; }
+        public int HighLimit{ get; set; }
+        public int Scale{ get; set; }
+        public List<ParameterGroupAssignment> ParameterGroupAssignments { get; set; } = new List<ParameterGroupAssignment>();
 
         public Parameter()
         {

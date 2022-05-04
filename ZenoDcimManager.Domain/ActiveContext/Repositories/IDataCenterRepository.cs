@@ -9,50 +9,54 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
     public interface IDataCenterRepository : IUnitOfWork
     {
         // Site
-        public Task AddSite(Site site);
-        public Task<IEnumerable<Site>> FindAllSites();
-        public Task<Site> FindSiteById(Guid id);
-        public void DeleteSite(Site site);
+        Task AddSite(Site site);
+        Task<IEnumerable<Site>> FindAllSites();
+        Task<Site> FindSiteById(Guid id);
+        void DeleteSite(Site site);
 
         // Building
-        public Task AddBuilding(Building building);
-        public Task<IEnumerable<Building>> FindAllBuildings();
-        public Task<Building> FindBuildingById(Guid id);
-        public void DeleteBuilding(Guid id);
+        Task AddBuilding(Building building);
+        Task<IEnumerable<Building>> FindAllBuildings();
+        Task<Building> FindBuildingById(Guid id);
+        void DeleteBuilding(Guid id);
 
         // Floor
-        public Task AddFloor(Floor floor);
-        public Task<IEnumerable<Floor>> FindAllFloors();
-        public Task<Floor> FindFloorById(Guid id);
-        public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId);
-        public void DeleteFloor(Floor floor);
+        Task AddFloor(Floor floor);
+        Task<IEnumerable<Floor>> FindAllFloors();
+        Task<Floor> FindFloorById(Guid id);
+        IEnumerable<Floor> FindFloorByBuilding(Guid buildingId);
+        void DeleteFloor(Floor floor);
 
         // Room
-        public Task AddRoom(Room room);
-        public Task<IEnumerable<Room>> FindAllRooms();
-        public Task<Room> FindRoomById(Guid id);
-        public IEnumerable<Room> FindRoomByFloor(Guid floorId);
-        public void DeleteRoom(Room room);
+        Task AddRoom(Room room);
+        Task<IEnumerable<Room>> FindAllRooms();
+        Task<Room> FindRoomById(Guid id);
+        IEnumerable<Room> FindRoomByFloor(Guid floorId);
+        void DeleteRoom(Room room);
 
         //Equipment
-        public Task AddEquipment(Equipment equipment);
-        public Task<IEnumerable<Equipment>> FindAllEquipments();
-        public Task<Equipment> FindEquipmentById(Guid id);
-        public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId);
-        public void DeleteEquipment(Equipment equipment);
+        Task AddEquipment(Equipment equipment);
+        Task<IEnumerable<Equipment>> FindAllEquipments();
+        Task<Equipment> FindEquipmentById(Guid id);
+        IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId);
+        void DeleteEquipment(Equipment equipment);
 
         // Equipment parameter
-        public Task AddEquipmentParameter(EquipmentParameter parameter);
-        public Task<EquipmentParameter> FindEquipmentParameterById(Guid id);
-        public Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters();
-        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
-        public Task<IEnumerable<EquipmentParameter>> FindParametersByIdRange(Guid[] id);
-        public void DeleteEquipmentParameter(EquipmentParameter parameter);
+        Task AddEquipmentParameter(EquipmentParameter parameter);
+        Task<EquipmentParameter> FindEquipmentParameterById(Guid id);
+        Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters();
+        IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
+        void DeleteEquipmentParameter(EquipmentParameter parameter);
 
         // Equipment parameter group
-        public Task AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
-        public Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups();
-        public void DeleteParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
-        
+        Task AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
+        Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups();
+        void DeleteParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
+
+        // Parameter
+        Task AddParameter(Parameter parameter);
+        Task<Parameter> FindParameterById(Guid id);
+        Task<IEnumerable<Parameter>> FindAllParameters();
+        void DeleteParameter(Parameter parameter);
     }
 }

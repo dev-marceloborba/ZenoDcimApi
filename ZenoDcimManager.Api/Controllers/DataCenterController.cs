@@ -302,12 +302,58 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)handler.Handle(command);
         }
 
+        [Route("building/floor/room/equipment/parameter/group")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups()
+        {
+            return await _repository.FindAllEquipmentParameterGroups();
+        }
+
         [Route("building/floor/room/equipment/parameters")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IEnumerable<EquipmentParameter>> FindAllParameters()
+        public async Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters()
         {
             return await _repository.FindAllEquipmentParameters();
+        }
+
+        [Route("parameters")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ICommandResult> CreateParameter(
+            [FromBody] CreateParameterCommand command,
+            [FromServices] BuildingHandler handler
+        )
+        {
+            return await handler.Handle(command);
+        }
+
+        [Route("parameters")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IEnumerable<Parameter>> FindAllParameters()
+        {
+            return await _repository.FindAllParameters();
+        }
+
+        [Route("parameters/{Id}")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public async Task<ActionResult> DeleteParameter(Guid Id)
+        {
+            try
+            {
+                var parameter = await _repository.FindParameterById(Id);
+                _repository.DeleteParameter(parameter);
+                await _repository.Commit();
+                return Ok();
+            }
+            catch 
+            {
+                return BadRequest();
+            }
+            
         }
     }
 }

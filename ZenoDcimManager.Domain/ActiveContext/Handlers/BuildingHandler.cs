@@ -17,7 +17,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateEquipmentParameterCommand>,
         ICommandHandler<CreateMultipleParametersCommand>,
         ICommandHandler<CreateEquipmentParameterGroupCommand>,
-        ICommandHandler<CreateSiteCommand>
+        ICommandHandler<CreateSiteCommand>,
+        ICommandHandler<CreateParameterCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -28,7 +29,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateBuildingCommand command)
         {
-            var building = new Building()
+            var building = new Building
             {
                 Name = command.Name,
                 SiteId = command.SiteId,
@@ -43,7 +44,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         public async Task<ICommandResult> Handle(CreateFloorCommand command)
         {
 
-            var floor = new Floor()
+            var floor = new Floor
             {
                 Name = command.Name,
                 BuildingId = command.BuildingId,
@@ -58,7 +59,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         public async Task<ICommandResult> Handle(CreateRoomCommand command)
         {
 
-            var room = new Room()
+            var room = new Room
             {
                 Name = command.Name,
                 FloorId = command.FloorId
@@ -72,7 +73,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateEquipmentCommand command)
         {
-            var equipment = new Equipment()
+            var equipment = new Equipment
             {
                 Component = command.Component,
                 ComponentCode = command.ComponentCode,
@@ -94,7 +95,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         {
             foreach (var item in command.Equipments)
             {
-                var equipment = new Equipment()
+                var equipment = new Equipment
                 {
                     Component = item.Component,
                     ComponentCode = item.ComponentCode,
@@ -107,7 +108,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 };
 
                await _dataCenterRepository.AddEquipment(equipment);
-
             }
 
             await _dataCenterRepository.Commit();
@@ -117,7 +117,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateEquipmentParameterCommand command)
         {
-            var parameter = new EquipmentParameter()
+            var parameter = new EquipmentParameter
             {
                 Name = command.Name,
                 Unit = command.Unit,
@@ -139,7 +139,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
             foreach (var item in command.Parameters)
             {
-                var parameter = new EquipmentParameter()
+                var parameter = new EquipmentParameter
                 {
                     Name = item.Name,
                     Unit = item.Unit,
@@ -180,12 +180,39 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateSiteCommand command)
         {
-            var site = new Site(command.Name);
+            var site = new Site
+            {
+                Name = command.Name
+            };
 
             await _dataCenterRepository.AddSite(site);
             await _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Site criado com sucesso", null);
+            return new CommandResult(true, "Site criado com sucesso", site);
+        }
+
+        public async Task<ICommandResult> Handle(CreateParameterCommand command)
+        {
+            var parameter = new Parameter
+            {
+                Name = command.Name,
+                Unit = command.Unit,
+                LowLimit = command.LowLimit,
+                HighLimit = command.HighLimit,
+                Scale = command.Scale
+            };
+
+            parameter.ParameterGroupAssignments.Add(
+                new ParameterGroupAssignment
+                {
+                    ParameterId = parameter.Id,
+                    EquipmentParameterGroupId = command.GroupId
+                });
+
+            await _dataCenterRepository.AddParameter(parameter);
+            await _dataCenterRepository.Commit();
+
+            return new CommandResult(true, "Parâmetro criado com sucesso", parameter);
         }
     }
 }
