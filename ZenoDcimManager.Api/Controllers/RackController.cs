@@ -14,7 +14,6 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("/v1/racks")]
     public class RackController : ControllerBase
     {
-
         private readonly IRackRepository _repository;
 
         public RackController(IRackRepository repository)

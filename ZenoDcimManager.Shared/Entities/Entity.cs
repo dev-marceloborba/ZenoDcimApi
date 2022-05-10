@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Flunt.Notifications;
 using ZenoDcimManager.Shared.ValueObjects;
 
@@ -15,6 +15,11 @@ namespace ZenoDcimManager.Shared
         public bool Equals(Entity other)
         {
             return Id == other.Id;
+        }
+
+        public void SetId(Guid id)
+        {
+            Id = id;
         }
     }
 }
