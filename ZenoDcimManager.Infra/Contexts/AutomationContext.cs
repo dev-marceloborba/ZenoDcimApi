@@ -34,6 +34,7 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.Entity<Alarm>().Property(x => x.Name).HasColumnType("varchar(50)");
             modelBuilder.Entity<Alarm>().Property(x => x.MessageOn).HasColumnType("varchar(200)");
             modelBuilder.Entity<Alarm>().Property(x => x.MessageOff).HasColumnType("varchar(200)");
+            modelBuilder.Entity<Alarm>().Property(x => x.TagName).HasColumnType("varchar(50)");
         }
     }
 }

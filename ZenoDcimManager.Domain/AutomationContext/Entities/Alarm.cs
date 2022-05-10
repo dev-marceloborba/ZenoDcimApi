@@ -12,5 +12,6 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
         public EAlarmStatus Status { get; set; } = EAlarmStatus.INACTIVE;
         public double Setpoint { get; set; }
         public bool Enabled { get; set; } = true;
+        public string TagName { get; set; }
     }
 }
