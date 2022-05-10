@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Entities
@@ -11,6 +11,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
         public string IpAddress { get; private set; }
         public int TcpPort { get; private set; }
         public List<ModbusTag> ModbusTags { get; private set; }
+
+        public Plc() { }
 
         public Plc(string name, string manufactor, string model, string ipAddress, int tcpPort)
         {

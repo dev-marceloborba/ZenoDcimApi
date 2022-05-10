@@ -44,12 +44,12 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.List();
         }
 
-        [Route("{Id}")]
+        [Route("{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<UserOutputCommand> FindUserById(Guid Id)
+        public async Task<UserOutputCommand> FindUserById(Guid id)
         {
-            var user = await _repository.FindUserById(Id);
+            var user = await _repository.FindUserById(id);
             return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
         }
 
@@ -62,13 +62,14 @@ namespace ZenoDcimManager.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("{Id}")]
+        [Route("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult> RemoveUserById(Guid Id)
+        public async Task<ActionResult> DeleteUserById(Guid id)
         {
             try
             {
-                var user = await _repository.FindUserById(Id);
+                var user = new User();
+                user.SetId(id);
                 _repository.Delete(user);
                 await _repository.Commit();
                 return Ok(user);

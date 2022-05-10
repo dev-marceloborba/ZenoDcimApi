@@ -7,6 +7,7 @@ using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -23,6 +24,7 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ICommandResult> CreateRack(
             [FromBody] CreateRackCommand command,
             [FromServices] RackHandler handler
@@ -33,6 +35,7 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<Rack>> GetAllRacks()
         {
             return await _repository.List();
@@ -40,58 +43,77 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("statistics/total-equipments/{id}")]
         [HttpGet]
-        public async Task<int> GetTotalEquipments(
-            string id
-        )
+        [AllowAnonymous]
+        public async Task<int> GetTotalEquipments(Guid id)
         {
-            var Id = Guid.Parse(id);
-            var rack = await _repository.FindById(Id);
-            return rack.TotalEquipments();
+            return (await _repository.FindById(id)).TotalEquipments();
         }
 
         [Route("statistics/total-occuped-slots/{id}")]
         [HttpGet]
-        public async Task<int> GetTotalOccupedSlots(string id)
+        [AllowAnonymous]
+        public async Task<int> GetTotalOccupedSlots(Guid id)
         {
-            var Id = Guid.Parse(id);
-            var rack = await _repository.FindById(Id);
-            return rack.TotalOccupedSlots();
+            return (await _repository.FindById(id)).TotalOccupedSlots();
         }
 
         [Route("statistics/available-positions/{id}")]
         [HttpGet]
-        public async Task<int[]> GetAvailablePositions(string id)
+        [AllowAnonymous]
+        public async Task<int[]> GetAvailablePositions(Guid id)
         {
-            var Id = Guid.Parse(id);
-            var rack = await _repository.FindById(Id);
-            return rack.AvailablePositions();
+            return (await _repository.FindById(id)).AvailablePositions();
         }
 
         [Route("statistics/occuped-positions/{id}")]
         [HttpGet]
-        public async Task<int[]> GetOccupedPositions(string id)
+        [AllowAnonymous]
+        public async Task<int[]> GetOccupedPositions(Guid id)
         {
-            var Id = Guid.Parse(id);
-            var rack = await _repository.FindById(Id);
-            return rack.OccupedPositions();
+            return (await _repository.FindById(id)).OccupedPositions();
         }
 
         [Route("statistics/percentage-used-space/{id}")]
         [HttpGet]
-        public async Task<double> GetPercentageUsedSpace(string id)
+        [AllowAnonymous]
+        public async Task<double> GetPercentageUsedSpace(Guid id)
         {
-            var Id = Guid.Parse(id);
-            var rack = await _repository.FindById(Id);
-            return rack.PercentUsedSpace();
+            return (await _repository.FindById(id)).PercentUsedSpace();
         }
 
         [Route("statistics/percentage-available-space/{id}")]
         [HttpGet]
-        public async Task<double> GetPercentageAvailableSpace(string id)
+        [AllowAnonymous]
+        public async Task<double> GetPercentageAvailableSpace(Guid id)
         {
-            var Id = Guid.Parse(id);
-            var rack = await _repository.FindById(Id);
-            return rack.PercentAvailableSpace();
+            return (await _repository.FindById(id)).PercentAvailableSpace();
+        }
+
+        [Route("statistics/{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetStatistics(Guid id)
+        {
+            var rack = await _repository.FindById(id);
+            try
+            {
+                var statistics = new
+                {
+                    TotalEquipments = rack.TotalEquipments(),
+                    TotalOccupedSlots = rack.TotalOccupedSlots(),
+                    AvailablePositions = rack.AvailablePositions(),
+                    OccupedPositions = rack.OccupedPositions(),
+                    PercentageUsedSpace = rack.PercentUsedSpace(),
+                    PercentageAvailableSpace = rack.PercentAvailableSpace()
+                };
+
+                return Ok(statistics);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
         }
     }
 }

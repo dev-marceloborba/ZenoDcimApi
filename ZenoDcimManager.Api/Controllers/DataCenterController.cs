@@ -48,7 +48,8 @@ namespace ZenoDcimManager.Api.Controllers
         {
             try
             {
-                var site = await _repository.FindSiteById(id);
+                var site = new Site();
+                site.SetId(id);
                 _repository.DeleteSite(site);
                 await _repository.Commit();
                 return Ok(site);
@@ -78,24 +79,26 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindAllBuildings();
         }
 
-        [Route("building/{Id}")]
+        [Route("building/{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<Building> FindBuildingById(Guid Id)
+        public async Task<Building> FindBuildingById(Guid id)
         {
-            return await _repository.FindBuildingById(Id);
+            return await _repository.FindBuildingById(id);
         }
 
 
-        [Route("building/{Id}")]
+        [Route("building/{id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public ActionResult DeleteBuilding(Guid Id)
+        public async Task<ActionResult> DeleteBuilding(Guid id)
         {
             try
             {
-                _repository.DeleteBuilding(Id);
-                _repository.Commit();
+                var building = new Building();
+                building.SetId(id);
+                _repository.DeleteBuilding(building);
+                await _repository.Commit();
                 return Ok();
             }
             catch
@@ -123,14 +126,15 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindAllFloors();
         }
 
-        [Route("building/floor/{Id}")]
+        [Route("building/floor/{id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public async Task<ActionResult> DeleteFloor(Guid Id)
+        public async Task<ActionResult> DeleteFloor(Guid id)
         {
             try
             {
-                var floor = await _repository.FindFloorById(Id);
+                var floor = new Floor();
+                floor.SetId(id);
                 _repository.DeleteFloor(floor);
                 await _repository.Commit();
                 return Ok(floor);
@@ -160,14 +164,15 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindAllRooms();
         }
 
-        [Route("building/floor/room/{Id}")]
+        [Route("building/floor/room/{id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public async Task<ActionResult> DeleteRoom(Guid Id)
+        public async Task<ActionResult> DeleteRoom(Guid id)
         {
             try
             {
-                var room = await _repository.FindRoomById(Id);
+                var room = new Room();
+                room.SetId(id);
                 _repository.DeleteRoom(room);
                 await _repository.Commit();
                 return Ok();
@@ -197,22 +202,23 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindAllEquipments();
         }
 
-        [Route("building/floor/room/equipment/{Id}")]
+        [Route("building/floor/room/equipment/{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<Equipment> FindEquipmentById(Guid Id)
+        public async Task<Equipment> FindEquipmentById(Guid id)
         {
-            return await _repository.FindEquipmentById(Id);
+            return await _repository.FindEquipmentById(id);
         }
 
-        [Route("building/floor/room/equipment/{Id}")]
+        [Route("building/floor/room/equipment/{id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public async Task<ActionResult> DeleteEquipment(Guid Id)
+        public async Task<ActionResult> DeleteEquipment(Guid id)
         {
             try
             {
-                var equipment = await _repository.FindEquipmentById(Id);
+                var equipment = new Equipment();
+                equipment.SetId(id);
                 _repository.DeleteEquipment(equipment);
                 await _repository.Commit();
                 return Ok();
@@ -256,14 +262,15 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
-        [Route("building/floor/room/equipment/parameter/{Id}")]
+        [Route("building/floor/room/equipment/parameter/{id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public async Task<ActionResult> DeleteEquipmentParameter(Guid Id)
+        public async Task<ActionResult> DeleteEquipmentParameter(Guid id)
         {
             try
             {
-                var parameter = await _repository.FindEquipmentParameterById(Id);
+                var parameter = new EquipmentParameter();
+                parameter.SetId(id);
                 _repository.DeleteEquipmentParameter(parameter);
                 await _repository.Commit();
                 return Ok();
@@ -274,20 +281,20 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
-        [Route("building/floor/room/equipment/parameter/{Id}")]
+        [Route("building/floor/room/equipment/parameter/{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<EquipmentParameter> FindEquipmentParameterById(Guid Id)
+        public async Task<EquipmentParameter> FindEquipmentParameterById(Guid id)
         {
-            return await _repository.FindEquipmentParameterById(Id);
+            return await _repository.FindEquipmentParameterById(id);
         }
 
-        [Route("building/floor/room/equipmentParameterById/{Id}")]
+        [Route("building/floor/room/equipmentParameterById/{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid Id)
+        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
         {
-            return _repository.FindParametersByEquipmentId(Id);
+            return _repository.FindParametersByEquipmentId(id);
         }
 
         // Equipment parameter group
@@ -340,11 +347,11 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("parameters/{Id}")]
         [HttpDelete]
         [AllowAnonymous]
-        public async Task<ActionResult> DeleteParameter(Guid Id)
+        public async Task<ActionResult> DeleteParameter(Guid id)
         {
             try
             {
-                var parameter = await _repository.FindParameterById(Id);
+                var parameter = await _repository.FindParameterById(id);
                 _repository.DeleteParameter(parameter);
                 await _repository.Commit();
                 return Ok();

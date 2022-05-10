@@ -30,10 +30,9 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public Plc GetPlcById(string id)
+        public Plc GetPlcById(Guid id)
         {
-            var Id = Guid.Parse(id);
-            return _repository.FindById(Id);
+            return _repository.FindById(id);
         }
 
         [Route("")]

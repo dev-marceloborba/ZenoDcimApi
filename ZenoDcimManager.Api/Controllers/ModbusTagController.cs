@@ -60,31 +60,34 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public ActionResult DeleteModbusTag(string id)
+        public async Task<ActionResult> DeleteModbusTag(Guid id)
         {
+            var modbusTag = new ModbusTag();
             try
             {
-                Guid gid = Guid.Parse(id);
-                var modbusTag = _repository.FindById(gid);
+                modbusTag.SetId(id);
                 _repository.Delete(modbusTag);
-                _repository.Commit();
-                return Ok();
+                await _repository.Commit();
+                return Ok(modbusTag);
             }
             catch
             {
-                return BadRequest();
+                return BadRequest(modbusTag);
             }
         }
 
         [Route("delete-by-clp/{id}")]
         [HttpDelete]
-        public ActionResult DeleteAllByClp(string id, [FromServices] IPlcRepository plcRepository, [FromServices] IModbusTagRepository modbusTagRepository)
+        public ActionResult DeleteAllByClp(
+            Guid id,
+            [FromServices] IPlcRepository plcRepository,
+            [FromServices] IModbusTagRepository modbusTagRepository)
         {
             try
             {
-                Guid gid = Guid.Parse(id);
-                var clp = plcRepository.FindById(gid);
-                modbusTagRepository.DeleteAllByClp(clp);
+                var plc = new Plc();
+                plc.SetId(id);
+                modbusTagRepository.DeleteAllByClp(plc);
                 modbusTagRepository.Commit();
                 return Ok();
             }

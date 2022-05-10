@@ -18,7 +18,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task AddBuilding(Building building);
         Task<IEnumerable<Building>> FindAllBuildings();
         Task<Building> FindBuildingById(Guid id);
-        void DeleteBuilding(Guid id);
+        void DeleteBuilding(Building building);
 
         // Floor
         Task AddFloor(Floor floor);

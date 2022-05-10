@@ -62,9 +62,8 @@ namespace ZenoDcimManager.Infra.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public void DeleteBuilding(Guid id)
+        public void DeleteBuilding(Building building)
         {
-            var building = _context.Buildings.Find(id);
             _context.Entry(building).State = EntityState.Deleted;
         }
 
