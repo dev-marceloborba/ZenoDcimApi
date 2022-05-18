@@ -362,5 +362,21 @@ namespace ZenoDcimManager.Api.Controllers
             }
             
         }
+
+        //[Route("parametersByGroup/{id}")]
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<IEnumerable<Parameter>> FindParametersByGroupd(Guid groupId)
+        //{
+        //    return await _repository.FindParametersByGroup(groupId);
+        //}
+
+        [Route("parametersByGroup/{group}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IEnumerable<Parameter>> FindParametersByGroupd(string group)
+        {
+            return await _repository.FindParametersByGroup(group);
+        }
     }
 }

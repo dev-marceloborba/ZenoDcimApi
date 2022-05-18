@@ -58,5 +58,9 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<Parameter> FindParameterById(Guid id);
         Task<IEnumerable<Parameter>> FindAllParameters();
         void DeleteParameter(Parameter parameter);
+
+        // Customs
+        Task<IEnumerable<Parameter>> FindParametersByGroup(string group);
+        //Task<IEnumerable<Parameter>> FindParametersByGroup(Guid groupId);
     }
 }

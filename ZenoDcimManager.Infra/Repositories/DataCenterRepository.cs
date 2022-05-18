@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
@@ -211,12 +212,24 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
         {
-            //return _context.Equipments
-            //    .Find(id).EquipmentParameters;
             return _context.Equipments
                     .Where(x => x.Id == id)
                     .Include(x => x.EquipmentParameters)                
                     .First().EquipmentParameters.OrderBy(x => x.Name);
+        }
+
+        public async Task<IEnumerable<Parameter>> FindParametersByGroup(string group)
+        {
+
+            var result = await _context.Parameters
+                .FromSqlRaw("SELECT Parameter.Id, Parameter.Name, Parameter.Unit, Parameter.HighLimit, Parameter.LowLimit, Parameter.Scale, Parameter.CreatedDate, Parameter.ModifiedDate " +
+                            "FROM ParameterGroupAssignment " +
+                            "LEFT JOIN Parameter ON ParameterGroupAssignment.ParameterId = Parameter.Id " +
+                            "LEFT JOIN EquipmentParameterGroup ON ParameterGroupAssignment.EquipmentParameterGroupId = EquipmentParameterGroup.Id " +
+                            "WHERE EquipmentParameterGroup.Name = {0}", group)
+                .ToListAsync();
+            
+            return result;
         }
 
         public IEnumerable<Room> FindRoomByFloor(Guid floorId)
