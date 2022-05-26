@@ -165,6 +165,14 @@ namespace ZenoDcimManager.Api.Controllers
         }
 
         [Route("building/floor/room/{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<Room> FindRoomById(Guid id)
+        {
+            return await _repository.FindRoomById(id);
+        }
+
+        [Route("building/floor/room/{id}")]
         [HttpDelete]
         [AllowAnonymous]
         public async Task<ActionResult> DeleteRoom(Guid id)

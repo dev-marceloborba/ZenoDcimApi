@@ -211,14 +211,11 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
         {
-            //return _context.Equipments
-            //        .Where(x => x.Id == id)
-            //        .Include(x => x.EquipmentParameters)                
-            //        .First().EquipmentParameters.OrderBy(x => x.Name);
             return _context.Equipments
                     .Where(x => x.Id == id)
                     .Select(x => x.EquipmentParameters)
                     .First()
+                    .OrderBy(x => x.Name)
                     .ToList();
         }
 
@@ -253,7 +250,10 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<Room> FindRoomById(Guid id)
         {
             return await _context.Rooms
-                .FindAsync(id);
+                .Where(x => x.Id == id)
+                .Include(x => x.Equipments)
+                .ThenInclude(x => x.EquipmentParameters)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Site> FindSiteById(Guid id)

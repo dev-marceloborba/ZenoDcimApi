@@ -83,12 +83,16 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("login")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult Login(
+        public async Task<ActionResult<ICommandResult>> Login(
             [FromBody] LoginCommand command,
             [FromServices] LoginHandler handler
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            var result = await handler.Handle(command);
+            if (result.Success)
+                return Ok(result);
+            else
+                return Unauthorized(result);
         }
 
         [Route("edit")]
