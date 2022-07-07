@@ -325,6 +325,25 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindAllEquipmentParameterGroups();
         }
 
+        [Route("building/floor/room/equipment/parameter/group/{id}")]
+        [HttpDelete]
+        [AllowAnonymous]
+        public ActionResult DeleteEquipmentParameterGroup(Guid id)
+        {
+            var parameterGroup = new EquipmentParameterGroup();
+            parameterGroup.SetId(id);
+            try
+            {
+                _repository.DeleteParameterGroup(parameterGroup);
+                _repository.Commit();
+                return Ok(parameterGroup);
+            }
+            catch
+            {
+                return BadRequest(parameterGroup);
+            }
+        }
+
         [Route("building/floor/room/equipment/parameters")]
         [HttpGet]
         [AllowAnonymous]
@@ -364,11 +383,11 @@ namespace ZenoDcimManager.Api.Controllers
                 await _repository.Commit();
                 return Ok();
             }
-            catch 
+            catch
             {
                 return BadRequest();
             }
-            
+
         }
 
         //[Route("parametersByGroup/{id}")]
@@ -385,6 +404,17 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IEnumerable<Parameter>> FindParametersByGroupd(string group)
         {
             return await _repository.FindParametersByGroup(group);
+        }
+
+        [Route("parameters/groupAssociation")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ICommandResult> CreateEquipmentOnGroup(
+            [FromServices] BuildingHandler handler,
+            [FromBody] CreateEquipmentOnGroupCommand command
+        )
+        {
+            return (ICommandResult)await handler.Handle(command);
         }
     }
 }

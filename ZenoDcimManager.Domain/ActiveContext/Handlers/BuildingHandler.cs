@@ -18,7 +18,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
         ICommandHandler<CreateMultipleParametersCommand>,
         ICommandHandler<CreateEquipmentParameterGroupCommand>,
         ICommandHandler<CreateSiteCommand>,
-        ICommandHandler<CreateParameterCommand>
+        ICommandHandler<CreateParameterCommand>,
+        ICommandHandler<CreateEquipmentOnGroupCommand>
     {
         private readonly IDataCenterRepository _dataCenterRepository;
 
@@ -63,7 +64,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             {
                 Name = command.Name,
                 FloorId = command.FloorId
-            };    
+            };
 
             await _dataCenterRepository.AddRoom(room);
             await _dataCenterRepository.Commit();
@@ -107,7 +108,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                     RoomId = item.RoomId,
                 };
 
-               await _dataCenterRepository.AddEquipment(equipment);
+                await _dataCenterRepository.AddEquipment(equipment);
             }
 
             await _dataCenterRepository.Commit();
@@ -127,7 +128,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 DataSource = command.DataSource,
                 EquipmentId = command.EquipmentId,
             };
-    
+
             await _dataCenterRepository.AddEquipmentParameter(parameter);
             await _dataCenterRepository.Commit();
 
@@ -166,16 +167,16 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 Group = command.Group,
             };
 
-            foreach (var item in command.ParametersId)
-            {
-                var parameter = _dataCenterRepository.FindEquipmentParameterById(item);
-                //equipmentParameterGroup.AddParameter(parameter);
-            }
+            // foreach (var item in command.ParametersId)
+            // {
+            //     var parameter = _dataCenterRepository.FindEquipmentParameterById(item);
+            //     //equipmentParameterGroup.AddParameter(parameter);
+            // }
 
             await _dataCenterRepository.AddEquipmentParameterGroup(equipmentParameterGroup);
             await _dataCenterRepository.Commit();
 
-            return new CommandResult(true, "Grupo de parâmetros criado com sucesso", null);
+            return new CommandResult(true, "Grupo de parâmetros criado com sucesso", equipmentParameterGroup);
         }
 
         public async Task<ICommandResult> Handle(CreateSiteCommand command)
@@ -213,6 +214,27 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             await _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Parâmetro criado com sucesso", parameter);
+        }
+
+        public async Task<ICommandResult> Handle(CreateEquipmentOnGroupCommand command)
+        {
+            var group = new EquipmentParameterGroup();
+            group.SetId(command.GroupId);
+
+            foreach (var item in command.Parameters)
+            {
+                group.ParameterGroupAssignments.Add(new ParameterGroupAssignment()
+                {
+                    ParameterId = item.Id,
+                    EquipmentParameterGroupId = group.Id
+                });
+            }
+
+            group.TrackModifiedDate();
+            _dataCenterRepository.UpdateParameterGroup(group);
+            await _dataCenterRepository.Commit();
+
+            return new CommandResult(true, "Grupo atualizado com sucesso", group);
         }
     }
 }

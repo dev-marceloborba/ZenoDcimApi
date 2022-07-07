@@ -39,7 +39,7 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task AddFloor(Floor floor)
         {
-            await _context.Floors.AddAsync(floor);   
+            await _context.Floors.AddAsync(floor);
         }
 
         public async Task AddParameter(Parameter parameter)
@@ -49,7 +49,7 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task AddRoom(Room room)
         {
-            await _context.Rooms.AddAsync(room);            
+            await _context.Rooms.AddAsync(room);
         }
 
         public async Task AddSite(Site site)
@@ -115,7 +115,9 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups()
         {
-            return await _context.EquipmentParameterGroups.ToListAsync();
+            return await _context.EquipmentParameterGroups
+                .OrderBy(x => x.Name)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters()
@@ -237,7 +239,7 @@ namespace ZenoDcimManager.Infra.Repositories
                 where epg.Name == groupName
                 //where epg.Name.Contains(groupName)
                 select p;
-            
+
             return await parametersByGroup.ToListAsync();
         }
 
@@ -259,6 +261,13 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<Site> FindSiteById(Guid id)
         {
             return await _context.Sites.FindAsync(id);
+        }
+
+        public void UpdateParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
+        {
+            // _context.Entry(equipmentParameterGroup).State = EntityState.Modified;
+            // _context.Entry(equipmentParameterGroup).State = EntityState.Added;
+            _context.Entry(equipmentParameterGroup).State = EntityState.Detached;
         }
     }
 }

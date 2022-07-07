@@ -52,6 +52,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
         Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups();
         void DeleteParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
+        void UpdateParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
 
         // Parameter
         Task AddParameter(Parameter parameter);
