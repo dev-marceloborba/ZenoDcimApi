@@ -193,6 +193,14 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FirstAsync(x => x.Id == id);
         }
 
+        public async Task<EquipmentParameterGroup> FindEquipmentParameterGroupById(Guid id)
+        {
+            return await _context.EquipmentParameterGroups
+                .Where(x => x.Id == id)
+                .Include(x => x.ParameterGroupAssignments)
+                .SingleAsync();
+        }
+
         public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId)
         {
             return _context.Buildings

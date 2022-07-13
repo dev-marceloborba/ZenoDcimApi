@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
@@ -218,20 +220,21 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateEquipmentOnGroupCommand command)
         {
-            var group = new EquipmentParameterGroup();
-            group.SetId(command.GroupId);
+            var group = await _dataCenterRepository.FindEquipmentParameterGroupById(command.GroupId);
+
+            var parameterList = new HashSet<ParameterGroupAssignment>();
 
             foreach (var item in command.Parameters)
             {
-                group.ParameterGroupAssignments.Add(new ParameterGroupAssignment()
+                parameterList.Add(new ParameterGroupAssignment()
                 {
                     ParameterId = item.Id,
                     EquipmentParameterGroupId = group.Id
                 });
             }
 
+            group.ParameterGroupAssignments = parameterList.ToList();
             group.TrackModifiedDate();
-            _dataCenterRepository.UpdateParameterGroup(group);
             await _dataCenterRepository.Commit();
 
             return new CommandResult(true, "Grupo atualizado com sucesso", group);
