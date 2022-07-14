@@ -13,12 +13,14 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<IEnumerable<Site>> FindAllSites();
         Task<Site> FindSiteById(Guid id);
         void DeleteSite(Site site);
+        void UpdateSite(Site site);
 
         // Building
         Task AddBuilding(Building building);
         Task<IEnumerable<Building>> FindAllBuildings();
         Task<Building> FindBuildingById(Guid id);
         void DeleteBuilding(Building building);
+        void UpdateBuilding(Building building);
 
         // Floor
         Task AddFloor(Floor floor);
@@ -26,6 +28,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<Floor> FindFloorById(Guid id);
         IEnumerable<Floor> FindFloorByBuilding(Guid buildingId);
         void DeleteFloor(Floor floor);
+        void UpdateFloor(Floor floor);
 
         // Room
         Task AddRoom(Room room);
@@ -33,6 +36,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<Room> FindRoomById(Guid id);
         IEnumerable<Room> FindRoomByFloor(Guid floorId);
         void DeleteRoom(Room room);
+        void UpdateRoom(Room room);
 
         //Equipment
         Task AddEquipment(Equipment equipment);
@@ -40,6 +44,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<Equipment> FindEquipmentById(Guid id);
         IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId);
         void DeleteEquipment(Equipment equipment);
+        void UpdateEquipment(Equipment equipment);
 
         // Equipment parameter
         Task AddEquipmentParameter(EquipmentParameter parameter);
@@ -47,6 +52,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters();
         IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
         void DeleteEquipmentParameter(EquipmentParameter parameter);
+        void UpdateEquipmentParameter(EquipmentParameter parameter);
 
         // Equipment parameter group
         Task AddEquipmentParameterGroup(EquipmentParameterGroup equipmentParameterGroup);
@@ -60,6 +66,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Repositories
         Task<Parameter> FindParameterById(Guid id);
         Task<IEnumerable<Parameter>> FindAllParameters();
         void DeleteParameter(Parameter parameter);
+        void UpdateParameter(Parameter parameter);
 
         // Customs
         Task<IEnumerable<Parameter>> FindParametersByGroup(string group);

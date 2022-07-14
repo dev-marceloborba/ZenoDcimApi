@@ -271,11 +271,44 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Sites.FindAsync(id);
         }
 
+        public void UpdateBuilding(Building building)
+        {
+            _context.Buildings.Update(building);
+        }
+
+        public void UpdateEquipment(Equipment equipment)
+        {
+            _context.Equipments.Update(equipment);
+        }
+
+        public void UpdateEquipmentParameter(EquipmentParameter parameter)
+        {
+            _context.EquipmentParameters.Update(parameter);
+        }
+
+        public void UpdateFloor(Floor floor)
+        {
+            _context.Floors.Update(floor);
+        }
+
+        public void UpdateParameter(Parameter parameter)
+        {
+            _context.Parameters.Update(parameter);
+        }
+
         public void UpdateParameterGroup(EquipmentParameterGroup equipmentParameterGroup)
         {
-            // _context.Entry(equipmentParameterGroup).State = EntityState.Modified;
-            // _context.Entry(equipmentParameterGroup).State = EntityState.Added;
-            _context.Entry(equipmentParameterGroup).State = EntityState.Detached;
+            _context.EquipmentParameterGroups.Update(equipmentParameterGroup);
+        }
+
+        public void UpdateRoom(Room room)
+        {
+            _context.Rooms.Update(room);
+        }
+
+        public void UpdateSite(Site site)
+        {
+            _context.Sites.Update(site);
         }
     }
 }

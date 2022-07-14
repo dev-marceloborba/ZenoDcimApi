@@ -317,6 +317,28 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
+        [Route("building/floor/room/equipment/parameter/group/{id}")]
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<IActionResult> EditEquipmentParameterGroup(
+            [FromRoute] Guid id,
+            [FromBody] CreateEquipmentParameterGroupCommand command,
+            [FromServices] BuildingHandler handler)
+        {
+            try
+            {
+                var equipmentParameterGroup = await _repository.FindEquipmentParameterGroupById(id);
+                equipmentParameterGroup.Name = command.Name;
+                _repository.UpdateParameterGroup(equipmentParameterGroup);
+                await _repository.Commit();
+                return Ok(new CommandResult(true, "Grupo editado com sucesso", equipmentParameterGroup));
+            }
+            catch
+            {
+                return BadRequest(new CommandResult(false, "Erro ao editar grupo", command));
+            }
+        }
+
         [Route("building/floor/room/equipment/parameter/group")]
         [HttpGet]
         [AllowAnonymous]
