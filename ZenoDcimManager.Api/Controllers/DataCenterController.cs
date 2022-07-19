@@ -259,6 +259,34 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
+        [Route("building/floor/room/equipment/parameter/{id}")]
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateEquipmentParameter(
+            [FromRoute] Guid id,
+            [FromBody] CreateEquipmentParameterCommand command,
+            [FromServices] BuildingHandler handler)
+        {
+            try
+            {
+                var equipmentParameter = await _repository.FindEquipmentParameterById(id);
+                equipmentParameter.DataSource = command.DataSource;
+                equipmentParameter.HighLimit = command.HighLimit;
+                equipmentParameter.LowLimit = command.LowLimit;
+                equipmentParameter.Unit = command.Unit;
+                equipmentParameter.Scale = command.Scale;
+                equipmentParameter.ModbusTagName = command.Address;
+                equipmentParameter.TrackModifiedDate();
+                _repository.UpdateEquipmentParameter(equipmentParameter);
+                await _repository.Commit();
+                return Ok(new CommandResult(true, "Parâmetro de equipamento atualizado com sucesso", equipmentParameter));
+            }
+            catch
+            {
+                return BadRequest(new CommandResult(false, "Erro ao atualizar parâmetro de equipamento", new { id }));
+            }
+        }
+
         [Route("building/floor/room/equipment/parameter/multiple")]
         [HttpPost]
         [AllowAnonymous]
@@ -383,6 +411,35 @@ namespace ZenoDcimManager.Api.Controllers
         )
         {
             return (ICommandResult)await handler.Handle(command);
+        }
+
+        [Route("parameters/{id}")]
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateParameter(
+            [FromRoute] Guid id,
+            [FromBody] CreateParameterCommand command,
+            [FromServices] BuildingHandler handler
+        )
+        {
+            try
+            {
+                var parameter = await _repository.FindParameterById(id);
+                parameter.HighLimit = command.HighLimit;
+                parameter.LowLimit = command.LowLimit;
+                parameter.Name = command.Name;
+                parameter.Scale = command.Scale;
+                parameter.Unit = command.Unit;
+                parameter.TrackModifiedDate();
+                _repository.UpdateParameter(parameter);
+                await _repository.Commit();
+                return Ok(new CommandResult(true, "Parâmetro editado com sucesso", parameter));
+            }
+            catch
+            {
+                return BadRequest(new CommandResult(false, "Não foi possivel editar o parâmetro", new { id }));
+            }
+            // return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("parameters")]

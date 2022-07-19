@@ -205,13 +205,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 Scale = command.Scale
             };
 
-            parameter.ParameterGroupAssignments.Add(
-                new ParameterGroupAssignment
-                {
-                    ParameterId = parameter.Id,
-                    EquipmentParameterGroupId = command.GroupId
-                });
-
             await _dataCenterRepository.AddParameter(parameter);
             await _dataCenterRepository.Commit();
 
