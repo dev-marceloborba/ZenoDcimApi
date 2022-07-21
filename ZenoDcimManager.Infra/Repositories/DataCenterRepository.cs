@@ -178,7 +178,10 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Equipments
                 .Where(x => x.Id == id)
                 .Include(x => x.EquipmentParameters)
-                .FirstAsync();
+                .Include(x => x.Building)
+                .Include(x => x.Floor)
+                .Include(x => x.Room)
+                .FirstOrDefaultAsync();
         }
 
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId)

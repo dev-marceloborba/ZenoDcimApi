@@ -6,6 +6,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
 {
     public class CreateEquipmentCommand : ICommand
     {
+        public Guid BuildingId { get; set; }
+        public Guid FloorId { get; set; }
         public Guid RoomId { get; set; }
         public int Class { get; set; }
         public string Component { get; set; }
@@ -13,7 +15,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
         public string Description { get; set; }
         public EEquipmentGroup Group { get; set; }
         public EEquipmentStatus Status { get; set; }
-        public int Alarms { get; set; }
         public void Validate()
         {
             throw new System.NotImplementedException();

@@ -83,8 +83,8 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                 Class = command.Class,
                 Group = command.Group,
                 Description = command.Description,
-                Alarms = command.Alarms,
-                Status = command.Status,
+                BuildingId = command.BuildingId,
+                FloorId = command.FloorId,
                 RoomId = command.RoomId,
             };
 
@@ -105,8 +105,6 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
                     Class = item.Class,
                     Group = item.Group,
                     Description = item.Description,
-                    Alarms = item.Alarms,
-                    Status = item.Status,
                     RoomId = item.RoomId,
                 };
 
@@ -163,17 +161,11 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateEquipmentParameterGroupCommand command)
         {
-            var equipmentParameterGroup = new EquipmentParameterGroup()
+            var equipmentParameterGroup = new EquipmentParameterGroup
             {
                 Name = command.Name,
                 Group = command.Group,
             };
-
-            // foreach (var item in command.ParametersId)
-            // {
-            //     var parameter = _dataCenterRepository.FindEquipmentParameterById(item);
-            //     //equipmentParameterGroup.AddParameter(parameter);
-            // }
 
             await _dataCenterRepository.AddEquipmentParameterGroup(equipmentParameterGroup);
             await _dataCenterRepository.Commit();

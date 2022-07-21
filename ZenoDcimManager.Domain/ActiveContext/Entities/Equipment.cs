@@ -15,10 +15,14 @@ namespace ZenoDcimManager.Domain.ActiveContext.Entities
         public RackPdu RackPdu { get; set; }
         public List<EquipmentParameter> EquipmentParameters { get; set; } = new List<EquipmentParameter>();
         public EEquipmentGroup Group { get; set; }
-        public EEquipmentStatus Status { get; set; }
-        public int Alarms { get; set; }
+        public Building Building { get; set; }
+        public Floor Floor { get; set; }
+        public Room Room { get; set; }
+        // Navigation properties
+        public Guid? BuildingId { get; set; }
+        public Guid? FloorId { get; set; }
+        public Guid? RoomId { get; set; }
         public Guid? RackId { get; set; }
         public Guid? RackPduId { get; set; }
-        public Guid? RoomId { get; set; }
     }
 }
