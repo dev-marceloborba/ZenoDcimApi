@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class BuildingController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IBuildingRepository _repository;
 
-        public BuildingController(IDataCenterRepository repository)
+        public BuildingController(IBuildingRepository repository)
         {
             _repository = repository;
         }
@@ -41,10 +41,10 @@ namespace ZenoDcimManager.Api.Controllers
         {
             try
             {
-                var building = await _repository.FindBuildingById(id);
+                var building = await _repository.FindByIdAsync(id);
                 building.Name = command.Name;
                 building.TrackModifiedDate();
-                _repository.UpdateBuilding(building);
+                _repository.Update(building);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Prédio atualizado com sucesso", building));
             }
@@ -58,14 +58,14 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Building>> FindAllBuildings()
         {
-            return await _repository.FindAllBuildings();
+            return await _repository.FindAllAsync();
         }
 
         [Route("building/{id}")]
         [HttpGet]
         public async Task<Building> FindBuildingById(Guid id)
         {
-            return await _repository.FindBuildingById(id);
+            return await _repository.FindByIdAsync(id);
         }
 
 
@@ -77,7 +77,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var building = new Building();
                 building.SetId(id);
-                _repository.DeleteBuilding(building);
+                _repository.Delete(building);
                 await _repository.Commit();
                 return Ok();
             }

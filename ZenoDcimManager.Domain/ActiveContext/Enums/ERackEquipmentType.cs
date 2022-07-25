@@ -1,4 +1,4 @@
-namespace ZenoDcimManager.Domain.ActiveContext.Enums
+namespace ZenoDcimManager.Domain.ZenoContext.Enums
 {
     public enum ERackEquipmentType
     {

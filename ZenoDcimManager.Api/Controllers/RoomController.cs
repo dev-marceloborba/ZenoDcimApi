@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class RoomController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IRoomRepository _repository;
 
-        public RoomController(IDataCenterRepository repository)
+        public RoomController(IRoomRepository repository)
         {
             _repository = repository;
         }
@@ -26,7 +26,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateRoom(
            [FromBody] CreateRoomCommand command,
-           [FromServices] BuildingHandler handler
+           [FromServices] RoomHandler handler
        )
         {
             return (ICommandResult)await handler.Handle(command);
@@ -37,14 +37,14 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateRoom(
             [FromRoute] Guid id,
             [FromBody] CreateRoomCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] RoomHandler handler)
         {
             try
             {
-                var room = await _repository.FindRoomById(id);
+                var room = await _repository.FindByIdAsync(id);
                 room.Name = command.Name;
                 room.TrackModifiedDate();
-                _repository.UpdateRoom(room);
+                _repository.Update(room);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Sala atualizada com sucesso", room));
             }
@@ -58,14 +58,14 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Room>> FindAllRooms()
         {
-            return await _repository.FindAllRooms();
+            return await _repository.FindAllAsync();
         }
 
         [Route("building/floor/room/{id}")]
         [HttpGet]
         public async Task<Room> FindRoomById(Guid id)
         {
-            return await _repository.FindRoomById(id);
+            return await _repository.FindByIdAsync(id);
         }
 
         [Route("building/floor/room/{id}")]
@@ -77,7 +77,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var room = new Room();
                 room.SetId(id);
-                _repository.DeleteRoom(room);
+                _repository.Delete(room);
                 await _repository.Commit();
                 return Ok();
             }

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using ZenoDcimManager.Shared.Commands;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
+namespace ZenoDcimManager.Domain.ZenoContext.Commands.Inputs
 {
-	public class CreateMultipleParametersCommand : ICommand
+    public class CreateMultipleParametersCommand : ICommand
     {
         public IEnumerable<MultipleParametersCommand> Parameters { get; set; }
         public CreateMultipleParametersCommand()
-		{
-		}
+        {
+        }
 
         public void Validate()
         {
@@ -17,7 +17,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
         }
     }
 
-	public class MultipleParametersCommand
+    public class MultipleParametersCommand
     {
         public Guid EquipmentId { get; set; }
         public string Name { get; set; }

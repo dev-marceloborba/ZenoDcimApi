@@ -10,9 +10,9 @@ namespace ZenoDcimManager.Infra.Repositories
 {
     public class AlarmRepository : IAlarmRepository
     {
-        private readonly AutomationContext _context;
+        private readonly ZenoContext _context;
 
-        public AlarmRepository(AutomationContext context)
+        public AlarmRepository(ZenoContext context)
         {
             _context = context;
         }

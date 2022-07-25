@@ -11,9 +11,9 @@ namespace ZenoDcimManager.Infra.Repositories
 {
     public class ModbusTagRepository : IModbusTagRepository
     {
-        private readonly AutomationContext _context;
+        private readonly ZenoContext _context;
 
-        public ModbusTagRepository(AutomationContext context)
+        public ModbusTagRepository(ZenoContext context)
         {
             _context = context;
         }

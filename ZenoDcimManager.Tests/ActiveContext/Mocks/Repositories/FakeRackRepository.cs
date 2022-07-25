@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Enums;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Enums;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 
-namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
+namespace ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories
 {
     public class FakeRackRepository : IRackRepository
     {
@@ -29,22 +29,22 @@ namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
             _racks.Add(new Rack(16, "Rack-06"));
         }
 
-        public void Delete(Rack item)
+        public void Delete(Rack model)
         {
-            _racks.Remove(item);
+            _racks.Remove(model);
         }
 
-        public async Task<Rack> Find(Guid id)
+        public async Task<Rack> FindByIdAsync(Guid id)
         {
             return _racks.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Rack>> List()
+        public async Task<IEnumerable<Rack>> FindAllAsync()
         {
             return _racks.ToList();
         }
 
-        public async Task Save(Rack item)
+        public async Task CreateAsync(Rack item)
         {
             _racks.Add(item);
         }

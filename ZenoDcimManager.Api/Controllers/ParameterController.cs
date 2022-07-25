@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class ParameterController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IParameterRepository _repository;
 
-        public ParameterController(IDataCenterRepository repository)
+        public ParameterController(IParameterRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateParameter(
             [FromBody] CreateParameterCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] ParameterHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -37,18 +37,18 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateParameter(
           [FromRoute] Guid id,
           [FromBody] CreateParameterCommand command,
-          [FromServices] BuildingHandler handler)
+          [FromServices] ParameterHandler handler)
         {
             try
             {
-                var parameter = await _repository.FindParameterById(id);
+                var parameter = await _repository.FindByIdAsync(id);
                 parameter.HighLimit = command.HighLimit;
                 parameter.LowLimit = command.LowLimit;
                 parameter.Name = command.Name;
                 parameter.Scale = command.Scale;
                 parameter.Unit = command.Unit;
                 parameter.TrackModifiedDate();
-                _repository.UpdateParameter(parameter);
+                _repository.Update(parameter);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Parâmetro editado com sucesso", parameter));
             }
@@ -62,7 +62,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Parameter>> FindAllParameters()
         {
-            return await _repository.FindAllParameters();
+            return await _repository.FindAllAsync();
         }
 
         [Route("parameters/{Id}")]
@@ -71,8 +71,8 @@ namespace ZenoDcimManager.Api.Controllers
         {
             try
             {
-                var parameter = await _repository.FindParameterById(id);
-                _repository.DeleteParameter(parameter);
+                var parameter = await _repository.FindByIdAsync(id);
+                _repository.Delete(parameter);
                 await _repository.Commit();
                 return Ok();
             }
@@ -93,7 +93,7 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("parameters/groupAssociation")]
         [HttpPost]
         public async Task<ICommandResult> CreateEquipmentOnGroup(
-            [FromServices] BuildingHandler handler,
+            [FromServices] ParameterGroupHandler handler,
             [FromBody] CreateEquipmentOnGroupCommand command
         )
         {

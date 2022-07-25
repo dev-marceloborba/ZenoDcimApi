@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Shared.UnitOfWork;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Repositories
+namespace ZenoDcimManager.Domain.ZenoContext.Repositories
 {
     public interface IRackEquipmentRepository : IUnitOfWork
     {

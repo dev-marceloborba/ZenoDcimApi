@@ -1,7 +1,7 @@
-using ZenoDcimManager.Domain.ActiveContext.ValueObjects;
+using ZenoDcimManager.Domain.ZenoContext.ValueObjects;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Cable : Entity
     {

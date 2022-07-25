@@ -21,10 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20220422224003_NavigationPropertiesOnActiveContext.cs" />
-    <Compile Remove="Migrations\20220422224003_NavigationPropertiesOnActiveContext.Designer.cs" />
-    <Compile Remove="Migrations\20220422225348_NullableNavigationPropertiesOnActiveContext.cs" />
-    <Compile Remove="Migrations\20220422225348_NullableNavigationPropertiesOnActiveContext.Designer.cs" />
+    <Compile Remove="Migrations\20220422224003_NavigationPropertiesOnZenoContext.cs" />
+    <Compile Remove="Migrations\20220422224003_NavigationPropertiesOnZenoContext.Designer.cs" />
+    <Compile Remove="Migrations\20220422225348_NullableNavigationPropertiesOnZenoContext.cs" />
+    <Compile Remove="Migrations\20220422225348_NullableNavigationPropertiesOnZenoContext.Designer.cs" />
     <Compile Remove="Migrations\Automation\20220422224043_NavigationPropertiesOnAutomationContext.cs" />
     <Compile Remove="Migrations\Automation\20220422224043_NavigationPropertiesOnAutomationContext.Designer.cs" />
     <Compile Remove="Migrations\Automation\20220422225150_NullableNavigationPropertiesOnAutomationContext.cs" />

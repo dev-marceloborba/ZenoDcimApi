@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class EquipmentController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IEquipmentRepository _repository;
 
-        public EquipmentController(IDataCenterRepository repository)
+        public EquipmentController(IEquipmentRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateEquipment(
           [FromBody] CreateEquipmentCommand command,
-          [FromServices] BuildingHandler handler)
+          [FromServices] EquipmentHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -37,18 +37,18 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateEquipment(
           [FromRoute] Guid id,
           [FromBody] CreateEquipmentCommand command,
-          [FromServices] BuildingHandler handler)
+          [FromServices] EquipmentHandler handler)
         {
             try
             {
-                var equipment = await _repository.FindEquipmentById(id);
+                var equipment = await _repository.FindByIdAsync(id);
                 equipment.Class = command.Class;
                 equipment.Component = command.Component;
                 equipment.ComponentCode = command.ComponentCode;
                 equipment.Description = command.Description;
                 equipment.Group = command.Group;
                 equipment.TrackModifiedDate();
-                _repository.UpdateEquipment(equipment);
+                _repository.Update(equipment);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Equipamento atualizado com sucesso", equipment));
             }
@@ -62,14 +62,14 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Equipment>> FindAllEquipments()
         {
-            return await _repository.FindAllEquipments();
+            return await _repository.FindAllAsync();
         }
 
         [Route("building/floor/room/equipment/{id}")]
         [HttpGet]
         public async Task<Equipment> FindEquipmentById(Guid id)
         {
-            return await _repository.FindEquipmentById(id);
+            return await _repository.FindByIdAsync(id);
         }
 
         [Route("building/floor/room/equipment/{id}")]
@@ -80,7 +80,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var equipment = new Equipment();
                 equipment.SetId(id);
-                _repository.DeleteEquipment(equipment);
+                _repository.Delete(equipment);
                 await _repository.Commit();
                 return Ok();
             }
@@ -94,7 +94,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateMultipleEquipments(
             [FromBody] CreateMultipleEquipmentsCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] EquipmentHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }

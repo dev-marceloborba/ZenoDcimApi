@@ -11,7 +11,7 @@ using ZenoDcimManager.Domain.UserContext.Commands.Output;
 using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Api.Controllers
-{           
+{
     [ApiController]
     [Route("/v1/users")]
     public class UserController : ControllerBase
@@ -41,7 +41,7 @@ namespace ZenoDcimManager.Api.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            return await _repository.List();
+            return await _repository.FindAllAsync();
         }
 
         [Route("{id}")]
@@ -49,7 +49,7 @@ namespace ZenoDcimManager.Api.Controllers
         [AllowAnonymous]
         public async Task<UserOutputCommand> FindUserById(Guid id)
         {
-            var user = await _repository.FindUserById(id);
+            var user = await _repository.FindByIdAsync(id);
             return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
         }
 

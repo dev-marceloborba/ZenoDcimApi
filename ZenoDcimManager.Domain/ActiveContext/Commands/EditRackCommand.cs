@@ -1,7 +1,7 @@
 using System;
 using ZenoDcimManager.Shared.Commands;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Commands
+namespace ZenoDcimManager.Domain.ZenoContext.Commands
 {
     public class EditRackCommand : ICommand
     {

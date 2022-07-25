@@ -1,7 +1,7 @@
 using ZenoDcimManager.Shared.ValueObjects;
 using Flunt.Validations;
 
-namespace ZenoDcimManager.Domain.ActiveContext.ValueObjects
+namespace ZenoDcimManager.Domain.ZenoContext.ValueObjects
 {
     public class ConnectionEdge : ValueObject
     {

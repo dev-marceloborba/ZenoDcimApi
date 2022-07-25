@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class EquipmentParameterControler : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IEquipmentParameterRepository _repository;
 
-        public EquipmentParameterControler(IDataCenterRepository repository)
+        public EquipmentParameterControler(IEquipmentParameterRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateEquipmentParameter(
           [FromBody] CreateEquipmentParameterCommand command,
-          [FromServices] BuildingHandler handler)
+          [FromServices] EquipmentParameterHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -37,11 +37,11 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateEquipmentParameter(
             [FromRoute] Guid id,
             [FromBody] CreateEquipmentParameterCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] EquipmentParameterHandler handler)
         {
             try
             {
-                var equipmentParameter = await _repository.FindEquipmentParameterById(id);
+                var equipmentParameter = await _repository.FindByIdAsync(id);
                 equipmentParameter.DataSource = command.DataSource;
                 equipmentParameter.HighLimit = command.HighLimit;
                 equipmentParameter.LowLimit = command.LowLimit;
@@ -49,7 +49,7 @@ namespace ZenoDcimManager.Api.Controllers
                 equipmentParameter.Scale = command.Scale;
                 equipmentParameter.ModbusTagName = command.Address;
                 equipmentParameter.TrackModifiedDate();
-                _repository.UpdateEquipmentParameter(equipmentParameter);
+                _repository.Update(equipmentParameter);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Parâmetro de equipamento atualizado com sucesso", equipmentParameter));
             }
@@ -61,9 +61,10 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("building/floor/room/equipment/parameter/{id}")]
         [HttpGet]
-        public async Task<EquipmentParameter> FindEquipmentParameterById(Guid id)
+        public async Task<EquipmentParameter> FindEquipmentParameterById(
+            [FromRoute] Guid id)
         {
-            return await _repository.FindEquipmentParameterById(id);
+            return await _repository.FindByIdAsync(id);
         }
 
         [Route("building/floor/room/equipment/parameter/{id}")]
@@ -74,7 +75,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var parameter = new EquipmentParameter();
                 parameter.SetId(id);
-                _repository.DeleteEquipmentParameter(parameter);
+                _repository.Delete(parameter);
                 await _repository.Commit();
                 return Ok();
             }
@@ -88,7 +89,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateMultipleEquipmentParameter(
             [FromBody] CreateMultipleParametersCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] EquipmentParameterHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -104,7 +105,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<EquipmentParameter>> FindAllEquipmentParameters()
         {
-            return await _repository.FindAllEquipmentParameters();
+            return await _repository.FindAllAsync();
         }
     }
 }

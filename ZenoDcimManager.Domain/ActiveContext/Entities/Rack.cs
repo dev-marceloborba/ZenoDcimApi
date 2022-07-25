@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZenoDcimManager.Domain.ActiveContext.Enums;
+using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Rack : Entity
     {

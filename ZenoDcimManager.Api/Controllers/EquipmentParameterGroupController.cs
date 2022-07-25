@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class EquipmentParameterGroupController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IEquipmentParameterGroupRepository _repository;
 
-        public EquipmentParameterGroupController(IDataCenterRepository repository)
+        public EquipmentParameterGroupController(IEquipmentParameterGroupRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateEquipmentParameterGroup(
            [FromBody] CreateEquipmentParameterGroupCommand command,
-           [FromServices] BuildingHandler handler)
+           [FromServices] ParameterGroupHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -37,13 +37,13 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> EditEquipmentParameterGroup(
             [FromRoute] Guid id,
             [FromBody] CreateEquipmentParameterGroupCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] ParameterGroupHandler handler)
         {
             try
             {
-                var equipmentParameterGroup = await _repository.FindEquipmentParameterGroupById(id);
+                var equipmentParameterGroup = await _repository.FindByIdAsync(id);
                 equipmentParameterGroup.Name = command.Name;
-                _repository.UpdateParameterGroup(equipmentParameterGroup);
+                _repository.Update(equipmentParameterGroup);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Grupo editado com sucesso", equipmentParameterGroup));
             }
@@ -57,7 +57,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<EquipmentParameterGroup>> FindAllEquipmentParameterGroups()
         {
-            return await _repository.FindAllEquipmentParameterGroups();
+            return await _repository.FindAllAsync();
         }
 
         [Route("building/floor/room/equipment/parameter/group/{id}")]
@@ -68,7 +68,7 @@ namespace ZenoDcimManager.Api.Controllers
             parameterGroup.SetId(id);
             try
             {
-                _repository.DeleteParameterGroup(parameterGroup);
+                _repository.Delete(parameterGroup);
                 _repository.Commit();
                 return Ok(parameterGroup);
             }

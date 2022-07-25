@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using ZenoDcimManager.Shared.Commands;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Commands.Inputs
+namespace ZenoDcimManager.Domain.ZenoContext.Commands.Inputs
 {
     public class CreateEquipmentOnGroupCommand : ICommand
     {

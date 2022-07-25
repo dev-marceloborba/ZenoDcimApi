@@ -1,7 +1,7 @@
 using ZenoDcimManager.Shared;
 using Flunt.Validations;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class BaseEquipment : Entity
     {

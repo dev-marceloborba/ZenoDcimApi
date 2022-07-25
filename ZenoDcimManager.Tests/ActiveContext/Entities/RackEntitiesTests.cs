@@ -1,9 +1,9 @@
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Enums;
-using ZenoDcimManager.Domain.ActiveContext.Validators;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Enums;
+using ZenoDcimManager.Domain.ZenoContext.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ZenoDcimManager.Tests.ActiveContext.Entities
+namespace ZenoDcimManager.Tests.ZenoContext.Entities
 {
     [TestClass]
     public class RackEntitiesTests

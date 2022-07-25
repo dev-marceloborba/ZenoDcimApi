@@ -1,6 +1,6 @@
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class BackupRobot : Entity
     {

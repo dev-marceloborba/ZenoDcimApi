@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -11,9 +11,9 @@ namespace ZenoDcimManager.Infra.Repositories
 {
     public class RackEquipmentRepository : IRackEquipmentRepository
     {
-        private readonly ActiveContext _context;
+        private readonly ZenoContext _context;
 
-        public RackEquipmentRepository(ActiveContext context)
+        public RackEquipmentRepository(ZenoContext context)
         {
             _context = context;
         }

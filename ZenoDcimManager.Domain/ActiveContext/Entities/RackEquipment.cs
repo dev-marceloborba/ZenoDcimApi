@@ -1,8 +1,8 @@
 using System;
-using ZenoDcimManager.Domain.ActiveContext.Enums;
+using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class RackEquipment : Entity
     {

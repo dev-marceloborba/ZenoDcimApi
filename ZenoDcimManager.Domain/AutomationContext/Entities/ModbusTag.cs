@@ -1,5 +1,5 @@
 ﻿using System;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Entities

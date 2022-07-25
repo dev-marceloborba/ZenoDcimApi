@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
-    public class  UserHandler :
+    public class UserHandler :
         Notifiable,
         ICommandHandler<CreateUserCommand>,
         ICommandHandler<EditUserCommand>
@@ -63,7 +63,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Nao foi possivel criar o usuario", "");
 
             // save informations
-            await _userRepository.Save(user);
+            await _userRepository.CreateAsync(user);
             await _userRepository.Commit();
 
             // send e-mail
@@ -91,7 +91,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Não foi possível criar o usuário", Notifications);
             }
 
-            var user = await _userRepository.Find(command.Id);
+            var user = await _userRepository.FindByIdAsync(command.Id);
 
             if (user == null)
             {

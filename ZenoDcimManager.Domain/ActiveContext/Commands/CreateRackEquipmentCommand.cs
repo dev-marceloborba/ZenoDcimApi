@@ -1,7 +1,7 @@
-using ZenoDcimManager.Domain.ActiveContext.Enums;
+using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared.Commands;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Commands
+namespace ZenoDcimManager.Domain.ZenoContext.Commands
 {
     public class CreateRackEquipmentCommand : ICommand
     {

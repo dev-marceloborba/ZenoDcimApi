@@ -28,13 +28,13 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
         {
         }
 
-        public void Delete(User item)
+        public void Delete(User model)
         {
-            _users.Remove(item);
+            _users.Remove(model);
         }
 
 
-        public async Task<User> Find(Guid id)
+        public async Task<User> FindByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -44,12 +44,7 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<User> FindUserById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<User>> List()
+        public async Task<IEnumerable<User>> FindAllAsync()
         {
             return _users.ToList();
         }
@@ -59,17 +54,17 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task Save(User item)
+        public async Task CreateAsync(User item)
         {
             _users.Add(item);
         }
 
-        public void Update(User item)
+        public void Update(User model)
         {
             _users.ForEach(x =>
             {
-                if (x.Id == item.Id)
-                    x = item;
+                if (x.Id == model.Id)
+                    x = model;
             });
         }
     }

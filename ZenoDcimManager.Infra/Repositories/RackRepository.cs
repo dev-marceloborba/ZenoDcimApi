@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -11,9 +11,9 @@ namespace ZenoDcimManager.Infra.Repositories
 {
     public class RackRepository : IRackRepository
     {
-        private readonly ActiveContext _context;
+        private readonly ZenoContext _context;
 
-        public RackRepository(ActiveContext context)
+        public RackRepository(ZenoContext context)
         {
             _context = context;
         }
@@ -31,22 +31,17 @@ namespace ZenoDcimManager.Infra.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public void Delete(Rack item)
+        public void Delete(Rack model)
         {
-            _context.Entry(item).State = EntityState.Deleted;
+            _context.Entry(model).State = EntityState.Deleted;
         }
 
-        public async Task<Rack> Find(Guid id)
+        public async Task<Rack> FindByIdAsync(Guid id)
         {
             return await _context.Racks
                 .AsNoTracking()
                 .Include(x => x.RackEquipments)
                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<Rack> FindById(Guid id)
-        {
-            return await _context.Racks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Rack> FindByLocalization(string localization)
@@ -56,7 +51,7 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FirstOrDefaultAsync(x => x.Localization == localization);
         }
 
-        public async Task<IEnumerable<Rack>> List()
+        public async Task<IEnumerable<Rack>> FindAllAsync()
         {
             return await _context.Racks
                 .AsNoTracking()
@@ -66,14 +61,14 @@ namespace ZenoDcimManager.Infra.Repositories
                 .ToListAsync();
         }
 
-        public async Task Save(Rack item)
+        public async Task CreateAsync(Rack item)
         {
             await _context.Racks.AddAsync(item);
         }
 
-        public void Update(Rack item)
+        public void Update(Rack model)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            _context.Entry(model).State = EntityState.Modified;
         }
     }
 }

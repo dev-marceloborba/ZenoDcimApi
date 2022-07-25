@@ -1,7 +1,7 @@
 ﻿using System;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class EquipmentParameter : Entity
     {

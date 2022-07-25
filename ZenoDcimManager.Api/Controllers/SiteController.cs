@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Infra.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class SiteController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly SiteRepository _repository;
 
-        public SiteController(IDataCenterRepository repository)
+        public SiteController(SiteRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateSite(
             [FromBody] CreateSiteCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] SiteHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -37,14 +37,14 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateSite(
             [FromRoute] Guid id,
             [FromBody] CreateSiteCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] SiteHandler handler)
         {
             try
             {
-                var site = await _repository.FindSiteById(id);
+                var site = await _repository.FindByIdAsync(id);
                 site.Name = command.Name;
                 site.TrackModifiedDate();
-                _repository.UpdateSite(site);
+                _repository.Update(site);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Site atualizado com sucesso", site));
             }
@@ -58,7 +58,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Site>> FindAllSites()
         {
-            return await _repository.FindAllSites();
+            return await _repository.FindAllAsync();
         }
 
         [Route("site")]
@@ -69,7 +69,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var site = new Site();
                 site.SetId(id);
-                _repository.DeleteSite(site);
+                _repository.Delete(site);
                 await _repository.Commit();
                 return Ok(site);
             }

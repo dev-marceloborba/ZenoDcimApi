@@ -1,13 +1,13 @@
-﻿using ZenoDcimManager.Domain.ActiveContext.Commands;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
-using ZenoDcimManager.Domain.ActiveContext.Validators;
+﻿using ZenoDcimManager.Domain.ZenoContext.Commands;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Validators;
 using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
 using System.Threading.Tasks;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Handlers
+namespace ZenoDcimManager.Domain.ZenoContext.Handlers
 {
     public class RackEquipmentHandler :
         Notifiable,

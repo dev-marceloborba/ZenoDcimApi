@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Floor : Entity
     {

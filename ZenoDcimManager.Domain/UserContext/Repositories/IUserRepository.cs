@@ -9,7 +9,6 @@ namespace ZenoDcimManager.Domain.UserContext.Repositories
     public interface IUserRepository : CrudRepository<User>, IUnitOfWork
     {
         Task<User> FindUserByEmail(string email);
-        Task<User> FindUserById(Guid id);
         Task Login(string email, string password);
     }
 }

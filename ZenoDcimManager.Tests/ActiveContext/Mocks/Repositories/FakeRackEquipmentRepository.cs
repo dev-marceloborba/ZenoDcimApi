@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Enums;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Enums;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 
-namespace ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories
+namespace ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories
 {
     public class FakeRackEquipmentRepository : IRackEquipmentRepository
     {

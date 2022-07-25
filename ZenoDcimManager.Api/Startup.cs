@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
 using ZenoDcimManager.Api.Hubs;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.Handlers;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.UserContext.Handlers;
@@ -39,15 +39,10 @@ namespace ZenoDcimManager.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // contexts for In-Memory Database
-            //services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("Database"));
-            //services.AddDbContext<ActiveContext>(opt => opt.UseInMemoryDatabase("Database"));
-            //services.AddDbContext<AutomationContext>(opt => opt.UseInMemoryDatabase("Database"));
+            //services.AddDbContext<ZenoContext>(opt => opt.UseInMemoryDatabase("Database"));
 
             // contexts for SQL Server
-            services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
-            services.AddDbContext<ActiveContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
-            services.AddDbContext<AutomationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
-            // services.AddDbContext<DataCenterContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
+            services.AddDbContext<ZenoContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
 
             // services
             services.AddTransient<IEmailService, EmailService>();
@@ -62,7 +57,14 @@ namespace ZenoDcimManager.Api
             services.AddTransient<IPlcRepository, PlcRepository>();
             services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
             services.AddTransient<IAlarmRepository, AlarmRepository>();
-            services.AddTransient<IDataCenterRepository, DataCenterRepository>();
+            services.AddTransient<ISiteRepository, SiteRepository>();
+            services.AddTransient<IBuildingRepository, BuildingRepository>();
+            services.AddTransient<IFloorRepository, FloorRepository>();
+            services.AddTransient<IRoomRepository, RoomRepository>();
+            services.AddTransient<IEquipmentRepository, EquipmentRepository>();
+            services.AddTransient<IParameterRepository, ParameterRepository>();
+            services.AddTransient<IEquipmentParameterRepository, EquipmentParameterRepository>();
+            services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();
@@ -73,7 +75,14 @@ namespace ZenoDcimManager.Api
             services.AddTransient<PlcHandler, PlcHandler>();
             services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
             services.AddTransient<AlarmHandler, AlarmHandler>();
+            services.AddTransient<SiteHandler, SiteHandler>();
             services.AddTransient<BuildingHandler, BuildingHandler>();
+            services.AddTransient<FloorHandler, FloorHandler>();
+            services.AddTransient<RoomHandler, RoomHandler>();
+            services.AddTransient<EquipmentHandler, EquipmentHandler>();
+            services.AddTransient<EquipmentParameterHandler, EquipmentParameterHandler>();
+            services.AddTransient<ParameterHandler, ParameterHandler>();
+            services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
 
             services.AddCors();
 

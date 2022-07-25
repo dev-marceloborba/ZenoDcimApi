@@ -1,10 +1,10 @@
-using ZenoDcimManager.Domain.ActiveContext.Commands;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
-using ZenoDcimManager.Tests.ActiveContext.Mocks.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ZenoDcimManager.Tests.ActiveContext.Handlers
+namespace ZenoDcimManager.Tests.ZenoContext.Handlers
 {
     [TestClass]
     public class RackHandlerTests

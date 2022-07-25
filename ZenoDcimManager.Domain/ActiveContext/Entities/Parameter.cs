@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Entities
+namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Parameter : Entity
     {
-        public string Name{ get; set; }
-        public string Unit{ get; set; }
-        public int LowLimit{ get; set; }
-        public int HighLimit{ get; set; }
-        public int Scale{ get; set; }
+        public string Name { get; set; }
+        public string Unit { get; set; }
+        public int LowLimit { get; set; }
+        public int HighLimit { get; set; }
+        public int Scale { get; set; }
         public List<ParameterGroupAssignment> ParameterGroupAssignments { get; set; } = new List<ParameterGroupAssignment>();
 
         public Parameter()

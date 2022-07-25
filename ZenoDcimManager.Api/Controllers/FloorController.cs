@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
-using ZenoDcimManager.Domain.ActiveContext.Entities;
-using ZenoDcimManager.Domain.ActiveContext.Handlers;
-using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Handlers;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -16,9 +16,9 @@ namespace ZenoDcimManager.Api.Controllers
     [AllowAnonymous]
     public class FloorController : ControllerBase
     {
-        private readonly IDataCenterRepository _repository;
+        private readonly IFloorRepository _repository;
 
-        public FloorController(IDataCenterRepository repository)
+        public FloorController(IFloorRepository repository)
         {
             _repository = repository;
         }
@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         public async Task<ICommandResult> CreateFloor(
             [FromBody] CreateFloorCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] FloorHandler handler)
         {
             return (ICommandResult)await handler.Handle(command);
         }
@@ -37,14 +37,14 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateFloor(
             [FromRoute] Guid id,
             [FromBody] CreateFloorCommand command,
-            [FromServices] BuildingHandler handler)
+            [FromServices] FloorHandler handler)
         {
             try
             {
-                var floor = await _repository.FindFloorById(id);
+                var floor = await _repository.FindByIdAsync(id);
                 floor.Name = command.Name;
                 floor.TrackModifiedDate();
-                _repository.UpdateFloor(floor);
+                _repository.Update(floor);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Andar atualizado com sucesso", floor));
             }
@@ -58,7 +58,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Floor>> FindAllFloors()
         {
-            return await _repository.FindAllFloors();
+            return await _repository.FindAllAsync();
         }
 
         [Route("building/floor/{id}")]
@@ -69,7 +69,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var floor = new Floor();
                 floor.SetId(id);
-                _repository.DeleteFloor(floor);
+                _repository.Delete(floor);
                 await _repository.Commit();
                 return Ok(floor);
             }

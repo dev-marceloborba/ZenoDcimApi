@@ -11,9 +11,9 @@ namespace ZenoDcimManager.Infra.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
-        private readonly UserContext _context;
+        private readonly ZenoContext _context;
 
-        public CompanyRepository(UserContext context)
+        public CompanyRepository(ZenoContext context)
         {
             _context = context;
         }

@@ -11,9 +11,9 @@ namespace ZenoDcimManager.Infra.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext _context;
+        private readonly ZenoContext _context;
 
-        public UserRepository(UserContext context)
+        public UserRepository(ZenoContext context)
         {
             _context = context;
         }
@@ -23,12 +23,12 @@ namespace ZenoDcimManager.Infra.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public void Delete(User item)
+        public void Delete(User model)
         {
-            _context.Entry(item).State = EntityState.Deleted;
+            _context.Entry(model).State = EntityState.Deleted;
         }
 
-        public async Task<User> Find(Guid id)
+        public async Task<User> FindByIdAsync(Guid id)
         {
             return await _context.Users.FindAsync(id);
         }
@@ -38,12 +38,7 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<User> FindUserById(Guid id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<User>> List()
+        public async Task<IEnumerable<User>> FindAllAsync()
         {
             return await _context.Users
                 .AsNoTracking()
@@ -58,7 +53,7 @@ namespace ZenoDcimManager.Infra.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task Save(User user)
+        public async Task CreateAsync(User user)
         {
             await _context.Users.AddAsync(user);
         }

@@ -1,8 +1,8 @@
-using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
 using Flunt.Notifications;
 using Flunt.Validations;
 
-namespace ZenoDcimManager.Domain.ActiveContext.Validators
+namespace ZenoDcimManager.Domain.ZenoContext.Validators
 {
     public class RackEquipmentValidator : Notifiable
     {
