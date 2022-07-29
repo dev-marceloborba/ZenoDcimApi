@@ -7,7 +7,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Equipment : Entity
     {
-        public int Class { get; set; }
         public string Component { get; set; }
         public string ComponentCode { get; set; }
         public string Description { get; set; }
@@ -24,5 +23,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public Guid? RoomId { get; set; }
         public Guid? RackId { get; set; }
         public Guid? RackPduId { get; set; }
+        public int Weight { get; set; }
+        public string Size { get; set; }
+        public int PowerLimit { get; set; }
     }
 }

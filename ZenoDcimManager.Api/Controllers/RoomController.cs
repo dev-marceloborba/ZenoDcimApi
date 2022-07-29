@@ -68,6 +68,14 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindByIdAsync(id);
         }
 
+        [Route("rooms-by-floor/{id}")]
+        [HttpGet]
+        public IEnumerable<Room> FindRoomsByFloorId(
+            [FromRoute] Guid id)
+        {
+            return _repository.FindRoomByFloor(id);
+        }
+
         [Route("building/floor/room/{id}")]
         [HttpDelete]
         [AllowAnonymous]

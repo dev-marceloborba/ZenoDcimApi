@@ -37,6 +37,7 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<IEnumerable<Floor>> FindAllAsync()
         {
             return await _context.Floors
+                .Include(x => x.Building)
                 .Include(x => x.Rooms.OrderBy(y => y.Name))
                 .OrderBy(x => x.Name)
                 .ToListAsync();
@@ -45,7 +46,9 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<Floor> FindByIdAsync(Guid id)
         {
             return await _context.Floors
-                .FindAsync(id);
+                .Where(x => x.Id == id)
+                .Include(x => x.Building)
+                .FirstOrDefaultAsync();
         }
 
         public IEnumerable<Floor> FindFloorByBuilding(Guid buildingId)

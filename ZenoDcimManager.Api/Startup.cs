@@ -24,6 +24,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ActiveContext.Handlers;
 
 namespace ZenoDcimManager.Api
 {
@@ -63,6 +65,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<IRoomRepository, RoomRepository>();
             services.AddTransient<IEquipmentRepository, EquipmentRepository>();
             services.AddTransient<IParameterRepository, ParameterRepository>();
+            services.AddTransient<IVirtualParameterRepository, VirtualParameterRepository>();
             services.AddTransient<IEquipmentParameterRepository, EquipmentParameterRepository>();
             services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
 
@@ -83,6 +86,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<EquipmentParameterHandler, EquipmentParameterHandler>();
             services.AddTransient<ParameterHandler, ParameterHandler>();
             services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
+            services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
 
             services.AddCors();
 
@@ -91,7 +95,7 @@ namespace ZenoDcimManager.Api
             // {
             //     options.AddPolicy("Default", builder =>
             //     {
-            //         builder.WithOrigins("http://localhost:4200")
+            //         builder.WithOrigins("http://localhost:3000")
             //             .AllowAnyMethod()
             //             .AllowAnyHeader()
             //             .AllowAnyOrigin()

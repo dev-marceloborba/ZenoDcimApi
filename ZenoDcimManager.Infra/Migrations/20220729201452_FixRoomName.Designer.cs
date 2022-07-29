@@ -12,8 +12,8 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    [Migration("20220725203947_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220729201452_FixRoomName")]
+    partial class FixRoomName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,23 @@ namespace ZenoDcimManager.Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ZenoDcimManager.Domain.ActiveContext.Entities.RealtimeData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RealtimeData", (string)null);
+                });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.Alarm", b =>
                 {
@@ -310,9 +327,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<Guid?>("BuildingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Class")
-                        .HasColumnType("int");
-
                     b.Property<string>("Component")
                         .HasColumnType("varchar(64)");
 
@@ -334,6 +348,9 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PowerLimit")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("RackId")
                         .HasColumnType("uniqueidentifier");
 
@@ -342,6 +359,12 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("varchar(14)");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -366,6 +389,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DataId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DataSource")
                         .HasColumnType("varchar(20)");
@@ -395,6 +421,8 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("varchar(5)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DataId");
 
                     b.HasIndex("EquipmentId");
 
@@ -440,7 +468,7 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(12)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
@@ -457,6 +485,10 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("HighLimit")
                         .HasColumnType("int");
@@ -479,6 +511,8 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Parameter", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Parameter");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.ParameterGroupAssignment", b =>
@@ -600,7 +634,7 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(12)");
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
 
@@ -629,6 +663,16 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.ToTable("Site", (string)null);
                 });
 
+            modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.VirtualParameter", b =>
+                {
+                    b.HasBaseType("ZenoDcimManager.Domain.ZenoContext.Entities.Parameter");
+
+                    b.Property<string>("Expression")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("VirtualParameter");
+                });
+
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.ModbusTag", b =>
                 {
                     b.HasOne("ZenoDcimManager.Domain.AutomationContext.Entities.Plc", null)
@@ -654,9 +698,11 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Building", b =>
                 {
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Site", null)
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Site", "Site")
                         .WithMany("Buildings")
                         .HasForeignKey("SiteId");
+
+                    b.Navigation("Site");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Equipment", b =>
@@ -694,16 +740,24 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", b =>
                 {
+                    b.HasOne("ZenoDcimManager.Domain.ActiveContext.Entities.RealtimeData", "Data")
+                        .WithMany()
+                        .HasForeignKey("DataId");
+
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Equipment", null)
                         .WithMany("EquipmentParameters")
                         .HasForeignKey("EquipmentId");
+
+                    b.Navigation("Data");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Floor", b =>
                 {
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", null)
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", "Building")
                         .WithMany("Floors")
                         .HasForeignKey("BuildingId");
+
+                    b.Navigation("Building");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.ParameterGroupAssignment", b =>
@@ -740,9 +794,11 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>
                 {
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Floor", null)
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Floor", "Floor")
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId");
+
+                    b.Navigation("Floor");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.Plc", b =>

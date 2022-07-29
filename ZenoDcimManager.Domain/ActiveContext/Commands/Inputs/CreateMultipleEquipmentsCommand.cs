@@ -23,7 +23,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands.Inputs
         public string ComponentCode { get; set; }
         public string Description { get; set; }
         public EEquipmentGroup Group { get; set; }
-        public EEquipmentStatus Status { get; set; }
-        public int Alarms { get; set; }
+        public int Weight { get; set; }
+        public string Size { get; set; }
+        public int PowerLimit { get; set; }
     }
 }

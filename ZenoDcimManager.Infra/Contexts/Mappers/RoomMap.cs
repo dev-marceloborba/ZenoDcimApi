@@ -9,7 +9,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         public void Configure(EntityTypeBuilder<Room> builder)
         {
             builder.ToTable("Room");
-            builder.Property(x => x.Name).HasColumnType("varchar(12)");
+            builder.Property(x => x.Name).HasColumnType("varchar(200)");
         }
     }
 }

@@ -10,5 +10,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public List<Equipment> Equipments { get; set; } = new List<Equipment>();
         // Navigation property
         public Guid? FloorId { get; set; }
+        public Floor Floor { get; set; }
     }
 }

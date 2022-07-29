@@ -1,4 +1,5 @@
 ﻿using System;
+using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.ZenoContext.Entities
@@ -15,5 +16,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         // Navigations Property
         public Guid? EquipmentId { get; set; }
         public string? ModbusTagName { get; set; }
+
+        public RealtimeData Data { get; set; }
     }
 }

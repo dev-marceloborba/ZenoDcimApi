@@ -6,24 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
-using ZenoDcimManager.Infra.Repositories;
+using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
 {
     [ApiController]
-    [Route("v1/data-center")]
+    [Route("v1/data-center/sites")]
     [AllowAnonymous]
     public class SiteController : ControllerBase
     {
-        private readonly SiteRepository _repository;
+        private readonly ISiteRepository _repository;
 
-        public SiteController(SiteRepository repository)
+        public SiteController(ISiteRepository repository)
         {
             _repository = repository;
         }
 
-        [Route("site")]
+        [Route("")]
         [HttpPost]
         public async Task<ICommandResult> CreateSite(
             [FromBody] CreateSiteCommand command,
@@ -32,7 +32,7 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
-        [Route("site/{id}")]
+        [Route("{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateSite(
             [FromRoute] Guid id,
@@ -54,16 +54,17 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
-        [Route("site")]
+        [Route("")]
         [HttpGet]
         public async Task<IEnumerable<Site>> FindAllSites()
         {
             return await _repository.FindAllAsync();
         }
 
-        [Route("site")]
+        [Route("{id}")]
         [HttpDelete]
-        public async Task<ActionResult> DeleteSite(Guid id)
+        public async Task<ActionResult> DeleteSite(
+            [FromRoute] Guid id)
         {
             try
             {

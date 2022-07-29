@@ -10,5 +10,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public List<Room> Rooms { get; set; } = new List<Room>();
         // Navigation property
         public Guid? BuildingId { get; set; }
+        public Building Building { get; set; }
     }
 }

@@ -31,6 +31,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<EquipmentParameter> EquipmentParameters { get; set; }
         public DbSet<EquipmentParameterGroup> EquipmentParameterGroups { get; set; }
         public DbSet<Parameter> Parameters { get; set; }
+        public DbSet<VirtualParameter> VirtualParameters { get; set; }
         public DbSet<ParameterGroupAssignment> ParameterGroupAssignments { get; set; }
 
         // Automação
@@ -58,12 +59,14 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new EquipmentParameterMap());
             modelBuilder.ApplyConfiguration(new EquipmentParameterGroupMap());
             modelBuilder.ApplyConfiguration(new ParameterMap());
+            modelBuilder.ApplyConfiguration(new VirtualParameterMap());
             modelBuilder.ApplyConfiguration(new ParameterGroupAssignmentMap());
 
             // Automação
             modelBuilder.ApplyConfiguration(new AlarmMap());
             modelBuilder.ApplyConfiguration(new ModbusTagMap());
             modelBuilder.ApplyConfiguration(new PlcMap());
+            modelBuilder.ApplyConfiguration(new RealtimeDataMap());
         }
     }
 }

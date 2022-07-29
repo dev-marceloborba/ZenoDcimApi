@@ -37,6 +37,9 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Equipments
                 .Include(x => x.EquipmentParameters)
+                .Include(x => x.Building)
+                .Include(x => x.Floor)
+                .Include(x => x.Room)
                 .ToListAsync();
         }
 

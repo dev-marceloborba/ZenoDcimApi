@@ -12,6 +12,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         ICommandHandler<CreateSiteCommand>
     {
         private readonly ISiteRepository _siteRepository;
+
+        public SiteHandler(ISiteRepository siteRepository)
+        {
+            _siteRepository = siteRepository;
+        }
+
         public async Task<ICommandResult> Handle(CreateSiteCommand command)
         {
             var site = new Site

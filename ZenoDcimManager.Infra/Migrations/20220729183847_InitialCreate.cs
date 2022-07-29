@@ -88,6 +88,8 @@ namespace ZenoDcimManager.Infra.Migrations
                     LowLimit = table.Column<int>(type: "int", nullable: false),
                     HighLimit = table.Column<int>(type: "int", nullable: false),
                     Scale = table.Column<int>(type: "int", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Expression = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -141,6 +143,19 @@ namespace ZenoDcimManager.Infra.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RackPdu", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RealtimeData",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RealtimeData", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -311,7 +326,7 @@ namespace ZenoDcimManager.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(12)", nullable: true),
+                    Name = table.Column<string>(type: "varchar(100)", nullable: true),
                     BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -351,7 +366,6 @@ namespace ZenoDcimManager.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Class = table.Column<int>(type: "int", nullable: false),
                     Component = table.Column<string>(type: "varchar(64)", nullable: true),
                     ComponentCode = table.Column<string>(type: "varchar(30)", nullable: true),
                     Description = table.Column<string>(type: "varchar(100)", nullable: true),
@@ -361,6 +375,9 @@ namespace ZenoDcimManager.Infra.Migrations
                     RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RackPduId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<string>(type: "varchar(14)", nullable: true),
+                    PowerLimit = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -407,6 +424,7 @@ namespace ZenoDcimManager.Infra.Migrations
                     DataSource = table.Column<string>(type: "varchar(20)", nullable: true),
                     EquipmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ModbusTagName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -417,6 +435,11 @@ namespace ZenoDcimManager.Infra.Migrations
                         name: "FK_EquipmentParameter_Equipment_EquipmentId",
                         column: x => x.EquipmentId,
                         principalTable: "Equipment",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EquipmentParameter_RealtimeData_DataId",
+                        column: x => x.DataId,
+                        principalTable: "RealtimeData",
                         principalColumn: "Id");
                 });
 
@@ -459,6 +482,11 @@ namespace ZenoDcimManager.Infra.Migrations
                 name: "IX_Equipment_RoomId",
                 table: "Equipment",
                 column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquipmentParameter_DataId",
+                table: "EquipmentParameter",
+                column: "DataId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EquipmentParameter_EquipmentId",
@@ -531,6 +559,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
             migrationBuilder.DropTable(
                 name: "Equipment");
+
+            migrationBuilder.DropTable(
+                name: "RealtimeData");
 
             migrationBuilder.DropTable(
                 name: "Plc");

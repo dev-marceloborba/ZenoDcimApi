@@ -25,12 +25,14 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             {
                 Component = command.Component,
                 ComponentCode = command.ComponentCode,
-                Class = command.Class,
                 Group = command.Group,
                 Description = command.Description,
                 BuildingId = command.BuildingId,
                 FloorId = command.FloorId,
                 RoomId = command.RoomId,
+                Weight = command.Weight,
+                Size = command.Size,
+                PowerLimit = command.PowerLimit,
             };
 
             await _equipmentRepository.CreateAsync(equipment);
@@ -47,10 +49,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 {
                     Component = item.Component,
                     ComponentCode = item.ComponentCode,
-                    Class = item.Class,
                     Group = item.Group,
                     Description = item.Description,
                     RoomId = item.RoomId,
+                    Weight = item.Weight,
+                    Size = item.Size,
+                    PowerLimit = item.PowerLimit,
                 };
 
                 await _equipmentRepository.CreateAsync(equipment);

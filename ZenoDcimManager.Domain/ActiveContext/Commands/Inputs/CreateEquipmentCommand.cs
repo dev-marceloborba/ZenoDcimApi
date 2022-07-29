@@ -9,12 +9,13 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands.Inputs
         public Guid BuildingId { get; set; }
         public Guid FloorId { get; set; }
         public Guid RoomId { get; set; }
-        public int Class { get; set; }
         public string Component { get; set; }
         public string ComponentCode { get; set; }
         public string Description { get; set; }
         public EEquipmentGroup Group { get; set; }
-        public EEquipmentStatus Status { get; set; }
+        public int Weight { get; set; }
+        public string Size { get; set; }
+        public int PowerLimit { get; set; }
         public void Validate()
         {
             throw new System.NotImplementedException();

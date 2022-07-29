@@ -42,7 +42,6 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var equipment = await _repository.FindByIdAsync(id);
-                equipment.Class = command.Class;
                 equipment.Component = command.Component;
                 equipment.ComponentCode = command.ComponentCode;
                 equipment.Description = command.Description;
@@ -63,6 +62,14 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IEnumerable<Equipment>> FindAllEquipments()
         {
             return await _repository.FindAllAsync();
+        }
+
+        [Route("equipments-by-room/{id}")]
+        [HttpGet]
+        public IEnumerable<Equipment> FindEquipmentsByRoomId(
+            [FromRoute] Guid id)
+        {
+            return _repository.FindEquipmentByRoom(id);
         }
 
         [Route("building/floor/room/equipment/{id}")]
