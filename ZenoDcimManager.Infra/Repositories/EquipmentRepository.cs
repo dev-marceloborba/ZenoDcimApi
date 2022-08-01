@@ -47,10 +47,11 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Equipments
                 .Where(x => x.Id == id)
-                .Include(x => x.EquipmentParameters)
                 .Include(x => x.Building)
                 .Include(x => x.Floor)
                 .Include(x => x.Room)
+                .Include(x => x.EquipmentParameters)
+                .ThenInclude(x => x.AlarmRules)
                 .FirstOrDefaultAsync();
         }
 

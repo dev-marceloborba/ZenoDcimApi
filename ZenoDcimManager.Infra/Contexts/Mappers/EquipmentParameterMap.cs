@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 
 namespace ZenoDcimManager.Infra.Contexts.Mappers

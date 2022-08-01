@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20220731222608_OneToOneWithEpAndAlarms")]
+    partial class OneToOneWithEpAndAlarms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EquipmentParameterId");
+                    b.HasIndex("EquipmentParameterId")
+                        .IsUnique()
+                        .HasFilter("[EquipmentParameterId] IS NOT NULL");
 
                     b.ToTable("AlarmRule", (string)null);
                 });
@@ -708,8 +712,9 @@ namespace ZenoDcimManager.Infra.Migrations
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.AlarmRule", b =>
                 {
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
-                        .WithMany("AlarmRules")
-                        .HasForeignKey("EquipmentParameterId");
+                        .WithOne("AlarmRule")
+                        .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.AlarmRule", "EquipmentParameterId")
+                        .HasConstraintName("FK_AlarmRule_EquipmentParameter_EquipmentParameterId");
 
                     b.Navigation("EquipmentParameter");
                 });
@@ -866,7 +871,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", b =>
                 {
-                    b.Navigation("AlarmRules");
+                    b.Navigation("AlarmRule");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameterGroup", b =>

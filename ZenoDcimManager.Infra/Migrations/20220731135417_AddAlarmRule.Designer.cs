@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20220731135417_AddAlarmRule")]
+    partial class AddAlarmRule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -708,7 +710,7 @@ namespace ZenoDcimManager.Infra.Migrations
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.AlarmRule", b =>
                 {
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
-                        .WithMany("AlarmRules")
+                        .WithMany()
                         .HasForeignKey("EquipmentParameterId");
 
                     b.Navigation("EquipmentParameter");
@@ -862,11 +864,6 @@ namespace ZenoDcimManager.Infra.Migrations
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Equipment", b =>
                 {
                     b.Navigation("EquipmentParameters");
-                });
-
-            modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", b =>
-                {
-                    b.Navigation("AlarmRules");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameterGroup", b =>

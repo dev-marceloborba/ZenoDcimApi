@@ -59,6 +59,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<IPlcRepository, PlcRepository>();
             services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
             services.AddTransient<IAlarmRepository, AlarmRepository>();
+            services.AddTransient<IAlarmRuleRepository, AlarmRuleRepository>();
             services.AddTransient<ISiteRepository, SiteRepository>();
             services.AddTransient<IBuildingRepository, BuildingRepository>();
             services.AddTransient<IFloorRepository, FloorRepository>();
@@ -78,6 +79,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<PlcHandler, PlcHandler>();
             services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
             services.AddTransient<AlarmHandler, AlarmHandler>();
+            services.AddTransient<AlarmRuleHandler, AlarmRuleHandler>();
             services.AddTransient<SiteHandler, SiteHandler>();
             services.AddTransient<BuildingHandler, BuildingHandler>();
             services.AddTransient<FloorHandler, FloorHandler>();

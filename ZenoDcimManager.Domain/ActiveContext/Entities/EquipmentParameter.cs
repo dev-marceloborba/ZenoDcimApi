@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
+using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.ZenoContext.Entities
@@ -15,8 +17,15 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 
         // Navigations Property
         public Guid? EquipmentId { get; set; }
-        public string? ModbusTagName { get; set; }
+        public Equipment Equipment { get; set; }
+        public string ModbusTagName { get; set; }
 
         public RealtimeData Data { get; set; }
+        public List<AlarmRule> AlarmRules { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

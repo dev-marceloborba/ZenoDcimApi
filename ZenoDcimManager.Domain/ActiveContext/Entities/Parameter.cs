@@ -10,6 +10,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public int LowLimit { get; set; }
         public int HighLimit { get; set; }
         public int Scale { get; set; }
+        public string Discriminator { get; set; }
         public List<ParameterGroupAssignment> ParameterGroupAssignments { get; set; } = new List<ParameterGroupAssignment>();
 
         public Parameter()

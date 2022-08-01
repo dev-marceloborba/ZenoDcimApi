@@ -26,5 +26,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public int Weight { get; set; }
         public string Size { get; set; }
         public int PowerLimit { get; set; }
+
+        public override string ToString()
+        {
+            return Component;
+        }
     }
 }

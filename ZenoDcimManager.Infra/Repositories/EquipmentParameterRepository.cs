@@ -43,7 +43,9 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<EquipmentParameter> FindByIdAsync(Guid id)
         {
             return await _context.EquipmentParameters
-                .FirstAsync(x => x.Id == id);
+                .Where(x => x.Id == id)
+                .Include(x => x.AlarmRules)
+                .FirstOrDefaultAsync();
         }
 
         public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)

@@ -36,6 +36,7 @@ namespace ZenoDcimManager.Infra.Contexts
 
         // Automação
         public DbSet<Alarm> Alarms { get; set; }
+        public DbSet<AlarmRule> AlarmRules { get; set; }
         public DbSet<ModbusTag> ModbusTags { get; set; }
         public DbSet<Plc> Plcs { get; set; }
 
@@ -67,6 +68,7 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new ModbusTagMap());
             modelBuilder.ApplyConfiguration(new PlcMap());
             modelBuilder.ApplyConfiguration(new RealtimeDataMap());
+            modelBuilder.ApplyConfiguration(new AlarmRuleMap());
         }
     }
 }
