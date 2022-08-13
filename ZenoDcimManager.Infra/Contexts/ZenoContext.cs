@@ -39,6 +39,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<AlarmRule> AlarmRules { get; set; }
         public DbSet<ModbusTag> ModbusTags { get; set; }
         public DbSet<Plc> Plcs { get; set; }
+        public DbSet<Measure> Measures { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -69,6 +70,7 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new PlcMap());
             modelBuilder.ApplyConfiguration(new RealtimeDataMap());
             modelBuilder.ApplyConfiguration(new AlarmRuleMap());
+            modelBuilder.ApplyConfiguration(new MeasureMap());
         }
     }
 }

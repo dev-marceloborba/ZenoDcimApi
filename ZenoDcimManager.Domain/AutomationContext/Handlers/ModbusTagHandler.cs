@@ -30,11 +30,13 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
         {
             command.Validate();
 
-            var modbusTag = new ModbusTag() {
+            var modbusTag = new ModbusTag
+            {
                     Name = command.Name,
                     Address = command.Address,
                     DataSize = command.DataSize,
                     DataType = command.DataType,
+                    RegisterType = command.RegisterType,
                     Deadband = command.Deadband
             };
 

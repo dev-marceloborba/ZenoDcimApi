@@ -9,7 +9,6 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         public void Configure(EntityTypeBuilder<ModbusTag> builder)
         {
             builder.ToTable("ModbusTag");
-            builder.Property(x => x.DataType).HasColumnType("varchar(16)");
             builder.Property(x => x.Name).HasColumnType("varchar(50)");
             builder.Property(x => x.EquipmentParameterName).HasColumnType("varchar(50)");
         }
