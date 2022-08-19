@@ -39,6 +39,23 @@ namespace ZenoDcimManager.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("by-parameter")]
+        public async Task<IActionResult> FindByParameterAsync(
+           [FromQuery] string parameter,
+           [FromQuery] DateTime initialDate,
+           [FromQuery] DateTime finalDate)
+        {
+            var filter = new HistoryFiltersViewModel
+            {
+                InitialDate = initialDate,
+                FinalDate = finalDate
+            };
+
+            var result = await _repository.FindByParameterAsync(parameter, filter);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> CreateAsync(

@@ -11,6 +11,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.ToTable("ParameterGroupAssignment");
             builder.HasKey(
                 x => new { x.ParameterId, x.EquipmentParameterGroupId });
+            // builder.HasKey(x => x.Id);
         }
     }
 }

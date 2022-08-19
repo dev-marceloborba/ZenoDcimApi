@@ -41,5 +41,14 @@ namespace ZenoDcimManager.Infra.Repositories
                 .OrderByDescending(x => x.Timestamp)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Measure>> FindByParameterAsync(string parameter, HistoryFiltersViewModel filter)
+        {
+            return await _context.Measures
+                .AsNoTracking()
+                .Where(x => x.Timestamp >= filter.InitialDate && x.Timestamp <= filter.FinalDate && x.Name.Contains(parameter))
+                .OrderByDescending(x => x.Timestamp)
+                .ToListAsync();
+        }
     }
 }

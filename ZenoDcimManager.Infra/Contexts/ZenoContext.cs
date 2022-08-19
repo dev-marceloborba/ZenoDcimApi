@@ -43,6 +43,9 @@ namespace ZenoDcimManager.Infra.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Entity
+            // modelBuilder.ApplyConfiguration(new EntityMap());
+
             // Usuário
             modelBuilder.Ignore<Notification>();
             modelBuilder.ApplyConfiguration(new UserMap());

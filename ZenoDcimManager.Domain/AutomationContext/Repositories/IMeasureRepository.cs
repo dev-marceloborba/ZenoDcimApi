@@ -11,5 +11,6 @@ namespace ZenoDcimManager.Domain.AutomationContext.Repositories
         Task CreateAsync(Measure measure);
         Task CreateMultipleAsync(IEnumerable<Measure> measures);
         Task<IEnumerable<Measure>> FindAllAsync(HistoryFiltersViewModel filters);
+        Task<IEnumerable<Measure>> FindByParameterAsync(string parameter, HistoryFiltersViewModel filters);
     }
 }
