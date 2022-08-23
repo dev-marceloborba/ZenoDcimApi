@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20220823173819_AddExpressionOnParameter")]
+    partial class AddExpressionOnParameter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -554,6 +556,9 @@ namespace ZenoDcimManager.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Expression")
+                        .HasColumnType("varchar(200)");
+
                     b.Property<int>("HighLimit")
                         .HasColumnType("int");
 
@@ -730,9 +735,6 @@ namespace ZenoDcimManager.Infra.Migrations
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.VirtualParameter", b =>
                 {
                     b.HasBaseType("ZenoDcimManager.Domain.ZenoContext.Entities.Parameter");
-
-                    b.Property<string>("Expression")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("VirtualParameter");
                 });

@@ -30,6 +30,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 Scale = command.Scale,
                 DataSource = command.DataSource,
                 EquipmentId = command.EquipmentId,
+                Expression = command.Expression
             };
 
             await _equipmentParameterRepository.CreateAsync(parameter);
@@ -51,6 +52,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                     Scale = item.Scale,
                     DataSource = item.DataSource,
                     EquipmentId = item.EquipmentId,
+                    Expression = item.Expression
                 };
 
                 await _equipmentParameterRepository.CreateAsync(parameter);

@@ -64,6 +64,14 @@ namespace ZenoDcimManager.Api.Controllers
         }
 
         [Route("{id}")]
+        [HttpGet]
+        public async Task<IActionResult> FindVirtualParameterById(
+            [FromRoute] Guid id)
+        {
+            return Ok(await _repository.FindByIdAsync(id));
+        }
+
+        [Route("{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteVirtualParameter(
             [FromRoute] Guid id)

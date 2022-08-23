@@ -69,12 +69,9 @@ namespace ZenoDcimManager.Tests.AutomationContext.VirtualParameters
 
             }
 
-            virtualParameter.AddVariable($"{equipment}.{parameter1}={parameter1.Data.Value}");
-            virtualParameter.AddVariable($"{equipment}.{parameter2}={parameter2.Data.Value}");
 
-            double result = virtualParameter.CalculateResult();
 
-            Assert.AreEqual(2200, result);
+            Assert.Fail();
         }
     }
 }

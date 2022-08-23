@@ -35,6 +35,10 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Sites
               .Include(x => x.Buildings)
+              .ThenInclude(x => x.Floors)
+              .ThenInclude(x => x.Rooms)
+              .ThenInclude(x => x.Equipments)
+              .ThenInclude(x => x.EquipmentParameters)
               .OrderBy(x => x.Name)
               .ToListAsync();
         }

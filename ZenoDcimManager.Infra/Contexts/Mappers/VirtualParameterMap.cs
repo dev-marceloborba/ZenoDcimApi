@@ -9,7 +9,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         public void Configure(EntityTypeBuilder<VirtualParameter> builder)
         {
             // builder.ToTable("VirtualParameter");
-            builder.Ignore(x => x.Variables);
+            // builder.Ignore(x => x.Variables);
         }
     }
 }
