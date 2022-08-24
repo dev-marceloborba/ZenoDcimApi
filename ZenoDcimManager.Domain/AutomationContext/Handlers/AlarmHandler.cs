@@ -9,36 +9,34 @@ using System.Threading.Tasks;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Handlers
 {
-    public class AlarmHandler : Notifiable, ICommandHandler<AlarmCommand>
+    public class AlarmHandler : Notifiable, ICommandHandler<CreateAlarmCommand>
     {
-        private readonly IAlarmRepository _alarmRepository;
+        private readonly IAlarmRepository _repository;
 
-        public AlarmHandler(IAlarmRepository alarmRepository)
+        public AlarmHandler(IAlarmRepository repository)
         {
-            _alarmRepository = alarmRepository;
+            _repository = repository;
         }
 
-        public async Task<ICommandResult> Handle(AlarmCommand command)
+        public async Task<ICommandResult> Handle(CreateAlarmCommand command)
         {
-            var alarm = new Alarm()
+            var alarm = new Alarm
             {
-                MessageOn = command.MessageIn,
-                MessageOff = command.MessageOff,
-                Name = command.Name,
-                AlarmPriority = command.AlarmPriority,
-                Setpoint = command.Setpoint
+                Value = command.Value,
+                Enabled = command.Enabled,
+                Status = command.Status,
+                AlarmRuleId = command.AlarmRuleId
             };
-                
 
-            var alarmValidator = new AlarmValidator(alarm);
+            // var alarmValidator = new AlarmValidator(alarm);
 
-            AddNotifications(alarmValidator);
+            // AddNotifications(alarmValidator);
 
-            if (alarmValidator.Invalid)
-                return new CommandResult(false, "Error on creating alarm", alarmValidator.Notifications);
+            // if (alarmValidator.Invalid)
+            //     return new CommandResult(false, "Error on creating alarm", alarmValidator.Notifications);
 
-            _alarmRepository.Save(alarm);
-            await _alarmRepository.Commit();
+            await _repository.CreateAsync(alarm);
+            await _repository.Commit();
 
             return new CommandResult(true, "Alarm created successful", alarm);
         }

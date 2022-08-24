@@ -10,7 +10,6 @@ namespace ZenoDcimManager.Domain.AutomationContext.Validators
         {
             AddNotifications(new Contract()
                 .Requires()
-                .HasMinLen(alarm.Name, 4, "Name", "Name should have at last 4 charateres")
             );
         }
     }

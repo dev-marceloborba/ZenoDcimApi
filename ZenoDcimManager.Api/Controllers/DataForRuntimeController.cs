@@ -21,7 +21,7 @@ namespace ZenoDcimManager.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult> GetTaskAsync()
+        public async Task<ActionResult> GetDataCenterStructure()
         {
             var result = await _context.Buildings
                 .Include(x => x.Floors)
@@ -48,6 +48,45 @@ namespace ZenoDcimManager.Api.Controllers
                             })
                         })
                     })
+                })
+                .ToListAsync();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("alarms")]
+        public async Task<ActionResult> GetAlarmsConfiguration()
+        {
+            var result = await _context.AlarmRules
+                .AsNoTracking()
+                .Include(x => x.EquipmentParameter)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Priority,
+                    x.Conditional,
+                    x.Setpoint,
+                    EquipmentParameter = new
+                    {
+                        Name = x.EquipmentParameter.Name,
+                        Equipment = new
+                        {
+                            Name = x.EquipmentParameter.Equipment.Component,
+                            Room = new
+                            {
+                                Name = x.EquipmentParameter.Equipment.Room.Name,
+                                Floor = new
+                                {
+                                    Name = x.EquipmentParameter.Equipment.Room.Floor.Name,
+                                    Building = new
+                                    {
+                                        Name = x.EquipmentParameter.Equipment.Room.Floor.Building.Name
+                                    }
+                                }
+                            }
+                        }
+                    }
                 })
                 .ToListAsync();
             return Ok(result);
