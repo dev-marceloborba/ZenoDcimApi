@@ -48,6 +48,17 @@ namespace ZenoDcimManager.Api.Controllers
             return Ok(alarm);
         }
 
+        [HttpPost]
+        [Route("inactive")]
+        public async Task<ActionResult> Inactive([FromBody] Guid alarmId)
+        {
+            var alarm = await _repository.FindByIdAsync(alarmId);
+            alarm.Status = EAlarmStatus.INACTIVE;
+            _repository.Update(alarm);
+            await _repository.Commit();
+            return Ok(alarm);
+        }
+
         [HttpGet]
         [Route("")]
         public async Task<ActionResult> GetFilteredAlarms(
