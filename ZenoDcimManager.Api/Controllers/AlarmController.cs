@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
+using ZenoDcimManager.Domain.AutomationContext.Enums;
 using ZenoDcimManager.Domain.AutomationContext.Handlers;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.ViewModels;
@@ -36,6 +37,17 @@ namespace ZenoDcimManager.Api.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("ack")]
+        public async Task<ActionResult> Ack([FromBody] Guid alarmId)
+        {
+            var alarm = await _repository.FindByIdAsync(alarmId);
+            alarm.Status = EAlarmStatus.ACKED;
+            _repository.Update(alarm);
+            await _repository.Commit();
+            return Ok(alarm);
+        }
+
         [HttpGet]
         [Route("")]
         public async Task<ActionResult> GetFilteredAlarms(
@@ -60,23 +72,29 @@ namespace ZenoDcimManager.Api.Controllers
                     x.CreatedDate,
                     AlarmRule = new
                     {
+                        Id = x.AlarmRule.Id,
                         Name = x.AlarmRule.Name,
                         Setpoint = x.AlarmRule.Setpoint,
                         Priority = x.AlarmRule.Priority,
                         EquipmentParameter = new
                         {
+                            Id = x.AlarmRule.EquipmentParameter.Id,
                             Name = x.AlarmRule.EquipmentParameter.Name,
                             Equipment = new
                             {
+                                Id = x.AlarmRule.EquipmentParameter.Equipment.Id,
                                 Name = x.AlarmRule.EquipmentParameter.Equipment.Component,
                                 Room = new
                                 {
+                                    Id = x.AlarmRule.EquipmentParameter.Equipment.Room.Id,
                                     Name = x.AlarmRule.EquipmentParameter.Equipment.Room.Name,
                                     Floor = new
                                     {
+                                        Id = x.AlarmRule.EquipmentParameter.Equipment.Floor.Id,
                                         Name = x.AlarmRule.EquipmentParameter.Equipment.Floor.Name,
                                         Building = new
                                         {
+                                            Id = x.AlarmRule.EquipmentParameter.Equipment.Floor.Building.Id,
                                             Name = x.AlarmRule.EquipmentParameter.Equipment.Floor.Building.Name
                                         }
                                     }
@@ -87,6 +105,7 @@ namespace ZenoDcimManager.Api.Controllers
                     }
                 })
                 .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate)
+                .OrderByDescending(x => x.CreatedDate)
                 .ToListAsync();
             return Ok(result);
         }
@@ -109,8 +128,8 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 return BadRequest();
             }
-
-
         }
+
+
     }
 }
