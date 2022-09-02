@@ -37,9 +37,9 @@ namespace ZenoDcimManager.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("ack")]
-        public async Task<ActionResult> Ack([FromBody] Guid alarmId)
+        public async Task<ActionResult> Ack([FromQuery] Guid alarmId)
         {
             var alarm = await _repository.FindByIdAsync(alarmId);
             alarm.Status = EAlarmStatus.ACKED;
@@ -48,7 +48,7 @@ namespace ZenoDcimManager.Api.Controllers
             return Ok(alarm);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("inactive")]
         public async Task<ActionResult> Inactive([FromBody] Guid alarmId)
         {
@@ -81,6 +81,8 @@ namespace ZenoDcimManager.Api.Controllers
                     x.Enabled,
                     x.Id,
                     x.CreatedDate,
+                    x.InDate,
+                    x.OutDate,
                     AlarmRule = new
                     {
                         Id = x.AlarmRule.Id,
