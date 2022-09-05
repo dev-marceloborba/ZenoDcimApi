@@ -8,8 +8,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
     {
         public string Pathname { get; set; }
         public double Value { get; set; }
-        public DateTime InDate { get; set; }
-        public DateTime OutDate { get; set; }
+        public DateTime? InDate { get; set; }
+        public DateTime? OutDate { get; set; }
         public EAlarmStatus Status { get; set; } = EAlarmStatus.INACTIVE;
         public bool Enabled { get; set; } = true;
 

@@ -22,10 +22,13 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
         {
             var alarm = new Alarm
             {
+                Pathname = command.Pathname,
                 Value = command.Value,
                 Enabled = command.Enabled,
                 Status = command.Status,
-                AlarmRuleId = command.AlarmRuleId
+                AlarmRuleId = command.AlarmRuleId,
+                InDate = command.InDate,
+                OutDate = command.OutDate,
             };
 
             // var alarmValidator = new AlarmValidator(alarm);

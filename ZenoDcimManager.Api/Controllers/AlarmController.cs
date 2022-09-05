@@ -50,9 +50,11 @@ namespace ZenoDcimManager.Api.Controllers
 
         [HttpPut]
         [Route("inactive")]
-        public async Task<ActionResult> Inactive([FromBody] Guid alarmId)
+        public async Task<ActionResult> Inactive([FromBody] InactiveAlarmCommand command)
         {
-            var alarm = await _repository.FindByIdAsync(alarmId);
+            var alarm = await _repository.FindByIdAsync(command.Id);
+            alarm.OutDate = command.OutDate;
+            alarm.Value = command.Value;
             alarm.Status = EAlarmStatus.INACTIVE;
             _repository.Update(alarm);
             await _repository.Commit();
@@ -76,6 +78,7 @@ namespace ZenoDcimManager.Api.Controllers
                 .Include(x => x.AlarmRule)
                 .Select(x => new
                 {
+                    x.Pathname,
                     x.Value,
                     x.Status,
                     x.Enabled,
@@ -89,32 +92,6 @@ namespace ZenoDcimManager.Api.Controllers
                         Name = x.AlarmRule.Name,
                         Setpoint = x.AlarmRule.Setpoint,
                         Priority = x.AlarmRule.Priority,
-                        EquipmentParameter = new
-                        {
-                            Id = x.AlarmRule.EquipmentParameter.Id,
-                            Name = x.AlarmRule.EquipmentParameter.Name,
-                            Equipment = new
-                            {
-                                Id = x.AlarmRule.EquipmentParameter.Equipment.Id,
-                                Name = x.AlarmRule.EquipmentParameter.Equipment.Component,
-                                Room = new
-                                {
-                                    Id = x.AlarmRule.EquipmentParameter.Equipment.Room.Id,
-                                    Name = x.AlarmRule.EquipmentParameter.Equipment.Room.Name,
-                                    Floor = new
-                                    {
-                                        Id = x.AlarmRule.EquipmentParameter.Equipment.Floor.Id,
-                                        Name = x.AlarmRule.EquipmentParameter.Equipment.Floor.Name,
-                                        Building = new
-                                        {
-                                            Id = x.AlarmRule.EquipmentParameter.Equipment.Floor.Building.Id,
-                                            Name = x.AlarmRule.EquipmentParameter.Equipment.Floor.Building.Name
-                                        }
-                                    }
-                                },
-
-                            }
-                        }
                     }
                 })
                 .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate)
