@@ -11,5 +11,9 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         // Navigation property
         public Guid? BuildingId { get; set; }
         public Building Building { get; set; }
+        public string GetPathname()
+        {
+            return Building.Site.Name + '*' + Building.Name + '*' + Name;
+        }
     }
 }

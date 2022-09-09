@@ -1,13 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
-using ZenoDcimManager.Shared;
-using ZenoDcimManager.Shared.Extensions;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
 
-namespace ZenoDcimManager.Domain.ZenoContext.Entities
+namespace ZenoDcimManager.Domain.ActiveContext.Commands.Outputs
 {
-    public class EquipmentParameter : Entity
+    public class FindParametersByEquipmentOutputCommand
     {
         public string Name { get; set; }
         public string Unit { get; set; }
@@ -24,21 +23,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 
         public RealtimeData Data { get; set; }
         public List<AlarmRule> AlarmRules { get; set; }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-        public string GetPathname()
-        {
-            var pathname = Equipment.Room.Floor.Building.Site.Name
-                + Equipment.Room.Floor.Building.Name
-                + Equipment.Room.Floor.Name
-                + Equipment.Room.Name
-                + Equipment.ToString()
-                + Name;
-            pathname = pathname.Replace(" ", "");
-            return pathname.RemoveAccents();
-        }
+        public string Pathname { get; set; }
     }
 }

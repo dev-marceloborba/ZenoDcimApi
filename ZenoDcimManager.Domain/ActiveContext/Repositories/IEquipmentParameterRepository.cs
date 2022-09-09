@@ -8,6 +8,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Repositories
 {
     public interface IEquipmentParameterRepository : CrudRepository<EquipmentParameter>, IUnitOfWork
     {
-        IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id);
+        IList<EquipmentParameter> FindParametersByEquipmentId(Guid id);
     }
 }

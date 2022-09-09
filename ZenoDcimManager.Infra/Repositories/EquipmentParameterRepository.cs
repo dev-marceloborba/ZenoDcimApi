@@ -48,12 +48,21 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
+        public IList<EquipmentParameter> FindParametersByEquipmentId(Guid id)
         {
-            return _context.Equipments
-                .Where(x => x.Id == id)
-                .Select(x => x.EquipmentParameters)
-                .First()
+            // return _context.Equipments
+            //     .Where(x => x.Id == id)
+            //     .Select(x => x.EquipmentParameters)
+            //     .First()
+            //     .OrderBy(x => x.Name)
+            //     .ToList();
+            return _context.EquipmentParameters
+                .Include(x => x.Equipment)
+                .ThenInclude(x => x.Room)
+                .ThenInclude(x => x.Floor)
+                .ThenInclude(x => x.Building)
+                .ThenInclude(x => x.Site)
+                .Where(x => x.EquipmentId == id)
                 .OrderBy(x => x.Name)
                 .ToList();
         }

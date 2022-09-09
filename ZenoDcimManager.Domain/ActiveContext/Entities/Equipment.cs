@@ -31,5 +31,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         {
             return Component;
         }
+
+        public string GetPathname()
+        {
+            return Room.Floor.Building.Site.Name + '*' + Room.Floor.Building.Name + '*' + Room.Floor.Name + '*' + Room.Name + '*' + this.ToString();
+        }
     }
 }

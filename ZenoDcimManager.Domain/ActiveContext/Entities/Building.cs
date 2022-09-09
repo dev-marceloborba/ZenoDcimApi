@@ -11,5 +11,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         // Navigation property
         public Guid? SiteId { get; set; }
         public Site Site { get; set; }
+
+        public string GetPathname()
+        {
+            return Site.Name + '*' + Name;
+        }
     }
 }

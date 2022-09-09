@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -61,10 +62,11 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("building/floor/room/equipment/parameter/{id}")]
         [HttpGet]
-        public async Task<EquipmentParameter> FindEquipmentParameterById(
+        public async Task<ActionResult> FindEquipmentParameterById(
             [FromRoute] Guid id)
         {
-            return await _repository.FindByIdAsync(id);
+            var result = await _repository.FindByIdAsync(id);
+            return Ok(result);
         }
 
         [Route("building/floor/room/equipment/parameter/{id}")]
@@ -96,9 +98,31 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("building/floor/room/equipmentParameterById/{id}")]
         [HttpGet]
-        public IEnumerable<EquipmentParameter> FindParametersByEquipmentId(Guid id)
+        public ActionResult FindParametersByEquipmentId(Guid id)
         {
-            return _repository.FindParametersByEquipmentId(id);
+            var parameters = new List<FindParametersByEquipmentOutputCommand>();
+            var result = _repository.FindParametersByEquipmentId(id);
+            foreach (var item in result)
+            {
+                var pathname = item.GetPathname();
+                parameters.Add(new FindParametersByEquipmentOutputCommand
+                {
+                    Name = item.Name,
+                    Unit = item.Unit,
+                    LowLimit = item.LowLimit,
+                    HighLimit = item.HighLimit,
+                    Scale = item.Scale,
+                    DataSource = item.DataSource,
+                    Expression = item.Expression,
+                    EquipmentId = item.EquipmentId,
+                    Equipment = item.Equipment,
+                    ModbusTagName = item.ModbusTagName,
+                    Data = item.Data,
+                    AlarmRules = item.AlarmRules,
+                    Pathname = pathname
+                });
+            }
+            return Ok(parameters);
         }
 
         [Route("building/floor/room/equipment/parameters")]
