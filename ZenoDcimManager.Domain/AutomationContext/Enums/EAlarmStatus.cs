@@ -4,6 +4,7 @@
     {
         INACTIVE = 1,
         ACTIVE = 2,
-        ACKED = 3
+        ACKED = 3,
+        INHIBITED = 4
     }
 }

@@ -12,6 +12,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.ToTable("Alarm");
             builder.Property(x => x.InDate).HasConversion(typeof(UtcValueConverter));
             builder.Property(x => x.OutDate).HasConversion(typeof(UtcValueConverter));
+            builder.Property(x => x.RecognizedDate).HasConversion(typeof(UtcValueConverter));
             builder.Property(x => x.Pathname).HasColumnType("varchar(250)");
         }
     }

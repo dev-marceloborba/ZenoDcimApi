@@ -91,5 +91,22 @@ namespace ZenoDcimManager.Api.Controllers
             await _repository.Commit();
             return Ok();
         }
+
+        [HttpPost]
+        [Route("statistics")]
+        public async Task<ActionResult> GetStatistics(
+            [FromBody] StaisticsParameterFilterViewModel viewModel,
+            [FromQuery] DateTime initialDate,
+            [FromQuery] DateTime finalDate
+            )
+        {
+            var result = await _repository.GetMeasureStatistics(new CreateMeasureViewModel
+            {
+                Name = viewModel.Name,
+                InitialDate = initialDate,
+                FinalDate = finalDate
+            });
+            return Ok(result);
+        }
     }
 }

@@ -39,10 +39,11 @@ namespace ZenoDcimManager.Api.Controllers
 
         [HttpPut]
         [Route("ack")]
-        public async Task<ActionResult> Ack([FromQuery] Guid alarmId)
+        public async Task<ActionResult> Ack([FromBody] RecognizeAlarmCommand command)
         {
-            var alarm = await _repository.FindByIdAsync(alarmId);
+            var alarm = await _repository.FindByIdAsync(command.AlarmId);
             alarm.Status = EAlarmStatus.ACKED;
+            alarm.RecognizedDate = command.RecognizedDate;
             _repository.Update(alarm);
             await _repository.Commit();
             return Ok(alarm);
@@ -86,6 +87,7 @@ namespace ZenoDcimManager.Api.Controllers
                     x.CreatedDate,
                     x.InDate,
                     x.OutDate,
+                    x.RecognizedDate,
                     AlarmRule = new
                     {
                         Id = x.AlarmRule.Id,
