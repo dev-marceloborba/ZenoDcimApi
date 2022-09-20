@@ -26,6 +26,7 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
+using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
 
 namespace ZenoDcimManager.Api
 {
@@ -70,6 +71,8 @@ namespace ZenoDcimManager.Api
             services.AddTransient<IEquipmentParameterRepository, EquipmentParameterRepository>();
             services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
             services.AddTransient<IMeasureRepository, MeasureRepository>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<IWorkOrderRepository, WorkOrderRepository>();
 
             // handlers
             services.AddTransient<UserHandler, UserHandler>();

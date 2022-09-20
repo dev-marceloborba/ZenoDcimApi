@@ -4,6 +4,7 @@ using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Infra.Contexts.Mappers;
+using ZenoDcimManager.Domain.ServiceOrderContext.Entities;
 
 namespace ZenoDcimManager.Infra.Contexts
 {
@@ -41,6 +42,10 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<Plc> Plcs { get; set; }
         public DbSet<Measure> Measures { get; set; }
 
+        // Ordem de serviço
+        public DbSet<WorkOrder> WorkOrders { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Entity
@@ -74,6 +79,10 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new RealtimeDataMap());
             modelBuilder.ApplyConfiguration(new AlarmRuleMap());
             modelBuilder.ApplyConfiguration(new MeasureMap());
+
+            // Ordem de serviço
+            modelBuilder.ApplyConfiguration(new WorkOrderMap());
+            modelBuilder.ApplyConfiguration(new SupplierMap());
         }
     }
 }
