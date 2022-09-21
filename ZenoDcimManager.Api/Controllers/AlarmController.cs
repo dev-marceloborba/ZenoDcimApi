@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -122,6 +124,43 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("statistics")]
+        public async Task<ActionResult> GetAlarmsStatistics(
+            [FromServices] ZenoContext context,
+            [FromQuery] DateTime initialDate,
+            [FromQuery] DateTime finalDate)
+        {
+            var alarmRecognitionInterval = new List<AlarmRecognitionIntervalViewModel>();
+            var alarmsStatistics = new AlarmStatisticsViewModel();
 
+            var alarms = await context.Alarms.Where(x => x.InDate >= initialDate && x.OutDate <= finalDate).ToListAsync();
+
+            try
+            {
+                foreach (var item in alarms)
+                {
+                    alarmRecognitionInterval.Add(new AlarmRecognitionIntervalViewModel
+                    {
+                        Id = item.Id,
+                        InDate = item.InDate,
+                        OutDate = (DateTime)item.OutDate,
+                        Interval = (TimeSpan)(item.OutDate - item.InDate)
+                    });
+                }
+
+                alarmsStatistics.MaxAckTime = Math.Round(alarmRecognitionInterval.Max(x => x.Interval.TotalHours), 2);
+                alarmsStatistics.MinAckTime = Math.Round(alarmRecognitionInterval.Min(x => x.Interval.TotalHours), 2);
+                alarmsStatistics.AverageAckTime = Math.Round(alarmRecognitionInterval.Average(x => x.Interval.TotalHours), 2);
+                alarmsStatistics.AlarmsNotAcked = alarms.Where(x => x.Status != EAlarmStatus.ACKED && x.Status != EAlarmStatus.INACTIVE).Count();
+
+                return Ok(alarmsStatistics);
+            }
+            catch
+            {
+                return BadRequest(alarmsStatistics);
+            }
+
+        }
     }
 }

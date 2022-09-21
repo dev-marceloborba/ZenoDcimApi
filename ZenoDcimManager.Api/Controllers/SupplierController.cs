@@ -46,6 +46,7 @@ namespace ZenoDcimManager.Api.Controllers
             supplier.Email = command.Email;
             supplier.Phone = command.Phone;
             supplier.Responsible = command.Responsible;
+            supplier.TrackModifiedDate();
 
             repository.Update(supplier);
             await repository.Commit();

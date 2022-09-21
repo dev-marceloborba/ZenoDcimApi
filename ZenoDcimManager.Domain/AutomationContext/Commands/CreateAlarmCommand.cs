@@ -9,7 +9,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Commands
         public string Pathname { get; set; }
         public EAlarmStatus Status { get; set; }
         public double Value { get; set; }
-        public DateTime? InDate { get; set; }
+        public DateTime InDate { get; set; }
         public DateTime? OutDate { get; set; }
         public bool Enabled { get; set; }
         public Guid AlarmRuleId { get; set; }
