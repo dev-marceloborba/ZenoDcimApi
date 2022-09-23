@@ -13,6 +13,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
         public DateTime? RecognizedDate { get; set; }
         public EAlarmStatus Status { get; set; } = EAlarmStatus.INACTIVE;
         public bool Enabled { get; set; } = true;
+        public TimeSpan AckInterval { get; set; }
 
         public Guid AlarmRuleId { get; set; }
         public AlarmRule AlarmRule { get; set; }

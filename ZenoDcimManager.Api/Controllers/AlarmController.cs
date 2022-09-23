@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -46,6 +45,7 @@ namespace ZenoDcimManager.Api.Controllers
             var alarm = await _repository.FindByIdAsync(command.AlarmId);
             alarm.Status = EAlarmStatus.ACKED;
             alarm.RecognizedDate = command.RecognizedDate;
+            alarm.AckInterval = (TimeSpan)(alarm.RecognizedDate - alarm.InDate);
             _repository.Update(alarm);
             await _repository.Commit();
             return Ok(alarm);
@@ -131,34 +131,65 @@ namespace ZenoDcimManager.Api.Controllers
             [FromQuery] DateTime initialDate,
             [FromQuery] DateTime finalDate)
         {
-            var alarmRecognitionInterval = new List<AlarmRecognitionIntervalViewModel>();
             var alarmsStatistics = new AlarmStatisticsViewModel();
-
-            var alarms = await context.Alarms.Where(x => x.InDate >= initialDate && x.OutDate <= finalDate).ToListAsync();
-
+            var alarmRecognitionInterval = new List<AlarmRecognitionIntervalViewModel>();
+            var alarmCategory = new List<AlarmGroupViewModel>();
             try
             {
-                foreach (var item in alarms)
+                var alarms = await context.Alarms.Where(x => x.InDate >= initialDate && x.InDate <= finalDate).ToListAsync();
+                var ackedAlarms = await context.Alarms.Where(x => x.RecognizedDate >= initialDate && x.RecognizedDate <= finalDate).ToListAsync();
+                foreach (var item in ackedAlarms)
                 {
                     alarmRecognitionInterval.Add(new AlarmRecognitionIntervalViewModel
                     {
                         Id = item.Id,
                         InDate = item.InDate,
-                        OutDate = (DateTime)item.OutDate,
-                        Interval = (TimeSpan)(item.OutDate - item.InDate)
+                        OutDate = (DateTime)item.RecognizedDate,
+                        Interval = (TimeSpan)(item.RecognizedDate - item.InDate)
                     });
                 }
+
+                foreach (var item in alarms)
+                {
+                    var arr = item.Pathname.Split('*');
+                    alarmCategory.Add(new AlarmGroupViewModel
+                    {
+                        Id = item.Id,
+                        // Site = arr[0],
+                        // Building = arr[1],
+                        // Floor = arr[2],
+                        // Room = arr[3],
+                        // Equipment = arr[4],
+                        // Parameter = arr[5],
+                        Pathname = arr[0] + '*' + arr[1] + '*' + arr[2] + '*' + arr[3] + '*' + arr[4]
+                    });
+                }
+
+                var q = from p in alarmCategory
+                        group p by p.Pathname into g
+                        select new
+                        {
+                            Pathname = g.Key,
+                            Total = g.Count()
+                        };
 
                 alarmsStatistics.MaxAckTime = Math.Round(alarmRecognitionInterval.Max(x => x.Interval.TotalHours), 2);
                 alarmsStatistics.MinAckTime = Math.Round(alarmRecognitionInterval.Min(x => x.Interval.TotalHours), 2);
                 alarmsStatistics.AverageAckTime = Math.Round(alarmRecognitionInterval.Average(x => x.Interval.TotalHours), 2);
                 alarmsStatistics.AlarmsNotAcked = alarms.Where(x => x.Status != EAlarmStatus.ACKED && x.Status != EAlarmStatus.INACTIVE).Count();
 
-                return Ok(alarmsStatistics);
+                return Ok(new
+                {
+                    AverageAckTime = alarmsStatistics.AverageAckTime,
+                    MaxAckTime = alarmsStatistics.MaxAckTime,
+                    MinAckTime = alarmsStatistics.MinAckTime,
+                    AlarmsNotAcked = alarmsStatistics.AlarmsNotAcked,
+                    Categories = q.ToList(),
+                });
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest(alarmsStatistics);
+                return BadRequest(e);
             }
 
         }

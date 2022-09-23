@@ -14,6 +14,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.Property(x => x.OutDate).HasConversion(typeof(UtcValueConverter));
             builder.Property(x => x.RecognizedDate).HasConversion(typeof(UtcValueConverter));
             builder.Property(x => x.Pathname).HasColumnType("varchar(250)");
+            builder.Property(x => x.AckInterval).HasConversion<long>();
         }
     }
 }
