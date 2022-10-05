@@ -19,6 +19,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         // Datacenter
         public DbSet<Rack> Racks { get; set; }
@@ -56,6 +57,7 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new CompanyMap());
             modelBuilder.ApplyConfiguration(new ContractMap());
+            modelBuilder.ApplyConfiguration(new GroupMap());
 
             // Datacenter
             modelBuilder.ApplyConfiguration(new RackMap());

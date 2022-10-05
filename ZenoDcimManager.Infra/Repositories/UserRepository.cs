@@ -30,7 +30,10 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task<User> FindByIdAsync(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users
+                .Where(x => x.Id == id)
+                .Include(x => x.Group)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<User> FindUserByEmail(string email)
@@ -42,6 +45,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Users
                 .AsNoTracking()
+                .Include(x => x.Group)
                 .Include(x => x.Company)
                 .ThenInclude(x => x.Contracts)
                 .OrderBy(x => x.FirstName)

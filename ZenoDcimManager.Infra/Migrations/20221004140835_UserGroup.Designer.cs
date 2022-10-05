@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221004140835_UserGroup")]
+    partial class UserGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -457,9 +459,6 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("varchar(80)")
                         .HasColumnName("FirstName");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("HashedPassword")
                         .HasColumnType("varchar(80)");
 
@@ -478,8 +477,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("Email");
-
-                    b.HasIndex("GroupId");
 
                     b.ToTable("User", (string)null);
                 });
@@ -981,15 +978,7 @@ namespace ZenoDcimManager.Infra.Migrations
                         .WithMany()
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("ZenoDcimManager.Domain.UserContext.Entities.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Company");
-
-                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Building", b =>

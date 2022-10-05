@@ -1,3 +1,4 @@
+using System;
 using ZenoDcimManager.Domain.UserContext.Enums;
 using ZenoDcimManager.Shared;
 
@@ -12,6 +13,8 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
         public EUserRole Role { get; private set; }
         public bool Active { get; private set; }
         public Company Company { get; private set; }
+        public Guid GroupId { get; set; }
+        public Group Group { get; set; }
 
         public User()
         {

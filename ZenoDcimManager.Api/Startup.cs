@@ -72,6 +72,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
             services.AddTransient<IMeasureRepository, MeasureRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IWorkOrderRepository, WorkOrderRepository>();
 
             // handlers

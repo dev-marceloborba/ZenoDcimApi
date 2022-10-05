@@ -137,7 +137,8 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var alarms = await context.Alarms.Where(x => x.InDate >= initialDate && x.InDate <= finalDate).ToListAsync();
-                var ackedAlarms = await context.Alarms.Where(x => x.RecognizedDate >= initialDate && x.RecognizedDate <= finalDate).ToListAsync();
+                // var ackedAlarms = await context.Alarms.Where(x => x.RecognizedDate >= initialDate && x.RecognizedDate <= finalDate).ToListAsync();
+                var ackedAlarms = alarms.Where(x => x.RecognizedDate >= initialDate && x.RecognizedDate <= finalDate).ToList();
                 foreach (var item in ackedAlarms)
                 {
                     alarmRecognitionInterval.Add(new AlarmRecognitionIntervalViewModel
@@ -184,7 +185,7 @@ namespace ZenoDcimManager.Api.Controllers
                     MaxAckTime = alarmsStatistics.MaxAckTime,
                     MinAckTime = alarmsStatistics.MinAckTime,
                     AlarmsNotAcked = alarmsStatistics.AlarmsNotAcked,
-                    Categories = q.ToList(),
+                    Categories = q.ToList().Take(10),
                 });
             }
             catch (Exception e)
