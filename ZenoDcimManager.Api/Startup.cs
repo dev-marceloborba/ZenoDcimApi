@@ -100,28 +100,18 @@ namespace ZenoDcimManager.Api
                 options.AddDefaultPolicy(builder =>
                 {
                     builder
-                        .WithOrigins("http://localhost:3000")
-                        .WithOrigins("https://localhost:3000")
-                        .WithOrigins("http://main.d1ig3e0jiptnpr.amplifyapp.com")
-                        .WithOrigins("https://main.d1ig3e0jiptnpr.amplifyapp.com")
+                        .WithOrigins(
+                            "http://localhost:3000",
+                            "https://localhost:3000",
+                            "http://main.d1ig3e0jiptnpr.amplifyapp.com",
+                            "https://main.d1ig3e0jiptnpr.amplifyapp.com"
+                        )
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });
             });
 
-            // services.AddCors();
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("Default", builder =>
-            //     {
-            //         builder.WithOrigins("http://localhost:3000")
-            //             .AllowAnyMethod()
-            //             .AllowAnyHeader()
-            //             .AllowAnyOrigin()
-            //             .AllowCredentials();
-            //     });
-            // });
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
@@ -172,13 +162,6 @@ namespace ZenoDcimManager.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
             }
 
-            // app.UseCors(MyAllowSpecificOrigins);
-            // app.UseCors(x => x
-            //     .AllowAnyOrigin()
-            //     .AllowAnyMethod()
-            //     .AllowAnyHeader()
-            // );
-
             app.UseCors();
 
             app.UseRouting();
@@ -196,14 +179,7 @@ namespace ZenoDcimManager.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationsHub>("/notifications");
-                // endpoints.MapHub<NotificationsHub>("/notifications").RequireCors(builder =>
-                // {
-                //     builder
-                //         .WithOrigins("http://localhost:3000")
-                //         .AllowAnyHeader()
-                //         .AllowAnyMethod()
-                //         .AllowCredentials();
-                // });
+
             });
         }
     }
