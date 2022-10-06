@@ -102,6 +102,7 @@ namespace ZenoDcimManager.Api
                     builder
                         .WithOrigins("http://localhost:3000")
                         .WithOrigins("https://localhost:3000")
+                        .WithOrigins("https://main.d1ig3e0jiptnpr.amplifyapp.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
