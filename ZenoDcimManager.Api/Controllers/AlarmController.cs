@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Api.Hubs;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Enums;
 using ZenoDcimManager.Domain.AutomationContext.Handlers;
+using ZenoDcimManager.Domain.AutomationContext.Hubs;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.ViewModels;
 using ZenoDcimManager.Infra.Contexts;
@@ -21,10 +24,12 @@ namespace ZenoDcimManager.Api.Controllers
     public class AlarmController : ControllerBase
     {
         private readonly IAlarmRepository _repository;
+        private readonly IHubContext<NotificationsHub, INotificationClient> _hubContext;
 
-        public AlarmController(IAlarmRepository repository)
+        public AlarmController(IAlarmRepository repository, IHubContext<NotificationsHub, INotificationClient> hubContext)
         {
             _repository = repository;
+            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -35,6 +40,8 @@ namespace ZenoDcimManager.Api.Controllers
         )
         {
             var result = await handler.Handle(command);
+            // await _hubContext.Clients.All.SendAsync("new-alarm", command);
+            await _hubContext.Clients.All.SendAlarmNotification((Alarm)result.Data);
             return Ok(result);
         }
 

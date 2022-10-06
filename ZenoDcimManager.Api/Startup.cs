@@ -95,7 +95,18 @@ namespace ZenoDcimManager.Api
             services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:3000")
+                        .WithOrigins("https://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
 
             // services.AddCors();
             // services.AddCors(options =>
@@ -122,6 +133,7 @@ namespace ZenoDcimManager.Api
                     options =>
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
                  );
+
             services.AddSignalR();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
@@ -159,11 +171,13 @@ namespace ZenoDcimManager.Api
             }
 
             // app.UseCors(MyAllowSpecificOrigins);
-            app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-         );
+            // app.UseCors(x => x
+            //     .AllowAnyOrigin()
+            //     .AllowAnyMethod()
+            //     .AllowAnyHeader()
+            // );
+
+            app.UseCors();
 
             app.UseRouting();
 
@@ -179,7 +193,15 @@ namespace ZenoDcimManager.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<AlarmHub>("/alarmHub");
+                endpoints.MapHub<NotificationsHub>("/notifications");
+                // endpoints.MapHub<NotificationsHub>("/notifications").RequireCors(builder =>
+                // {
+                //     builder
+                //         .WithOrigins("http://localhost:3000")
+                //         .AllowAnyHeader()
+                //         .AllowAnyMethod()
+                //         .AllowCredentials();
+                // });
             });
         }
     }
