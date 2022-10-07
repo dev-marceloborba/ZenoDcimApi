@@ -95,22 +95,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
 
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder
-                        .WithOrigins(
-                            "http://localhost:3000",
-                            "https://localhost:3000",
-                            "http://main.d1ig3e0jiptnpr.amplifyapp.com",
-                            "https://main.d1ig3e0jiptnpr.amplifyapp.com"
-                        )
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                });
-            });
+            services.AddCors();
 
             services.AddResponseCompression(options =>
             {
@@ -162,7 +147,12 @@ namespace ZenoDcimManager.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
             }
 
-            app.UseCors();
+            app.UseCors(x =>
+                x
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            );
 
             app.UseRouting();
 
@@ -179,7 +169,6 @@ namespace ZenoDcimManager.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationsHub>("/notifications");
-
             });
         }
     }

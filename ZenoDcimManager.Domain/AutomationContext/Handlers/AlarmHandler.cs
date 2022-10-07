@@ -29,6 +29,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 AlarmRuleId = command.AlarmRuleId,
                 InDate = command.InDate,
                 OutDate = command.OutDate,
+                NotificationEnabled = command.NotificationEnabled
             };
 
             // var alarmValidator = new AlarmValidator(alarm);

@@ -40,7 +40,6 @@ namespace ZenoDcimManager.Api.Controllers
         )
         {
             var result = await handler.Handle(command);
-            // await _hubContext.Clients.All.SendAsync("new-alarm", command);
             await _hubContext.Clients.All.SendAlarmNotification((Alarm)result.Data);
             return Ok(result);
         }

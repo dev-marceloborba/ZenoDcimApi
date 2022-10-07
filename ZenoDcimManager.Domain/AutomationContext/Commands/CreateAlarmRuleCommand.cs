@@ -10,6 +10,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Commands
         public EAlarmPriority Priority { get; set; }
         public EAlarmConditonal Conditional { get; set; }
         public double Setpoint { get; set; }
+        public bool EnableNotification { get; set; }
         public Guid EquipmentParameterId { get; set; }
         public void Validate()
         {
