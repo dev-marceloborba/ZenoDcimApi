@@ -16,13 +16,11 @@ namespace ZenoDcimManager.Api.Hubs
 
         public override Task OnConnectedAsync()
         {
-            Console.WriteLine("User connected");
             return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            Console.WriteLine("User disconnected");
             return base.OnDisconnectedAsync(exception);
         }
     }

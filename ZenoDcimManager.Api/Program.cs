@@ -16,7 +16,6 @@ namespace ZenoDcimManager.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-              
             ;
     }
 }

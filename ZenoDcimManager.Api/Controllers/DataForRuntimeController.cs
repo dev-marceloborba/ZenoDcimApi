@@ -67,6 +67,7 @@ namespace ZenoDcimManager.Api.Controllers
                     x.Priority,
                     x.Conditional,
                     x.Setpoint,
+                    x.EnableNotification,
                     EquipmentParameter = new
                     {
                         Name = x.EquipmentParameter.Name,

@@ -41,9 +41,6 @@ namespace ZenoDcimManager.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // contexts for In-Memory Database
-            //services.AddDbContext<ZenoContext>(opt => opt.UseInMemoryDatabase("Database"));
-
             // contexts for SQL Server
             services.AddDbContext<ZenoContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
 

@@ -10,11 +10,11 @@ using ZenoDcimManager.Api.Hubs;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Enums;
-using ZenoDcimManager.Domain.AutomationContext.Handlers;
 using ZenoDcimManager.Domain.AutomationContext.Hubs;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.ViewModels;
 using ZenoDcimManager.Infra.Contexts;
+using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -36,12 +36,30 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         public async Task<ActionResult> CreateAsync(
             [FromBody] CreateAlarmCommand command,
-            [FromServices] AlarmHandler handler
+            [FromServices] ZenoContext context
         )
         {
-            var result = await handler.Handle(command);
-            await _hubContext.Clients.All.SendAlarmNotification((Alarm)result.Data);
-            return Ok(result);
+            var alarm = new Alarm
+            {
+                Pathname = command.Pathname,
+                Value = command.Value,
+                Enabled = command.Enabled,
+                Status = command.Status,
+                AlarmRuleId = command.AlarmRuleId,
+                InDate = command.InDate,
+                OutDate = command.OutDate,
+                NotificationEnabled = command.NotificationEnabled
+            };
+
+            if (alarm.NotificationEnabled == true)
+            {
+                await _hubContext.Clients.All.SendAlarmNotification(alarm);
+            }
+
+            await _repository.CreateAsync(alarm);
+            await _repository.Commit();
+
+            return Ok(new CommandResult(true, "Alarm created successful", alarm));
         }
 
         [HttpPut]
