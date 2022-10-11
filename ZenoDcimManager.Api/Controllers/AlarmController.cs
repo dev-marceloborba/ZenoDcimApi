@@ -48,7 +48,8 @@ namespace ZenoDcimManager.Api.Controllers
                 AlarmRuleId = command.AlarmRuleId,
                 InDate = command.InDate,
                 OutDate = command.OutDate,
-                NotificationEnabled = command.NotificationEnabled
+                NotificationEnabled = command.NotificationEnabled,
+                EmailEnabled = command.EmailEnabled
             };
 
             if (alarm.NotificationEnabled == true)

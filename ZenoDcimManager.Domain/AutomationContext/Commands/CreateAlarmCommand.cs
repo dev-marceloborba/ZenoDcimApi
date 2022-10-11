@@ -13,6 +13,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Commands
         public DateTime? OutDate { get; set; }
         public bool Enabled { get; set; }
         public bool NotificationEnabled { get; set; }
+        public bool EmailEnabled { get; set; }
         public Guid AlarmRuleId { get; set; }
 
         public void Validate()
