@@ -81,6 +81,10 @@ namespace ZenoDcimManager.Infra.Repositories
                         Alarms = x.ViewAlarms,
                         Equipments = x.ViewEquipments,
                         Parameters = x.ViewParameters
+                    },
+                    General = new GeneralPermissions
+                    {
+                        ReceiveEmail = x.ReceiveEmail
                     }
                 })
                 .ToListAsync();

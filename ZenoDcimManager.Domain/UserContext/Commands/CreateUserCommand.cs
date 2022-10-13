@@ -17,25 +17,20 @@ namespace ZenoDcimManager.Domain.UserContext.Commands
         public string Email { get; set; }
         public string Password { get; set; }
         public string PasswordConfirmation { get; set; }
-        public int Role { get; set; }
         public bool Active { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid GroupId { get; set; }
 
         public void Validate()
         {
             AddNotifications(new Contract()
                 .Requires()
-                .IsTrue(ValidateRole(), "Role", "Invalid role")
                 .IsTrue(ValidateGuid(CompanyId), "CompanyId", "Company Id is empty")
                 .IsNotNull(CompanyId, "CompanyId", "Company Id is null")
                 .AreNotEquals(Password, PasswordConfirmation, "Password", "Password doenst match")
             );
         }
 
-        public bool ValidateRole()
-        {
-            return ((int)Role <= 4);
-        }
 
         public bool ValidateGuid(Guid guid)
         {

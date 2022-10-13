@@ -39,7 +39,6 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
             command.Email = "marcelo@marcelo.com";
             command.Password = "123456";
             command.PasswordConfirmation = "123456";
-            command.Role = 1;
             command.Active = true;
             command.CompanyId = Guid.Parse("bde6ab74-81be-448c-9abf-709e60a221b0");
             _handler.Handle(command);
@@ -56,7 +55,6 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
             command.Email = "marcelo@marcelo.com";
             command.Password = "123456";
             command.PasswordConfirmation = "123456";
-            command.Role = 8;
             command.Active = true;
             command.CompanyId = Guid.Parse("bde6ab74-81be-448c-9abf-709e60a221b0");
             _handler.Handle(command);
@@ -86,12 +84,11 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
             command.Email = "marcelo@marcelo.com";
             command.Password = "123456";
             command.PasswordConfirmation = "123456";
-            command.Role = 2;
             command.Active = true;
             command.CompanyId = Guid.Parse("bde6ab74-81be-448c-9abf-709e60a221b0");
             var result = await _handler.Handle(command);
             var entity = (UserOutputCommand)result.Data;
-            Assert.AreEqual(entity.Role, EUserRole.OPERATOR);
+            Assert.Fail();
         }
     }
 }

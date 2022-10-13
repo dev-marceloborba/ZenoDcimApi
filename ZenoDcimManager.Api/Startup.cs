@@ -91,6 +91,7 @@ namespace ZenoDcimManager.Api
             services.AddTransient<ParameterHandler, ParameterHandler>();
             services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
+            services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
             services.AddCors();
 

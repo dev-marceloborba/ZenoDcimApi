@@ -10,7 +10,6 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         {
             builder.ToTable("User");
             builder.Property(x => x.Id);
-            builder.Property(x => x.Role);
             builder.Property(x => x.Active);
             builder.Property(x => x.FirstName)
                 .HasColumnType("varchar(80)")

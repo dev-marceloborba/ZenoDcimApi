@@ -10,6 +10,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands.Input
         public ActionPermissions Actions { get; set; }
         public RegisterPermissions Registers { get; set; }
         public ViewPermissions Views { get; set; }
+        public GeneralPermissions General { get; set; }
 
         public void Validate()
         {

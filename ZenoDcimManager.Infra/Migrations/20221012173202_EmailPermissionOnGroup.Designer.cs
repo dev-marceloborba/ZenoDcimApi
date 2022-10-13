@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221012173202_EmailPermissionOnGroup")]
+    partial class EmailPermissionOnGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -458,7 +460,7 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("CompanyId")
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -484,6 +486,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -582,8 +587,8 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("PowerLimit")
-                        .HasColumnType("float");
+                    b.Property<int>("PowerLimit")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("RackId")
                         .HasColumnType("uniqueidentifier");
@@ -597,8 +602,8 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<string>("Size")
                         .HasColumnType("varchar(14)");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -742,8 +747,8 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("varchar(30)");
 
-                    b.Property<double>("Scale")
-                        .HasColumnType("float");
+                    b.Property<int>("Scale")
+                        .HasColumnType("int");
 
                     b.Property<string>("Unit")
                         .HasColumnType("varchar(5)");
@@ -991,9 +996,7 @@ namespace ZenoDcimManager.Infra.Migrations
                 {
                     b.HasOne("ZenoDcimManager.Domain.UserContext.Entities.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("ZenoDcimManager.Domain.UserContext.Entities.Group", "Group")
                         .WithMany()

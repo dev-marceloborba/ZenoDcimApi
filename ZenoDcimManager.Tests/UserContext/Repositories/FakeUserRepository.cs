@@ -16,12 +16,7 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
         public FakeUserRepository()
         {
             _users = new List<User>();
-            _users.Add(
-                new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN, _company)
-            );
-            _users.Add(
-                new User("Juliane", "Mattei", "juliane@marcelo.com", "123456798", EUserRole.ADMIN, _company)
-            );
+
         }
 
         public async Task Commit()

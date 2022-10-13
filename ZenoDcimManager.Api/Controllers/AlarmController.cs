@@ -10,6 +10,7 @@ using ZenoDcimManager.Api.Hubs;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Enums;
+using ZenoDcimManager.Domain.AutomationContext.Handlers;
 using ZenoDcimManager.Domain.AutomationContext.Hubs;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.ViewModels;
@@ -25,11 +26,13 @@ namespace ZenoDcimManager.Api.Controllers
     {
         private readonly IAlarmRepository _repository;
         private readonly IHubContext<NotificationsHub, INotificationClient> _hubContext;
+        private readonly AlarmEmailHandler _emailHandler;
 
-        public AlarmController(IAlarmRepository repository, IHubContext<NotificationsHub, INotificationClient> hubContext)
+        public AlarmController(IAlarmRepository repository, IHubContext<NotificationsHub, INotificationClient> hubContext, AlarmEmailHandler emailHandler)
         {
             _repository = repository;
             _hubContext = hubContext;
+            _emailHandler = emailHandler;
         }
 
         [HttpPost]
@@ -57,10 +60,15 @@ namespace ZenoDcimManager.Api.Controllers
                 await _hubContext.Clients.All.SendAlarmNotification(alarm);
             }
 
+            if (alarm.EmailEnabled == true)
+            {
+                await _emailHandler.Handle(alarm.Pathname);
+            }
+
             await _repository.CreateAsync(alarm);
             await _repository.Commit();
 
-            return Ok(new CommandResult(true, "Alarm created successful", alarm));
+            return Ok(new CommandResult(true, "Alarme criado com sucesso", alarm));
         }
 
         [HttpPut]

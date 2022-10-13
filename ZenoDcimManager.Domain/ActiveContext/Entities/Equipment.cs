@@ -17,15 +17,15 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public Building Building { get; set; }
         public Floor Floor { get; set; }
         public Room Room { get; set; }
+        public double Weight { get; set; }
+        public string Size { get; set; }
+        public double PowerLimit { get; set; }
         // Navigation properties
         public Guid? BuildingId { get; set; }
         public Guid? FloorId { get; set; }
         public Guid? RoomId { get; set; }
         public Guid? RackId { get; set; }
         public Guid? RackPduId { get; set; }
-        public int Weight { get; set; }
-        public string Size { get; set; }
-        public int PowerLimit { get; set; }
 
         public override string ToString()
         {

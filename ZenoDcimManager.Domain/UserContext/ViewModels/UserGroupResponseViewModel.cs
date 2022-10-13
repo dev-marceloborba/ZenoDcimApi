@@ -11,6 +11,7 @@ namespace ZenoDcimManager.Domain.UserContext.ViewModels
         public ActionPermissions Actions { get; set; }
         public RegisterPermissions Registers { get; set; }
         public ViewPermissions Views { get; set; }
+        public GeneralPermissions General { get; set; }
 
     }
 }

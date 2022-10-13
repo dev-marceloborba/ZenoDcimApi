@@ -13,9 +13,9 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands.Inputs
         public string ComponentCode { get; set; }
         public string Description { get; set; }
         public EEquipmentGroup Group { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         public string Size { get; set; }
-        public int PowerLimit { get; set; }
+        public double PowerLimit { get; set; }
         public void Validate()
         {
             throw new System.NotImplementedException();

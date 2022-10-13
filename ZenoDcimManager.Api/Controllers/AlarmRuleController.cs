@@ -57,6 +57,7 @@ namespace ZenoDcimManager.Api.Controllers
             alarmRule.EquipmentParameterId = command.EquipmentParameterId;
             alarmRule.Priority = command.Priority;
             alarmRule.Setpoint = command.Setpoint;
+            alarmRule.EnableEmail = command.EnableEmail;
             alarmRule.EnableNotification = command.EnableNotification;
             alarmRule.TrackModifiedDate();
 

@@ -50,15 +50,7 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<UserOutputCommand> FindUserById(Guid id)
         {
             var user = await _repository.FindByIdAsync(id);
-            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active);
-        }
-
-        [Route("")]
-        [HttpPut]
-        [Authorize]
-        public void Update()
-        {
-
+            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active);
         }
 
         [HttpDelete]
@@ -98,12 +90,20 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("edit")]
         [HttpPost]
         [AllowAnonymous]
-        public ICommandResult Edit(
-            [FromBody] EditUserCommand command,
-            [FromServices] UserHandler handler
+        public async Task<ActionResult> Edit(
+            [FromBody] EditUserCommand command
         )
         {
-            return (ICommandResult)handler.Handle(command);
+            var user = await _repository.FindByIdAsync(command.Id);
+            user.FirstName = command.FirstName;
+            user.LastName = command.LastName;
+            user.Email = command.Email;
+            user.GroupId = command.GroupId;
+
+            _repository.Update(user);
+            await _repository.Commit();
+
+            return Ok(new CommandResult(true, "Usuário editado com sucesso", user));
         }
 
         //[Route("{email}")]

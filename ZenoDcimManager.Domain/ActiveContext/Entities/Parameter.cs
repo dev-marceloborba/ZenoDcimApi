@@ -9,7 +9,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public string Unit { get; set; }
         public int LowLimit { get; set; }
         public int HighLimit { get; set; }
-        public int Scale { get; set; }
+        public double Scale { get; set; }
         public string Expression { get; set; }
         public string Discriminator { get; set; }
         public List<ParameterGroupAssignment> ParameterGroupAssignments { get; set; } = new List<ParameterGroupAssignment>();
@@ -18,23 +18,5 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         {
         }
 
-        public Parameter(string name, string unit, int lowLimit, int highLimit, int scale)
-        {
-            Name = name;
-            Unit = unit;
-            LowLimit = lowLimit;
-            HighLimit = highLimit;
-            Scale = scale;
-        }
-
-        public void AddParameter(ParameterGroupAssignment parameter)
-        {
-            ParameterGroupAssignments.Add(parameter);
-        }
-
-        public void RemoveParameter(ParameterGroupAssignment parameter)
-        {
-            ParameterGroupAssignments.Remove(parameter);
-        }
     }
 }

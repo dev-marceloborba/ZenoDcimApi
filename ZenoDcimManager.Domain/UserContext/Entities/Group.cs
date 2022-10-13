@@ -19,5 +19,7 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
         public bool ViewAlarms { get; set; }
         public bool ViewParameters { get; set; }
         public bool ViewEquipments { get; set; }
+        // General
+        public bool ReceiveEmail { get; set; }
     }
 }

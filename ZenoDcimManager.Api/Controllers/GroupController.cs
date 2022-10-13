@@ -35,6 +35,7 @@ namespace ZenoDcimManager.Api.Controllers
                 ViewAlarms = command.Views.Alarms,
                 ViewEquipments = command.Views.Equipments,
                 ViewParameters = command.Views.Parameters,
+                ReceiveEmail = command.General.ReceiveEmail
             };
 
             await repository.CreateAsync(group);
@@ -85,6 +86,7 @@ namespace ZenoDcimManager.Api.Controllers
             group.ViewAlarms = command.Views.Alarms;
             group.ViewEquipments = command.Views.Equipments;
             group.ViewParameters = command.Views.Parameters;
+            group.ReceiveEmail = command.General.ReceiveEmail;
             group.TrackModifiedDate();
 
             repository.Update(group);

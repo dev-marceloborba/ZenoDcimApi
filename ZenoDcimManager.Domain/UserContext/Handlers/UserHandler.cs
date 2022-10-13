@@ -41,18 +41,10 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Nao foi possivel criar o usuario", command.Notifications);
             }
 
-            // find company
-            var company = await _companyRepository.FindCompanyById(command.CompanyId);
-
-            if (company == null)
-            {
-                AddNotification("Company", "Empresa não encontrada");
-                return new CommandResult(false, "Não foi possível criar o usuário", Notifications);
-            }
-
-            var role = (EUserRole)command.Role;
             var hashedPassword = _cryptoService.EncryptPassword(command.Password);
-            var user = new User(command.FirstName, command.LastName, command.Email, hashedPassword, role, company);
+            var user = new User(command.FirstName, command.LastName, command.Email, hashedPassword);
+            user.CompanyId = command.CompanyId;
+            user.GroupId = command.GroupId;
 
             var userValidator = new UserValidator(user);
 
@@ -69,45 +61,36 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             // send e-mail
             _emailService.Send(user.ToString(), user.Email, "Welcome to Zeno DCIM", "Your account was created");
 
-            return new CommandResult(true, "Usuario criado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active));
+            return new CommandResult(true, "Usuario criado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active));
 
         }
 
         public async Task<ICommandResult> Handle(EditUserCommand command)
         {
-            command.Validate();
-            if (command.Invalid)
-            {
-                AddNotifications(command);
-                return new CommandResult(false, "Nao foi possivel editar o usuario", Notifications);
-            }
-
-            // find company
-            var company = await _companyRepository.FindCompanyById(command.CompanyId);
-
-            if (company == null)
-            {
-                AddNotification("Company", "Empresa não encontrada");
-                return new CommandResult(false, "Não foi possível criar o usuário", Notifications);
-            }
+            // command.Validate();
+            // if (command.Invalid)
+            // {
+            //     AddNotifications(command);
+            //     return new CommandResult(false, "Nao foi possivel editar o usuario", Notifications);
+            // }
 
             var user = await _userRepository.FindByIdAsync(command.Id);
 
-            if (user == null)
-            {
-                AddNotification("User", "User not found");
-                return new CommandResult(false, "Nao foi possivel editar o usuario", Notifications);
-            }
+            // if (user == null)
+            // {
+            //     AddNotification("User", "User not found");
+            //     return new CommandResult(false, "Nao foi possivel editar o usuario", Notifications);
+            // }
 
-            var role = (EUserRole)command.Role;
-            var editedUser = new User(command.FirstName, command.LastName, command.Email, role, company);
+            user.FirstName = command.FirstName;
+            user.LastName = command.LastName;
+            user.Email = command.Email;
+            user.GroupId = command.GroupId;
 
-            user.CopyWith(editedUser);
+            // _userRepository.Update(user);
+            // await _userRepository.Commit();
 
-            _userRepository.Update(user);
-            await _userRepository.Commit();
-
-            return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Active));
+            return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active));
         }
     }
 }

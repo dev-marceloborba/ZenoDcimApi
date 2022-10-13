@@ -17,7 +17,7 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
         private readonly User _user;
         public UserEntitiesTests()
         {
-            _user = new User("Marcelo", "Borba", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN, _company);
+            _user = new User();
         }
 
         [TestMethod]
@@ -35,29 +35,11 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
             Assert.AreEqual(_user.Active, false);
         }
 
-        [TestMethod]
-        [TestCategory("Entities")]
-        public void ShouldChangeRoleToOperator()
-        {
-            _user.ChangeRole(EUserRole.OPERATOR);
-            Assert.AreEqual(_user.Role, EUserRole.OPERATOR);
-        }
 
-        [TestMethod]
-        [TestCategory("Entities")]
-        public void ShouldChangeRoleToViewOnly()
-        {
-            _user.ChangeRole(EUserRole.VIEW_ONLY);
-            Assert.AreEqual(_user.Role, EUserRole.VIEW_ONLY);
-        }
 
-        [TestMethod]
-        [TestCategory("Entities")]
-        public void ShouldChangeRoleToExternalClient()
-        {
-            _user.ChangeRole(EUserRole.EXTERNAL_CLIENT);
-            Assert.AreEqual(_user.Role, EUserRole.EXTERNAL_CLIENT);
-        }
+
+
+
 
         [TestMethod]
         [TestCategory("Entities")]
@@ -75,21 +57,7 @@ namespace ZenoDcimManager.Tests.UserContext.Entities
             Assert.AreEqual(userValidator.Valid, true);
         }
 
-        [TestMethod]
-        [TestCategory("Entities")]
-        public void ShouldCreateAnInvalidUser()
-        {
-            var user = new User("Marcelo", "", "marcelo@marcelo.com", "123456798", EUserRole.ADMIN, _company);
-            var userValidator = new UserValidator(user);
-            Assert.AreEqual(userValidator.Invalid, true);
-        }
 
-        [TestMethod]
-        [TestCategory("Entities")]
-        public void ShouldCreateUserAsOperator()
-        {
-            var user = new User("Marcelo", "Borba", "marcelo@mindcloud.com", "12345678", EUserRole.OPERATOR, _company);
-            Assert.AreEqual(user.Role, EUserRole.OPERATOR);
-        }
+
     }
 }
