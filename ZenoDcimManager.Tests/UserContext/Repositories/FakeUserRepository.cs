@@ -62,5 +62,10 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
                     x = model;
             });
         }
+
+        public Task<bool> CheckIfExists(string parameter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

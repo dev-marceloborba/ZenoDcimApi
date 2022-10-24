@@ -66,5 +66,19 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             _context.Entry(item).State = EntityState.Modified;
         }
+
+        public async Task<bool> CheckIfExists(string parameter)
+        {
+            var result = await _context.Users
+                .FirstOrDefaultAsync(x => x.Email == parameter);
+            if (result == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

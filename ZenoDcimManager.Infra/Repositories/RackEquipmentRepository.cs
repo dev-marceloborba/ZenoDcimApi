@@ -56,6 +56,24 @@ namespace ZenoDcimManager.Infra.Repositories
                 .FirstOrDefaultAsync(x => x.BaseEquipment.Name == name);
         }
 
+        public async Task<IEnumerable<RackEquipment>> FindEquipmentsWithoutRack()
+        {
+            return await _context.RackEquipments
+                .AsNoTracking()
+                .Include(x => x.BaseEquipment)
+                .Where(x => x.InitialPosition == 0 && x.FinalPosition == 0)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<RackEquipment>> FindRackEquipmentsByRackId(Guid id)
+        {
+            return await _context.RackEquipments
+                .AsNoTracking()
+                .Where(x => x.RackId == id)
+                .Include(x => x.BaseEquipment)
+                .ToListAsync();
+        }
+
         public void Update(RackEquipment rackEquipment)
         {
             _context.Entry(rackEquipment).State = EntityState.Modified;

@@ -6,12 +6,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class RackEquipment : Entity
     {
-        public BaseEquipment BaseEquipment { get; private set; }
-        public int InitialPosition { get; private set; }
-        public int FinalPosition { get; private set; }
-        public ERackEquipmentType RackEquipmentType { get; private set; }
+        public BaseEquipment BaseEquipment { get; set; }
+        public int InitialPosition { get; set; }
+        public int FinalPosition { get; set; }
+        public ERackEquipmentType RackEquipmentType { get; set; }
         // Navigation property
-        public Guid? RackId { get; private set; }
+        public Guid? RackId { get; set; }
 
         public RackEquipment()
         {

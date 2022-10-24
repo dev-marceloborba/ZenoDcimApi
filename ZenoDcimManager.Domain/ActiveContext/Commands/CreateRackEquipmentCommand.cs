@@ -1,3 +1,4 @@
+using System;
 using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared.Commands;
 
@@ -13,6 +14,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands
         public int FinalPosition { get; set; }
         public ERackEquipmentType RackEquipmentType { get; set; }
         public string RackLocalization { get; set; }
+        public Guid RackId { get; set; }
+        public int Size { get; set; }
         public void Validate()
         {
 

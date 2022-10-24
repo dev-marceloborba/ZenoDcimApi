@@ -12,6 +12,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Repositories
         Task<IEnumerable<RackEquipment>> FindAll();
         Task<RackEquipment> FindById(Guid id);
         Task<RackEquipment> FindByName(string name);
+        Task<IEnumerable<RackEquipment>> FindRackEquipmentsByRackId(Guid id);
+        Task<IEnumerable<RackEquipment>> FindEquipmentsWithoutRack();
         void Update(RackEquipment rackEquipment);
         void Delete(RackEquipment rackEquipment);
     }

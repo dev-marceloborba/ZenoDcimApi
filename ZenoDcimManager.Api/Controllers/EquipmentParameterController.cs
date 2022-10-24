@@ -107,6 +107,7 @@ namespace ZenoDcimManager.Api.Controllers
                 var pathname = item.GetPathname();
                 parameters.Add(new FindParametersByEquipmentOutputCommand
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     Unit = item.Unit,
                     LowLimit = item.LowLimit,

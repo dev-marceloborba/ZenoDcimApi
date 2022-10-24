@@ -8,9 +8,9 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
     [TestClass]
     public class RackEntitiesTests
     {
-        private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
-        private readonly BaseEquipment _swBase = new BaseEquipment("Switch01", "SSW", "Datacom", "12345679");
-        private readonly BaseEquipment _storageBase = new BaseEquipment("Storage01", "SSG", "Dell", "12345679");
+        private readonly BaseEquipment _serverBase = new BaseEquipment();
+        private readonly BaseEquipment _swBase = new BaseEquipment();
+        private readonly BaseEquipment _storageBase = new BaseEquipment();
 
         private RackEquipment _server1;
         private RackEquipment _server2;

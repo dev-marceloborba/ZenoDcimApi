@@ -8,6 +8,7 @@ namespace ZenoDcimManager.Domain.ActiveContext.Commands.Outputs
 {
     public class FindParametersByEquipmentOutputCommand
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Unit { get; set; }
         public double LowLimit { get; set; }

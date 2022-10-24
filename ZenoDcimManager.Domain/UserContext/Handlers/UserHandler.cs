@@ -41,6 +41,13 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
                 return new CommandResult(false, "Nao foi possivel criar o usuario", command.Notifications);
             }
 
+            // verifica se o usuário já existe na base
+            var exists = await _userRepository.CheckIfExists(command.Email);
+            if (exists)
+            {
+                return new CommandResult(false, "Usuário já existente no sistema", "");
+            }
+
             var hashedPassword = _cryptoService.EncryptPassword(command.Password);
             var user = new User(command.FirstName, command.LastName, command.Email, hashedPassword);
             user.CompanyId = command.CompanyId;

@@ -5,17 +5,14 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class BaseEquipment : Entity
     {
-        public BaseEquipment(string name, string model, string manufactor, string serialNumber)
+        public BaseEquipment()
         {
-            Name = name;
-            Model = model;
-            Manufactor = manufactor;
-            SerialNumber = serialNumber;
-        }
 
-        public string Name { get; private set; }
-        public string Model { get; private set; }
-        public string Manufactor { get; private set; }
-        public string SerialNumber { get; private set; }
+        }
+        public string Name { get; set; }
+        public string Model { get; set; }
+        public string Manufactor { get; set; }
+        public string SerialNumber { get; set; }
+        public int Size { get; set; }
     }
 }

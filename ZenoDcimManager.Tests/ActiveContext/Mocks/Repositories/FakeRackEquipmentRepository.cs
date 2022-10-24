@@ -14,10 +14,10 @@ namespace ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories
         private readonly BaseEquipment _baseEquipment;
         public FakeRackEquipmentRepository()
         {
-            _baseEquipment = new BaseEquipment("Server1", "mode1", "manufactor1", "s1232131");
-            _rackEquipments.Add(new RackEquipment(_baseEquipment, 1, 2, ERackEquipmentType.SERVER));
-            _rackEquipments.Add(new RackEquipment(_baseEquipment, 3, 4, ERackEquipmentType.SWITCH));
-            _rackEquipments.Add(new RackEquipment(_baseEquipment, 5, 6, ERackEquipmentType.STORAGE));
+            // _baseEquipment = new BaseEquipment("Server1", "mode1", "manufactor1", "s1232131");
+            // _rackEquipments.Add(new RackEquipment(_baseEquipment, 1, 2, ERackEquipmentType.SERVER));
+            // _rackEquipments.Add(new RackEquipment(_baseEquipment, 3, 4, ERackEquipmentType.SWITCH));
+            // _rackEquipments.Add(new RackEquipment(_baseEquipment, 5, 6, ERackEquipmentType.STORAGE));
         }
 
         public async Task Commit()
@@ -49,6 +49,16 @@ namespace ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories
         {
             return new RackEquipment();
             // return _rackEquipments.FirstOrDefault(x => x.BaseEquipment.Name == name);
+        }
+
+        public Task<IEnumerable<RackEquipment>> FindEquipmentsWithoutRack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<RackEquipment>> FindRackEquipmentsByRackId(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(RackEquipment rackEquipment)

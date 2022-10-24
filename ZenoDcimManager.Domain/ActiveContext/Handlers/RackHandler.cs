@@ -42,6 +42,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         {
             var rack = await _rackRepository.FindByIdAsync(command.Id);
 
+            rack.Localization = command.Localization;
+            rack.Size = command.Size;
+            rack.TrackModifiedDate();
+
             _rackRepository.Update(rack);
             await _rackRepository.Commit();
 

@@ -11,7 +11,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories
     public class FakeRackRepository : IRackRepository
     {
         private List<Rack> _racks = new List<Rack>();
-        private readonly BaseEquipment _serverBase = new BaseEquipment("Server01", "HP-Proliant", "HP", "12345679");
+        private readonly BaseEquipment _serverBase = new BaseEquipment();
         private readonly RackEquipment _server;
         private Rack _rack;
 

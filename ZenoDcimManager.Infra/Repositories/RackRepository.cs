@@ -39,8 +39,8 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<Rack> FindByIdAsync(Guid id)
         {
             return await _context.Racks
-                .AsNoTracking()
                 .Include(x => x.RackEquipments)
+                .ThenInclude(x => x.BaseEquipment)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -48,6 +48,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Racks
                 .Include(x => x.RackEquipments)
+                .ThenInclude(x => x.BaseEquipment)
                 .FirstOrDefaultAsync(x => x.Localization == localization);
         }
 

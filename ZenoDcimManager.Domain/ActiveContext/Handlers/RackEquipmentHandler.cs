@@ -24,11 +24,14 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateRackEquipmentCommand command)
         {
-            var baseEquipment = new BaseEquipment(
-                    command.Name,
-                    command.Model,
-                    command.Manufactor,
-                    command.SerialNumber);
+            var baseEquipment = new BaseEquipment
+            {
+                Name = command.Name,
+                Model = command.Model,
+                Manufactor = command.Manufactor,
+                SerialNumber = command.SerialNumber,
+                Size = command.Size
+            };
             var baseEquipmentValidator = new BaseEquipmentValidator(baseEquipment);
 
             var rackEquipment = new RackEquipment(
@@ -44,17 +47,13 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 return new CommandResult(false, "Error on creating rack equipment", Notifications);
 
             var rack = await _rackRepository.FindByLocalization(command.RackLocalization);
-            if (rack == null)
-            {
-                AddNotification("Rack", "Rack doesnt exists");
-                return new CommandResult(false, "Error on creating rack equipment", Notifications);
-            }
+            if (rack != null)
+                rackEquipment.RackId = rack.Id;
 
-            rack.AddEquipment(rackEquipment);
-            await _rackRepository.AddRackEquipments(rack);
+            await _rackEquipmentRepository.Create(rackEquipment);
             await _rackEquipmentRepository.Commit();
 
-            return new CommandResult(true, "Rack equipment created successful", rackEquipment);
+            return new CommandResult(true, "Equipamento de rack criado com sucesso", rackEquipment);
         }
     }
 }

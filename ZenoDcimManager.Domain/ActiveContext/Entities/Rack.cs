@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZenoDcimManager.Domain.ActiveContext.ValueObjects;
 using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared;
 
@@ -8,9 +9,14 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Rack : Entity
     {
-        public int Size { get; private set; }
-        public string Localization { get; private set; }
+        public int Size { get; set; }
+        public string Localization { get; set; }
         public List<RackEquipment> RackEquipments { get; private set; }
+
+        public Rack()
+        {
+
+        }
 
         public Rack(int size, string localization)
         {
@@ -99,7 +105,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
             {
                 if (x.IsNotAvailable())
                 {
-                    occupedPositions.Add(x.InitialPosition);
+                    for (int i = x.InitialPosition; i < x.FinalPosition + 1; i++)
+                    {
+                        occupedPositions.Add(i);
+                    }
                 }
             });
             return occupedPositions.ToArray();
@@ -119,6 +128,49 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public int FirstAvailablePosition()
         {
             return AvailablePositions()[0];
+        }
+
+        public int TotalAvailableSpace()
+        {
+            return AvailablePositions().Count();
+        }
+
+        public int TotalUsedSpace()
+        {
+            return Size - TotalAvailableSpace();
+        }
+
+        public IEnumerable<RackSlot> GetRackSlots()
+        {
+            var slots = new List<RackSlot>();
+
+            for (int i = 1; i <= Size; i++)
+            {
+                var eq = RackEquipments.FirstOrDefault(x => i >= x.InitialPosition && i <= x.FinalPosition);
+                if (eq == null)
+                {
+                    slots.Add(new RackSlot
+                    {
+                        InitialPosition = i,
+                        FinalPosition = i
+                    });
+                }
+                else
+                {
+                    if (!slots.Exists(x => i >= x.InitialPosition && i <= x.FinalPosition))
+                    {
+                        slots.Add(new RackSlot
+                        {
+                            Description = eq.BaseEquipment.Name,
+                            InitialPosition = eq.InitialPosition,
+                            FinalPosition = eq.FinalPosition,
+                            EquipmentId = eq.Id
+                        });
+                    }
+                }
+            }
+
+            return slots.OrderBy(x => x.InitialPosition);
         }
 
         public void ChangeLocalization(string localization) => Localization = localization;

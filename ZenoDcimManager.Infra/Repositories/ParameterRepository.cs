@@ -47,14 +47,13 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task<IEnumerable<Parameter>> FindParametersByGroup(string groupName)
         {
-            var parametersByGroup =
-               from pga in _context.ParameterGroupAssignments
-               join p in _context.Parameters on pga.ParameterId equals p.Id
-               join epg in _context.EquipmentParameterGroups on pga.EquipmentParameterGroupId equals epg.Id
-               where epg.Name == groupName
-               select p;
-
-            return await parametersByGroup.ToListAsync();
+            return await _context.ParameterGroupAssignments
+                .AsNoTracking()
+                .Include(x => x.EquipmentParameterGroup)
+                .Include(x => x.Parameter)
+                .Where(x => x.EquipmentParameterGroup.Name == groupName)
+                .Select(x => x.Parameter)
+                .ToListAsync();
         }
 
         public void Update(Parameter model)
