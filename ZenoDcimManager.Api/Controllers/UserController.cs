@@ -50,7 +50,7 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<UserOutputCommand> FindUserById(Guid id)
         {
             var user = await _repository.FindByIdAsync(id);
-            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active);
+            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, user.UserPreferencies);
         }
 
         [HttpDelete]

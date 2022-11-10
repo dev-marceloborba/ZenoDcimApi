@@ -33,6 +33,24 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
+        [Route("place-equipment/{id}")]
+        [HttpPut]
+        public async Task<ActionResult> PlaceRackEquipment(
+            [FromRoute] Guid id,
+            [FromBody] CreateRackEquipmentCommand command
+        )
+        {
+            var rackEquipment = await _repository.FindById(id);
+            rackEquipment.RackId = command.RackId;
+            rackEquipment.InitialPosition = command.InitialPosition;
+            rackEquipment.FinalPosition = command.FinalPosition;
+
+            _repository.Update(rackEquipment);
+            await _repository.Commit();
+
+            return Ok(new CommandResult(true, "Equipamento posicionado no rack", rackEquipment));
+        }
+
         [Route("")]
         [HttpGet]
         public async Task<IEnumerable<RackEquipment>> GetAllRackEquipments()

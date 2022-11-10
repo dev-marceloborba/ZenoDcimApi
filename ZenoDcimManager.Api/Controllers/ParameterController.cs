@@ -65,6 +65,16 @@ namespace ZenoDcimManager.Api.Controllers
             return await _repository.FindAllAsync();
         }
 
+        [Route("parameters/{id}")]
+        [HttpGet]
+        public async Task<ActionResult> FindParameterById(
+            [FromRoute] Guid id
+        )
+        {
+            var result = await _repository.FindByIdAsync(id);
+            return Ok(result);
+        }
+
         [Route("parameters/{Id}")]
         [HttpDelete]
         public async Task<ActionResult> DeleteParameter(Guid id)

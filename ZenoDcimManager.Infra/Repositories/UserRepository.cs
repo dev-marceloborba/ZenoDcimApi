@@ -33,6 +33,7 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Users
                 .Where(x => x.Id == id)
                 .Include(x => x.Group)
+                .Include(x => x.UserPreferencies)
                 .FirstOrDefaultAsync();
         }
 
@@ -45,6 +46,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Users
                 .AsNoTracking()
+                .Include(x => x.UserPreferencies)
                 .Include(x => x.Group)
                 .Include(x => x.Company)
                 .ThenInclude(x => x.Contracts)

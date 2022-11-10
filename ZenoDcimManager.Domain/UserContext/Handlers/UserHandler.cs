@@ -68,7 +68,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             // send e-mail
             _emailService.Send(user.ToString(), user.Email, "Welcome to Zeno DCIM", "Your account was created");
 
-            return new CommandResult(true, "Usuario criado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active));
+            return new CommandResult(true, "Usuario criado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, null));
 
         }
 
@@ -97,7 +97,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             // _userRepository.Update(user);
             // await _userRepository.Commit();
 
-            return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active));
+            return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, null));
         }
     }
 }

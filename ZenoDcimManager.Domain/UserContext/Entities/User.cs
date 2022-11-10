@@ -1,5 +1,4 @@
 using System;
-using ZenoDcimManager.Domain.UserContext.Enums;
 using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.UserContext.Entities
@@ -15,6 +14,8 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
         public Guid CompanyId { get; set; }
         public Group Group { get; set; }
         public Guid GroupId { get; set; }
+        public UserPreferencies UserPreferencies { get; set; }
+        public Guid? UserPreferenciesId { get; set; }
 
         public User()
         {

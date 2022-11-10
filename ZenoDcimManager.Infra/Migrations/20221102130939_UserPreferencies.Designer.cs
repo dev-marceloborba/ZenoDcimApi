@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221102130939_UserPreferencies")]
+    partial class UserPreferencies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -485,7 +487,7 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserPreferenciesId")
+                    b.Property<Guid>("UserPreferenciesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -506,9 +508,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AlarmHistoryTable")
-                        .HasColumnType("int");
 
                     b.Property<int>("AvailableParameterTable")
                         .HasColumnType("int");
@@ -1061,7 +1060,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.HasOne("ZenoDcimManager.Domain.UserContext.Entities.UserPreferencies", "UserPreferencies")
                         .WithMany()
-                        .HasForeignKey("UserPreferenciesId");
+                        .HasForeignKey("UserPreferenciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 

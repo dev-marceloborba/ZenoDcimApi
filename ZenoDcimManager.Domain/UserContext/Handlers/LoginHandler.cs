@@ -46,7 +46,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
 
             var token = _tokenService.GenerateToken(user);
 
-            return new CommandResult(true, "Logado com sucesso", new AuthenticationOutputCommand(token, user.FirstName, user.Email));
+            return new CommandResult(true, "Logado com sucesso", new AuthenticationOutputCommand(token, user.FirstName, user.Email, user.Id));
         }
     }
 }

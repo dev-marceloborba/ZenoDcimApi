@@ -20,6 +20,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<Company> Companies { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<UserPreferencies> UserPreferencies { get; set; }
 
         // Datacenter
         public DbSet<Rack> Racks { get; set; }
@@ -49,15 +50,13 @@ namespace ZenoDcimManager.Infra.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Entity
-            // modelBuilder.ApplyConfiguration(new EntityMap());
-
             // Usuário
             modelBuilder.Ignore<Notification>();
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new CompanyMap());
             modelBuilder.ApplyConfiguration(new ContractMap());
             modelBuilder.ApplyConfiguration(new GroupMap());
+            modelBuilder.ApplyConfiguration(new UserPreferenciesMap());
 
             // Datacenter
             modelBuilder.ApplyConfiguration(new RackMap());

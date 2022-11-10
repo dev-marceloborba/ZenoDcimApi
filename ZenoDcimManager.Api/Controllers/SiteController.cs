@@ -62,6 +62,16 @@ namespace ZenoDcimManager.Api.Controllers
         }
 
         [Route("{id}")]
+        [HttpGet]
+        public async Task<ActionResult> FindSiteById(
+            [FromRoute] Guid id
+        )
+        {
+            var result = await _repository.FindByIdAsync(id);
+            return Ok(result);
+        }
+
+        [Route("{id}")]
         [HttpDelete]
         public async Task<ActionResult> DeleteSite(
             [FromRoute] Guid id)
