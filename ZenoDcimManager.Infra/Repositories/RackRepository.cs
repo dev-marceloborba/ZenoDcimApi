@@ -41,6 +41,10 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Racks
                 .Include(x => x.RackEquipments)
                 .ThenInclude(x => x.BaseEquipment)
+                .Include(x => x.Site)
+                .ThenInclude(x => x.Buildings)
+                .ThenInclude(x => x.Floors)
+                .ThenInclude(x => x.Rooms)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -58,6 +62,10 @@ namespace ZenoDcimManager.Infra.Repositories
                 .AsNoTracking()
                 .Include(x => x.RackEquipments)
                 .ThenInclude(x => x.BaseEquipment)
+                .Include(x => x.Site)
+                .Include(x => x.Building)
+                .Include(x => x.Floor)
+                .Include(x => x.Room)
                 .OrderBy(x => x.Id)
                 .ToListAsync();
         }

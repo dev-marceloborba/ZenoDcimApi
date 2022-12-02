@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221117121756_AdditionalFieldsOnWorkOrder")]
+    partial class AdditionalFieldsOnWorkOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1230,14 +1232,11 @@ namespace ZenoDcimManager.Infra.Migrations
                         .WithMany()
                         .HasForeignKey("BaseEquipmentId");
 
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Rack", "Rack")
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Rack", null)
                         .WithMany("RackEquipments")
-                        .HasForeignKey("RackId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RackId");
 
                     b.Navigation("BaseEquipment");
-
-                    b.Navigation("Rack");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>

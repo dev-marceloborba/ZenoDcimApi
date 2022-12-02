@@ -46,6 +46,7 @@ namespace ZenoDcimManager.Api.Controllers
                 EquipmentTable = command.EquipmentTable,
                 GroupParameterTable = command.GroupParameterTable,
                 ParameterTable = command.ParameterTable,
+                FloorTable = command.FloorTable,
                 RoomTable = command.RoomTable,
                 RuleTable = command.RuleTable,
                 SiteTable = command.SiteTable,
@@ -78,6 +79,7 @@ namespace ZenoDcimManager.Api.Controllers
             user.UserPreferencies.EquipmentTable = command.EquipmentTable;
             user.UserPreferencies.GroupParameterTable = command.GroupParameterTable;
             user.UserPreferencies.ParameterTable = command.ParameterTable;
+            user.UserPreferencies.FloorTable = command.FloorTable;
             user.UserPreferencies.RoomTable = command.RoomTable;
             user.UserPreferencies.RuleTable = command.RuleTable;
             user.UserPreferencies.SiteTable = command.SiteTable;

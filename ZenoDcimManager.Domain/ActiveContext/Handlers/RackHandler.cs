@@ -16,7 +16,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
     {
         private readonly IRackRepository _rackRepository;
 
-        public RackHandler(IRackRepository rackRepository)
+        public RackHandler(IRackRepository rackRepository )
         {
             _rackRepository = rackRepository;
         }
@@ -30,6 +30,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
 
             if (Invalid)
                 return new CommandResult(false, "Error on create rack", Notifications);
+
+            rack.Weight = command.Weight;
+            rack.SiteId = command.SiteId;
+            rack.BuildingId = command.BuildingId;
+            rack.FloorId = command.FloorId;
+            rack.RoomId = command.RoomId;
 
             // save on repository
             await _rackRepository.CreateAsync(rack);

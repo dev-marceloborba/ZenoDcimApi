@@ -46,7 +46,12 @@ namespace ZenoDcimManager.Api.Controllers
                 OrderType = command.OrderType,
                 Responsible = command.Responsible,
                 ResponsibleType = command.ResponsibleType,
-                WorkOrderStatus = EWorkOrderStatus.CREATED
+                WorkOrderStatus = EWorkOrderStatus.CREATED,
+                Title = command.Title,
+                Priority = command.Priority,
+                EstimatedRepairTime = command.EstimatedRepairTime,
+                RealRepairTime = command.RealRepairTime,
+                Cost = command.Cost
             };
 
             await repository.CreateAsync(workOrder);
@@ -71,7 +76,12 @@ namespace ZenoDcimManager.Api.Controllers
             workOrder.OrderType = command.OrderType;
             workOrder.Responsible = command.Responsible;
             workOrder.ResponsibleType = command.ResponsibleType;
-
+            workOrder.Title = command.Title;
+            workOrder.Priority = command.Priority;
+            workOrder.EstimatedRepairTime = command.EstimatedRepairTime;
+            workOrder.RealRepairTime = command.RealRepairTime;
+            workOrder.Cost = command.Cost;
+            workOrder.TrackModifiedDate();
 
             repository.Update(workOrder);
             await repository.Commit();

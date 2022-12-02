@@ -9,6 +9,10 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         public void Configure(EntityTypeBuilder<RackEquipment> builder)
         {
             builder.ToTable("RackEquipment");
+            builder
+                .HasOne<Rack>(x => x.Rack)
+                .WithMany(x => x.RackEquipments)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

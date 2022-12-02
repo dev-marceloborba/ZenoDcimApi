@@ -13,8 +13,10 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.ToTable("WorkOrder");
             builder.Property(x => x.Description).HasColumnType("varchar(400)");
             builder.Property(x => x.Responsible).HasColumnType("varchar(50)");
+            builder.Property(x => x.Title).HasColumnType("varchar(50)");
             builder.Property(x => x.InitialDate).HasConversion(typeof(UtcValueConverter));
             builder.Property(x => x.FinalDate).HasConversion(typeof(UtcValueConverter));
+            builder.Property(x => x.Cost).HasPrecision(18, 2);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands.Input
         public int UserTable { get; set; }
         public int SiteTable { get; set; }
         public int BuildingTable { get; set; }
+        public int FloorTable { get; set; }
         public int RoomTable { get; set; }
         public int ParameterTable { get; set; }
         public int AvailableParameterTable { get; set; }

@@ -22,6 +22,11 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Entities
         public DateTime FinalDate { get; set; }
         public string Description { get; set; }
         public EWorkOrderStatus WorkOrderStatus { get; set; }
+        public int EstimatedRepairTime { get; set; }
+        public int? RealRepairTime { get; set; }
+        public decimal? Cost { get; set; }
+        public string Title { get; set; }
+        public EWorkOrderPriority Priority { get; set; }
 
         // Navigation properties
         public Guid RoomId { get; set; }

@@ -8,6 +8,7 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
         public int SiteTable { get; set; } = 5;
         public int BuildingTable { get; set; } = 5;
         public int RoomTable { get; set; } = 5;
+        public int FloorTable { get; set; } = 5;
         public int ParameterTable { get; set; } = 5;
         public int AvailableParameterTable { get; set; } = 5;
         public int GroupParameterTable { get; set; } = 5;

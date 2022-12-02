@@ -9,9 +9,19 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Rack : Entity
     {
+        public int Weight { get; set; }
         public int Size { get; set; }
         public string Localization { get; set; }
         public List<RackEquipment> RackEquipments { get; private set; }
+        // navigation properties
+        public Site Site { get; set; }
+        public Guid? SiteId { get; set; }
+        public Building Building { get; set; }
+        public Guid? BuildingId { get; set; }
+        public Floor Floor { get; set; }
+        public Guid? FloorId { get; set; }
+        public Room Room { get; set; }
+        public Guid? RoomId { get; set; }
 
         public Rack()
         {

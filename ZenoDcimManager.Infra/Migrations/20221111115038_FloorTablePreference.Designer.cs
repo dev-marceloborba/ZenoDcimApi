@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221111115038_FloorTablePreference")]
+    partial class FloorTablePreference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,10 +275,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<Guid>("BuildingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("Cost")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -285,9 +283,6 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<Guid>("EquipmentId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EstimatedRepairTime")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("FinalDate")
                         .HasColumnType("datetime2");
@@ -310,12 +305,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<int>("OrderType")
                         .HasColumnType("int");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RealRepairTime")
-                        .HasColumnType("int");
-
                     b.Property<string>("Responsible")
                         .HasColumnType("varchar(50)");
 
@@ -327,9 +316,6 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("WorkOrderStatus")
                         .HasColumnType("int");
@@ -862,14 +848,8 @@ namespace ZenoDcimManager.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BuildingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("FloorId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Localization")
                         .HasColumnType("varchar(12)");
@@ -877,27 +857,10 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
-
-                    b.HasIndex("FloorId");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("SiteId");
 
                     b.ToTable("Rack", (string)null);
                 });
@@ -1197,47 +1160,17 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Navigation("Parameter");
                 });
 
-            modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Rack", b =>
-                {
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
-
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Floor", "Floor")
-                        .WithMany()
-                        .HasForeignKey("FloorId");
-
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId");
-
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId");
-
-                    b.Navigation("Building");
-
-                    b.Navigation("Floor");
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Site");
-                });
-
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.RackEquipment", b =>
                 {
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.BaseEquipment", "BaseEquipment")
                         .WithMany()
                         .HasForeignKey("BaseEquipmentId");
 
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Rack", "Rack")
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Rack", null)
                         .WithMany("RackEquipments")
-                        .HasForeignKey("RackId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RackId");
 
                     b.Navigation("BaseEquipment");
-
-                    b.Navigation("Rack");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>

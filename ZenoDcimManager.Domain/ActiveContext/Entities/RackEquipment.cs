@@ -10,6 +10,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public int InitialPosition { get; set; }
         public int FinalPosition { get; set; }
         public ERackEquipmentType RackEquipmentType { get; set; }
+        public Rack Rack { get; set; }
         // Navigation property
         public Guid? RackId { get; set; }
 
