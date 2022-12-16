@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.ActiveContext.ValueObjects;
+using ZenoDcimManager.Domain.AutomationContext.ViewModels;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
@@ -46,6 +48,43 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<Site> FindByIdAsync(Guid id)
         {
             return await _context.Sites.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<SiteCardViewModel>> LoadSiteCards()
+        {
+            return await _context.Sites
+                .AsNoTracking()
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter1)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter2)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter3)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter4)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter5)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter6)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Select(x => new SiteCardViewModel
+                {
+                    Id = x.CardSettings.Id == null ? new Guid() : x.CardSettings.Id,
+                    SiteId = x.Id,
+                    Name = x.Name,
+                    Parameter1 = x.CardSettings.Parameter1,
+                    Parameter2 = x.CardSettings.Parameter2,
+                    Parameter3 = x.CardSettings.Parameter3,
+                    Parameter4 = x.CardSettings.Parameter4,
+                    Parameter5 = x.CardSettings.Parameter5,
+                    Parameter6 = x.CardSettings.Parameter6,
+                })
+                .ToListAsync();
         }
 
         public void Update(Site model)

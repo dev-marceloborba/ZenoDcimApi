@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.AutomationContext.ViewModels;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
@@ -53,6 +54,43 @@ namespace ZenoDcimManager.Infra.Repositories
                .Include(x => x.Floors)
                .ThenInclude(x => x.Rooms)
                .FirstAsync();
+        }
+
+        public async Task<IEnumerable<BuildingCardViewModel>> LoadBuildingCards()
+        {
+            return await _context.Buildings
+                .AsNoTracking()
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter1)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter2)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter3)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter4)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter5)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter6)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Select(x => new BuildingCardViewModel
+                {
+                    Id = x.CardSettings.Id == null ? new Guid() : x.CardSettings.Id,
+                    BuildingId = x.Id,
+                    Name = x.Name,
+                    Parameter1 = x.CardSettings.Parameter1,
+                    Parameter2 = x.CardSettings.Parameter2,
+                    Parameter3 = x.CardSettings.Parameter3,
+                    Parameter4 = x.CardSettings.Parameter4,
+                    Parameter5 = x.CardSettings.Parameter5,
+                    Parameter6 = x.CardSettings.Parameter6,
+                })
+                .ToListAsync();
         }
 
         public void Update(Building model)

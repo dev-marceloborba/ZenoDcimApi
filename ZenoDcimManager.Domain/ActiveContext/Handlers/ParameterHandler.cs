@@ -24,8 +24,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             {
                 Name = command.Name,
                 Unit = command.Unit,
+                LowLowLimit = command.LowLowLimit,
                 LowLimit = command.LowLimit,
                 HighLimit = command.HighLimit,
+                HighHighLimit = command.HighHighLimit,
                 Scale = command.Scale
             };
 

@@ -43,6 +43,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<ModbusTag> ModbusTags { get; set; }
         public DbSet<Plc> Plcs { get; set; }
         public DbSet<Measure> Measures { get; set; }
+        public DbSet<SiteBuildingCardSettings> SiteBuildingCardSettings { get; set; }
 
         // Ordem de serviço
         public DbSet<WorkOrder> WorkOrders { get; set; }
@@ -80,6 +81,7 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new RealtimeDataMap());
             modelBuilder.ApplyConfiguration(new AlarmRuleMap());
             modelBuilder.ApplyConfiguration(new MeasureMap());
+            modelBuilder.ApplyConfiguration(new SiteBuildingCardSettingsMap());
 
             // Ordem de serviço
             modelBuilder.ApplyConfiguration(new WorkOrderMap());

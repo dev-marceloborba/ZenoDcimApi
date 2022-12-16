@@ -9,10 +9,10 @@ using ZenoDcimManager.Shared.Handlers;
 
 namespace ZenoDcimManager.Domain.ActiveContext.Handlers
 {
-	public class VirtualParameterHandler : Notifiable, ICommandHandler<CreateVirtualParameterCommand>
-	{
-		private readonly IVirtualParameterRepository _repository;
-		
+    public class VirtualParameterHandler : Notifiable, ICommandHandler<CreateVirtualParameterCommand>
+    {
+        private readonly IVirtualParameterRepository _repository;
+
         public VirtualParameterHandler(IVirtualParameterRepository repository)
         {
             _repository = repository;
@@ -24,8 +24,10 @@ namespace ZenoDcimManager.Domain.ActiveContext.Handlers
             {
                 Name = command.Name,
                 Unit = command.Unit,
+                LowLowLimit = command.LowLowLimit,
                 LowLimit = command.LowLimit,
                 HighLimit = command.HighLimit,
+                HighHighLimit = command.HighHighLimit,
                 Scale = command.Scale,
                 Expression = command.Expression
             };

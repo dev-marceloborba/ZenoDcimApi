@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221212214722_MissingFieldOnSiteBuildingCardSettings")]
+    partial class MissingFieldOnSiteBuildingCardSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,13 +257,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuildingId")
-                        .IsUnique()
-                        .HasFilter("[BuildingId] IS NOT NULL");
+                    b.HasIndex("BuildingId");
 
-                    b.HasIndex("SiteId")
-                        .IsUnique()
-                        .HasFilter("[SiteId] IS NOT NULL");
+                    b.HasIndex("SiteId");
 
                     b.ToTable("SiteBuildingCardSettings", (string)null);
                 });
@@ -1077,12 +1075,12 @@ namespace ZenoDcimManager.Infra.Migrations
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings", b =>
                 {
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", "Building")
-                        .WithOne("CardSettings")
-                        .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings", "BuildingId");
+                        .WithMany("CardSettings")
+                        .HasForeignKey("BuildingId");
 
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Site", "Site")
-                        .WithOne("CardSettings")
-                        .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings", "SiteId");
+                        .WithMany("CardSettings")
+                        .HasForeignKey("SiteId");
 
                     b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
                         {
@@ -1092,10 +1090,6 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Property<string>("Description")
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter1Description");
-
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter1Enabled");
 
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
@@ -1128,10 +1122,6 @@ namespace ZenoDcimManager.Infra.Migrations
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter2Description");
 
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter2Enabled");
-
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("EquipmentParameter2Id");
@@ -1162,10 +1152,6 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Property<string>("Description")
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter3Description");
-
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter3Enabled");
 
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
@@ -1198,10 +1184,6 @@ namespace ZenoDcimManager.Infra.Migrations
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter4Description");
 
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter4Enabled");
-
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("EquipmentParameter4Id");
@@ -1233,10 +1215,6 @@ namespace ZenoDcimManager.Infra.Migrations
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter5Description");
 
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter5Enabled");
-
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("EquipmentParameter5Id");
@@ -1267,10 +1245,6 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Property<string>("Description")
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter6Description");
-
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter6Enabled");
 
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")

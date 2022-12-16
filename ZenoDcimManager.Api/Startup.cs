@@ -109,6 +109,7 @@ namespace ZenoDcimManager.Api
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
                  );
 
+            //services.AddControllers().AddNewtonSoftJson();
             services.AddSignalR();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);

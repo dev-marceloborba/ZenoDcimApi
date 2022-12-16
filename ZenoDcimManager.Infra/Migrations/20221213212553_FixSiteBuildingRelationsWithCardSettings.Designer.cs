@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221213212553_FixSiteBuildingRelationsWithCardSettings")]
+    partial class FixSiteBuildingRelationsWithCardSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1093,10 +1095,6 @@ namespace ZenoDcimManager.Infra.Migrations
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter1Description");
 
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter1Enabled");
-
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("EquipmentParameter1Id");
@@ -1127,10 +1125,6 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Property<string>("Description")
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter2Description");
-
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter2Enabled");
 
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
@@ -1163,10 +1157,6 @@ namespace ZenoDcimManager.Infra.Migrations
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter3Description");
 
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter3Enabled");
-
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("EquipmentParameter3Id");
@@ -1197,10 +1187,6 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Property<string>("Description")
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter4Description");
-
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter4Enabled");
 
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
@@ -1233,10 +1219,6 @@ namespace ZenoDcimManager.Infra.Migrations
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter5Description");
 
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter5Enabled");
-
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("EquipmentParameter5Id");
@@ -1267,10 +1249,6 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Property<string>("Description")
                                 .HasColumnType("varchar(30)")
                                 .HasColumnName("Parameter6Description");
-
-                            b1.Property<bool>("Enabled")
-                                .HasColumnType("bit")
-                                .HasColumnName("Parameter6Enabled");
 
                             b1.Property<Guid>("EquipmentParameterId")
                                 .HasColumnType("uniqueidentifier")

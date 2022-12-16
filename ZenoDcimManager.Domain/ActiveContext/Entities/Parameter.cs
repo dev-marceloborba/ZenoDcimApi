@@ -7,8 +7,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
     {
         public string Name { get; set; }
         public string Unit { get; set; }
+        public int LowLowLimit { get; set; }
         public int LowLimit { get; set; }
         public int HighLimit { get; set; }
+        public int HighHighLimit { get; set; }
         public double Scale { get; set; }
         public string Expression { get; set; }
         public string Discriminator { get; set; }

@@ -90,5 +90,12 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("load-cards")]
+        public async Task<ActionResult> ListCards()
+        {
+            var result = await _repository.LoadSiteCards();
+            return Ok(result);
+        }
     }
 }

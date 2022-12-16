@@ -12,7 +12,7 @@ using ZenoDcimManager.Shared.Commands;
 namespace ZenoDcimManager.Api.Controllers
 {
     [ApiController]
-    [Route("v1/data-center")]
+    [Route("v1/data-center/building")]
     [AllowAnonymous]
     public class BuildingController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace ZenoDcimManager.Api.Controllers
             _repository = repository;
         }
 
-        [Route("building")]
+        [Route("")]
         [HttpPost]
         public async Task<ICommandResult> CreateBuilding(
            [FromBody] CreateBuildingCommand command,
@@ -32,7 +32,7 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
-        [Route("building/{id}")]
+        [Route("{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateBuilding(
             [FromRoute] Guid id,
@@ -54,14 +54,14 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
-        [Route("building")]
+        [Route("")]
         [HttpGet]
         public async Task<IEnumerable<Building>> FindAllBuildings()
         {
             return await _repository.FindAllAsync();
         }
 
-        [Route("building/{id}")]
+        [Route("{id}")]
         [HttpGet]
         public async Task<Building> FindBuildingById(Guid id)
         {
@@ -69,7 +69,7 @@ namespace ZenoDcimManager.Api.Controllers
         }
 
 
-        [Route("building/{id}")]
+        [Route("{id}")]
         [HttpDelete]
         public async Task<ActionResult> DeleteBuilding(Guid id)
         {
@@ -85,6 +85,14 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [Route("load-cards")]
+        public async Task<ActionResult> LoadCards()
+        {
+            var result = await _repository.LoadBuildingCards();
+            return Ok(result);
         }
     }
 }
