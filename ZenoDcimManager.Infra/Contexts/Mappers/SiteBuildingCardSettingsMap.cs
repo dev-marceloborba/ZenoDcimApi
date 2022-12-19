@@ -9,6 +9,9 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         public void Configure(EntityTypeBuilder<SiteBuildingCardSettings> builder)
         {
             builder.ToTable("SiteBuildingCardSettings");
+            builder.HasIndex(x => x.BuildingId).IsUnique(false);
+            builder.HasIndex(x => x.SiteId).IsUnique(false);
+
             // parameter 1
             builder.OwnsOne(x => x.Parameter1)
                 .Property(x => x.Description)

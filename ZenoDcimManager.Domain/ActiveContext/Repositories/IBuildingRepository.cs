@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZenoDcimManager.Domain.AutomationContext.ViewModels;
@@ -9,6 +10,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Repositories
 {
     public interface IBuildingRepository : CrudRepository<Building>, IUnitOfWork
     {
-        Task<IEnumerable<BuildingCardViewModel>> LoadBuildingCards();
+        Task<IEnumerable<BuildingCardViewModel>> LoadBuildingCards(Guid id);
     }
 }

@@ -56,10 +56,11 @@ namespace ZenoDcimManager.Infra.Repositories
                .FirstAsync();
         }
 
-        public async Task<IEnumerable<BuildingCardViewModel>> LoadBuildingCards()
+        public async Task<IEnumerable<BuildingCardViewModel>> LoadBuildingCards(Guid id)
         {
             return await _context.Buildings
                 .AsNoTracking()
+                .Where(x => x.SiteId == id)
                 .Include(x => x.CardSettings)
                     .ThenInclude(x => x.Parameter1)
                     .ThenInclude(x => x.EquipmentParameter)

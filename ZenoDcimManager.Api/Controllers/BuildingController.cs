@@ -87,11 +87,13 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
+        [Route("load-cards/{id}")]
         [HttpGet]
-        [Route("load-cards")]
-        public async Task<ActionResult> LoadCards()
+        public async Task<ActionResult> LoadCards(
+            [FromRoute] Guid id
+        )
         {
-            var result = await _repository.LoadBuildingCards();
+            var result = await _repository.LoadBuildingCards(id);
             return Ok(result);
         }
     }

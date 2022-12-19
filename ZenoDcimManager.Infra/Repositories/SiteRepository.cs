@@ -54,6 +54,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Sites
                 .AsNoTracking()
+                .Where(x => x.CardSettings.BuildingId == null)
                 .Include(x => x.CardSettings)
                     .ThenInclude(x => x.Parameter1)
                     .ThenInclude(x => x.EquipmentParameter)

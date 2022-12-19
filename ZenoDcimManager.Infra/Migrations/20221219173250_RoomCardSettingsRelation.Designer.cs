@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221219173250_RoomCardSettingsRelation")]
+    partial class RoomCardSettingsRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1019,9 +1021,6 @@ namespace ZenoDcimManager.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BuildingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -1035,8 +1034,6 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
 
                     b.HasIndex("FloorId");
 
@@ -1659,15 +1656,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>
                 {
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
-
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Floor", "Floor")
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId");
-
-                    b.Navigation("Building");
 
                     b.Navigation("Floor");
                 });

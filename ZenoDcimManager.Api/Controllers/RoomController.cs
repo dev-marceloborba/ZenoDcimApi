@@ -7,12 +7,13 @@ using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Infra.Contexts;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
 {
     [ApiController]
-    [Route("/v1/data-center")]
+    [Route("/v1/data-center/building/floor/room")]
     [AllowAnonymous]
     public class RoomController : ControllerBase
     {
@@ -22,7 +23,7 @@ namespace ZenoDcimManager.Api.Controllers
         {
             _repository = repository;
         }
-        [Route("building/floor/room")]
+        [Route("")]
         [HttpPost]
         public async Task<ICommandResult> CreateRoom(
            [FromBody] CreateRoomCommand command,
@@ -32,7 +33,7 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
-        [Route("building/floor/room/{id}")]
+        [Route("{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateRoom(
             [FromRoute] Guid id,
@@ -54,14 +55,14 @@ namespace ZenoDcimManager.Api.Controllers
             }
         }
 
-        [Route("building/floor/room")]
+        [Route("")]
         [HttpGet]
         public async Task<IEnumerable<Room>> FindAllRooms()
         {
             return await _repository.FindAllAsync();
         }
 
-        [Route("building/floor/room/{id}")]
+        [Route("{id}")]
         [HttpGet]
         public async Task<Room> FindRoomById(Guid id)
         {
@@ -76,9 +77,8 @@ namespace ZenoDcimManager.Api.Controllers
             return _repository.FindRoomByFloor(id);
         }
 
-        [Route("building/floor/room/{id}")]
+        [Route("{id}")]
         [HttpDelete]
-        [AllowAnonymous]
         public async Task<ActionResult> DeleteRoom(Guid id)
         {
             try
@@ -93,6 +93,17 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [Route("load-cards/{buildingId}")]
+        [HttpGet]
+        public async Task<ActionResult> LoadRoomCards(
+            [FromRoute] Guid buildingId,
+            [FromServices] ZenoContext context
+        )
+        {
+            var result = await _repository.LoadCardSettings(buildingId);
+            return Ok(result);
         }
     }
 }

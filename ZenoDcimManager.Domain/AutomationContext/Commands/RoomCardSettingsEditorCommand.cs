@@ -4,16 +4,12 @@ using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Commands
 {
-    public class SiteBuildingCardSettingsEditorCommand : ICommand
+    public class RoomCardSettingsEditorCommand : ICommand
     {
-        public Guid? SiteId { get; set; } = new Guid();
-        public Guid? BuildingId { get; set; } = new Guid();
+        public Guid RoomId { get; set; }
         public ParameterInfo Parameter1 { get; set; }
         public ParameterInfo Parameter2 { get; set; }
         public ParameterInfo Parameter3 { get; set; }
-        public ParameterInfo Parameter4 { get; set; }
-        public ParameterInfo Parameter5 { get; set; }
-        public ParameterInfo Parameter6 { get; set; }
 
         public void Validate()
         {

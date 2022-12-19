@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221219170905_RoomCardSettings")]
+    partial class RoomCardSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,12 +242,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("uniqueidentifier");
@@ -1019,9 +1015,6 @@ namespace ZenoDcimManager.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BuildingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -1035,8 +1028,6 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
 
                     b.HasIndex("FloorId");
 
@@ -1100,8 +1091,8 @@ namespace ZenoDcimManager.Infra.Migrations
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.RoomCardSettings", b =>
                 {
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Room", "Room")
-                        .WithOne("CardSettings")
-                        .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.RoomCardSettings", "RoomId");
+                        .WithMany()
+                        .HasForeignKey("RoomId");
 
                     b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
                         {
@@ -1659,15 +1650,9 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>
                 {
-                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId");
-
                     b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Floor", "Floor")
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId");
-
-                    b.Navigation("Building");
 
                     b.Navigation("Floor");
                 });
@@ -1721,8 +1706,6 @@ namespace ZenoDcimManager.Infra.Migrations
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>
                 {
-                    b.Navigation("CardSettings");
-
                     b.Navigation("Equipments");
                 });
 
