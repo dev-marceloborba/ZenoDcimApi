@@ -45,6 +45,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<Measure> Measures { get; set; }
         public DbSet<SiteBuildingCardSettings> SiteBuildingCardSettings { get; set; }
         public DbSet<RoomCardSettings> RoomCardSettings { get; set; }
+        public DbSet<EquipmentCardSettings> EquipmentCardSettings { get; set; }
 
         // Ordem de serviço
         public DbSet<WorkOrder> WorkOrders { get; set; }
@@ -84,6 +85,7 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new MeasureMap());
             modelBuilder.ApplyConfiguration(new SiteBuildingCardSettingsMap());
             modelBuilder.ApplyConfiguration(new RoomCardSettingsMap());
+            modelBuilder.ApplyConfiguration(new EquipmentCardSettingsMap());
 
             // Ordem de serviço
             modelBuilder.ApplyConfiguration(new WorkOrderMap());

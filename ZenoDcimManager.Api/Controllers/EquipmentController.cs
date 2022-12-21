@@ -105,5 +105,29 @@ namespace ZenoDcimManager.Api.Controllers
         {
             return (ICommandResult)await handler.Handle(command);
         }
+
+        [Route("building/floor/room/equipment/load-cards/{roomId}")]
+        [HttpGet]
+        public async Task<ActionResult> LoadEquipmentCards(
+            [FromRoute] Guid roomId
+        )
+        {
+            var result = await _repository.LoadEquipmentCards(roomId);
+            return Ok(result);
+            // return Ok(roomId);
+            // try
+            // {
+            //     var result = await _repository.LoadEquipmentCards(roomId);
+            //     return Ok(result);
+            // }
+            // catch (Exception ex)
+            // {
+            //     return BadRequest(new
+            //     {
+            //         Error = ex.StackTrace
+            //     });
+            // }
+
+        }
     }
 }

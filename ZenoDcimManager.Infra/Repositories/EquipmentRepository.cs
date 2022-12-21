@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.AutomationContext.ViewModels;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
@@ -61,6 +62,33 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Where(x => x.Id == roomId)
                 .Select(x => x.Equipments)
                 .Single();
+        }
+
+        public async Task<IEnumerable<EquipmentCardViewModel>> LoadEquipmentCards(Guid roomId)
+        {
+            return await _context.Equipments
+                .AsNoTracking()
+                .Where(x => x.RoomId == roomId)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter1)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter2)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Include(x => x.CardSettings)
+                    .ThenInclude(x => x.Parameter3)
+                    .ThenInclude(x => x.EquipmentParameter)
+                .Select(x => new EquipmentCardViewModel
+                {
+                    Id = x.CardSettings.Id == null ? new Guid() : x.CardSettings.Id,
+                    EquipmentId = x.Id,
+                    RoomId = (Guid)x.RoomId,
+                    Name = x.Component,
+                    Parameter1 = x.CardSettings.Parameter1,
+                    Parameter2 = x.CardSettings.Parameter2,
+                    Parameter3 = x.CardSettings.Parameter3,
+                })
+                .ToListAsync();
         }
 
         public void Update(Equipment model)

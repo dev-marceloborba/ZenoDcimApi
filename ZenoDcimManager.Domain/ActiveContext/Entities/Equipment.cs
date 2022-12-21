@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared;
 
@@ -20,6 +21,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public double Weight { get; set; }
         public string Size { get; set; }
         public double PowerLimit { get; set; }
+        public EquipmentCardSettings CardSettings { get; set; }
         // Navigation properties
         public Guid? BuildingId { get; set; }
         public Guid? FloorId { get; set; }
