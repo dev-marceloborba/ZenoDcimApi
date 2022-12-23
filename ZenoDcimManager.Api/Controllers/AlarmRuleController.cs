@@ -81,5 +81,16 @@ namespace ZenoDcimManager.Api.Controllers
 
             return Ok(alarm);
         }
+
+        [Route("by-equipment/{equipmentId}")]
+        [HttpGet]
+        public async Task<ActionResult> FindRulesByEquipmentId(
+            [FromRoute] Guid equipmentId,
+            [FromServices] IAlarmRuleRepository repository
+        )
+        {
+            var result = await repository.FindAlarmRulesByEquipmentId(equipmentId);
+            return Ok(result);
+        }
     }
 }

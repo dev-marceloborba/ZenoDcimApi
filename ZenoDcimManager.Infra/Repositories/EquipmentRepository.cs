@@ -37,6 +37,7 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<IEnumerable<Equipment>> FindAllAsync()
         {
             return await _context.Equipments
+                .AsNoTracking()
                 .Include(x => x.EquipmentParameters)
                 .Include(x => x.Building)
                 .Include(x => x.Floor)
@@ -48,12 +49,29 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Equipments
                 .Where(x => x.Id == id)
+                .Include(x => x.Site)
                 .Include(x => x.Building)
                 .Include(x => x.Floor)
                 .Include(x => x.Room)
                 .Include(x => x.EquipmentParameters)
-                .ThenInclude(x => x.AlarmRules)
+                    .ThenInclude(x => x.AlarmRules)
                 .FirstOrDefaultAsync();
+
+            // TODO: a tabela de equipamento pode ter relação apenas com Room, visto:
+            // Equipment tem relação 1:1 com Room
+            // Room tem relação 1:1 com Floor
+            // Floor tem relação 1:1 com Building
+            // Building tem relação 1:1 com Site
+
+            // return await _context.Equipments
+            //     .Where(x => x.Id == id)
+            //         .Include(x => x.Room)
+            //             .ThenInclude(x => x.Floor)
+            //             .ThenInclude(x => x.Building)
+            //             .ThenInclude(x => x.Site)
+            //         .Include(x => x.EquipmentParameters)
+            //             .ThenInclude(x => x.AlarmRules)
+            //     .FirstOrDefaultAsync();
         }
 
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId)

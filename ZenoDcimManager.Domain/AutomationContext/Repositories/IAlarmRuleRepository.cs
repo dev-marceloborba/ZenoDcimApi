@@ -10,5 +10,6 @@ namespace ZenoDcimManager.Domain.AutomationContext.Repositories
     public interface IAlarmRuleRepository : CrudRepository<AlarmRule>, IUnitOfWork
     {
         Task<IEnumerable<AlarmRule>> FindAlarmRulesByEquipmentParameterId(Guid id);
+        Task<IEnumerable<AlarmRule>> FindAlarmRulesByEquipmentId(Guid id);
     }
 }

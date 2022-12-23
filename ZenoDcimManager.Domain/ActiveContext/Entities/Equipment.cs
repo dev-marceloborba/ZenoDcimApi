@@ -15,6 +15,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public RackPdu RackPdu { get; set; }
         public List<EquipmentParameter> EquipmentParameters { get; set; } = new List<EquipmentParameter>();
         public EEquipmentGroup Group { get; set; }
+        public Site Site { get; set; }
         public Building Building { get; set; }
         public Floor Floor { get; set; }
         public Room Room { get; set; }
@@ -23,6 +24,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public double PowerLimit { get; set; }
         public EquipmentCardSettings CardSettings { get; set; }
         // Navigation properties
+        public Guid? SiteId { get; set; }
         public Guid? BuildingId { get; set; }
         public Guid? FloorId { get; set; }
         public Guid? RoomId { get; set; }

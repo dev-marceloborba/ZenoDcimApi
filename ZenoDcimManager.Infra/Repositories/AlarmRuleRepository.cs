@@ -33,21 +33,31 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Entry(model).State = EntityState.Deleted;
         }
 
+        public async Task<IEnumerable<AlarmRule>> FindAlarmRulesByEquipmentId(Guid id)
+        {
+            return await _context.AlarmRules
+                .AsNoTracking()
+                .Include(x => x.EquipmentParameter)
+                    .ThenInclude(x => x.Equipment)
+                .Where(x => x.EquipmentParameter.EquipmentId == id)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<AlarmRule>> FindAlarmRulesByEquipmentParameterId(Guid id)
         {
             return await _context.EquipmentParameters
+                .AsNoTracking()
                 .Where(x => x.Id == id)
                 .Include(x => x.AlarmRules)
                 .Select(x => x.AlarmRules)
-                .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<AlarmRule>> FindAllAsync()
         {
             return await _context.AlarmRules
-                .Include(x => x.EquipmentParameter)
                 .AsNoTracking()
+                .Include(x => x.EquipmentParameter)
                 .ToListAsync();
         }
 
