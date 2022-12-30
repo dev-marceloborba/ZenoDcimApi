@@ -38,8 +38,10 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<IEnumerable<Room>> FindAllAsync()
         {
             return await _context.Rooms
+                .AsNoTracking()
                 .Include(x => x.Floor)
-                .Include(x => x.Equipments.OrderBy(y => y.Description))
+                    .ThenInclude(x => x.Building)
+                    .ThenInclude(x => x.Site)
                 .OrderBy(x => x.Name)
                 .ToListAsync();
         }

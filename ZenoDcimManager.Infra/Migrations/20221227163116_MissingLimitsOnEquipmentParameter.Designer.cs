@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20221227163116_MissingLimitsOnEquipmentParameter")]
+    partial class MissingLimitsOnEquipmentParameter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -710,12 +712,10 @@ namespace ZenoDcimManager.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Component")
-                        .HasColumnType("varchar(64)")
-                        .HasColumnName("Name");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<string>("ComponentCode")
-                        .HasColumnType("varchar(30)")
-                        .HasColumnName("SerialNumber");
+                        .HasColumnType("varchar(30)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -728,9 +728,6 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<int>("Group")
                         .HasColumnType("int");
-
-                    b.Property<string>("Manufactor")
-                        .HasColumnType("varchar(20)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -752,9 +749,6 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<string>("Size")
                         .HasColumnType("varchar(14)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");

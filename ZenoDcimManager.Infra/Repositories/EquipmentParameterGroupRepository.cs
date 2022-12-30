@@ -36,6 +36,9 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<IEnumerable<EquipmentParameterGroup>> FindAllAsync()
         {
             return await _context.EquipmentParameterGroups
+                .AsNoTracking()
+                .Include(x => x.ParameterGroupAssignments)
+                    .ThenInclude(x => x.Parameter)
                 .OrderBy(x => x.Name)
                 .ToListAsync();
         }

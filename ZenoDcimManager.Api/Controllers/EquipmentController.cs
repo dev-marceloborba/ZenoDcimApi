@@ -45,8 +45,18 @@ namespace ZenoDcimManager.Api.Controllers
                 equipment.Component = command.Component;
                 equipment.ComponentCode = command.ComponentCode;
                 equipment.Description = command.Description;
+                equipment.Manufactor = command.Manufactor;
+                equipment.Status = command.Status;
                 equipment.Group = command.Group;
+                equipment.PowerLimit = command.PowerLimit;
+                equipment.Weight = command.Weight;
+                equipment.Size = command.Size;
+                equipment.SiteId = command.SiteId;
+                equipment.BuildingId = command.BuildingId;
+                equipment.FloorId = command.FloorId;
+                equipment.RoomId = command.RoomId;
                 equipment.TrackModifiedDate();
+
                 _repository.Update(equipment);
                 await _repository.Commit();
                 return Ok(new CommandResult(true, "Equipamento atualizado com sucesso", equipment));

@@ -33,6 +33,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 Weight = command.Weight,
                 Size = command.Size,
                 PowerLimit = command.PowerLimit,
+                Manufactor = command.Manufactor,
+                Status = command.Status
             };
 
             await _equipmentRepository.CreateAsync(equipment);

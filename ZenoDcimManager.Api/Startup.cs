@@ -27,6 +27,7 @@ using System.Text.Json.Serialization;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
+using System.Text.Json;
 
 namespace ZenoDcimManager.Api
 {
@@ -106,10 +107,14 @@ namespace ZenoDcimManager.Api
             services.AddControllers()
                 .AddJsonOptions(
                     options =>
-                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+                    {
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                        // options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+                    }
+
                  );
 
-            //services.AddControllers().AddNewtonSoftJson();
+            // services.AddControllers().AddNewtonSoftJson();
             services.AddSignalR();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);

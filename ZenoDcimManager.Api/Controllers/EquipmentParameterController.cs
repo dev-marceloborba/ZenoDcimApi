@@ -44,8 +44,10 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var equipmentParameter = await _repository.FindByIdAsync(id);
                 equipmentParameter.DataSource = command.DataSource;
+                equipmentParameter.HighHighLimit = command.HighHighLimit;
                 equipmentParameter.HighLimit = command.HighLimit;
                 equipmentParameter.LowLimit = command.LowLimit;
+                equipmentParameter.LowLowLimit = command.LowLowLimit;
                 equipmentParameter.Unit = command.Unit;
                 equipmentParameter.Scale = command.Scale;
                 equipmentParameter.ModbusTagName = command.Address;
@@ -110,8 +112,10 @@ namespace ZenoDcimManager.Api.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     Unit = item.Unit,
+                    LowLowLimit = item.LowLowLimit,
                     LowLimit = item.LowLimit,
                     HighLimit = item.HighLimit,
+                    HighHighLimit = item.HighHighLimit,
                     Scale = item.Scale,
                     DataSource = item.DataSource,
                     Expression = item.Expression,
