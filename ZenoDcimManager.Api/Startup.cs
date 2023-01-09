@@ -155,11 +155,10 @@ namespace ZenoDcimManager.Api
             }
 
 
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseCors("zenoCors");
-
-            app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
