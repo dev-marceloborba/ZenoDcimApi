@@ -154,9 +154,10 @@ namespace ZenoDcimManager.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
             }
 
-            app.UseCors("zenoCors");
 
             app.UseRouting();
+
+            app.UseCors("zenoCors");
 
             app.UseHttpsRedirection();
 
