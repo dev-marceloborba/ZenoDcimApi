@@ -96,7 +96,11 @@ namespace ZenoDcimManager.Api
 
             services.AddCors(p => p.AddPolicy("zenoCors", builder =>
             {
-                builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins(
+                    "https://main.d1ig3e0jiptnpr.amplifyapp.com",
+                    "http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
             }));
 
             services.AddResponseCompression(options =>
