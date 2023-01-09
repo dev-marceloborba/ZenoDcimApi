@@ -43,6 +43,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var building = await _repository.FindByIdAsync(id);
                 building.Name = command.Name;
+                building.SiteId = command.SiteId;
                 building.TrackModifiedDate();
                 _repository.Update(building);
                 await _repository.Commit();

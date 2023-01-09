@@ -15,19 +15,34 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         ICommandHandler<CreateEquipmentOnGroupCommand>
     {
         private readonly IEquipmentParameterGroupRepository _parameterGroupRepository;
+        private readonly IParameterRepository _parameterRepository;
 
-        public ParameterGroupHandler(IEquipmentParameterGroupRepository parameterGroupRepository)
+        public ParameterGroupHandler(IEquipmentParameterGroupRepository parameterGroupRepository, IParameterRepository parameterRepository)
         {
             _parameterGroupRepository = parameterGroupRepository;
+            _parameterRepository = parameterRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateEquipmentParameterGroupCommand command)
         {
+            var parameterGroupAssignments = new List<ParameterGroupAssignment>();
+
             var equipmentParameterGroup = new EquipmentParameterGroup
             {
                 Name = command.Name,
                 Group = command.Group,
             };
+
+            foreach (var parameterId in command.ParametersId)
+            {
+                parameterGroupAssignments.Add(new ParameterGroupAssignment
+                {
+                    EquipmentParameterGroupId = equipmentParameterGroup.Id,
+                    Parameter = await _parameterRepository.FindByIdAsync(parameterId)
+                });
+            }
+
+            equipmentParameterGroup.ParameterGroupAssignments = parameterGroupAssignments;
 
             await _parameterGroupRepository.CreateAsync(equipmentParameterGroup);
             await _parameterGroupRepository.Commit();

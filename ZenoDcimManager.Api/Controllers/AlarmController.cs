@@ -129,7 +129,8 @@ namespace ZenoDcimManager.Api.Controllers
                         Name = x.AlarmRule.Name,
                         Setpoint = x.AlarmRule.Setpoint,
                         Priority = x.AlarmRule.Priority,
-                    }
+                    },
+                    x.Priority
                 })
                 .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate)
                 .OrderByDescending(x => x.CreatedDate)
