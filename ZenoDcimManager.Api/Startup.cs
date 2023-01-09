@@ -94,15 +94,27 @@ namespace ZenoDcimManager.Api
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
             services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowCredentials();
+            }));
+
             // services.AddCors(p => p.AddPolicy("zenoCors", builder =>
             // {
             //     builder.WithOrigins(
             //         "https://main.d1ig3e0jiptnpr.amplifyapp.com",
+            //         "https://main.d1ig3e0jiptnpr.amplifyapp.com/v1/users",
+            //         "https://localhost:3000",
+            //         "http://main.d1ig3e0jiptnpr.amplifyapp.com",
             //         "http://localhost:3000")
             //     .AllowAnyMethod()
+            //     .AllowCredentials()
             //     .AllowAnyHeader();
             // }));
-            services.AddCors();
+            // services.AddCors();
 
             services.AddResponseCompression(options =>
             {
@@ -163,13 +175,13 @@ namespace ZenoDcimManager.Api
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            // app.UseCors("zenoCors");
-            app.UseCors(x =>
-            {
-                x.AllowAnyHeader();
-                x.AllowAnyMethod();
-                x.AllowCredentials();
-            });
+            app.UseCors("CorsPolicy");
+            // app.UseCors(x =>
+            // {
+            //     x.AllowAnyHeader();
+            //     x.AllowAnyMethod();
+            //     x.AllowCredentials();
+            // });
 
             app.UseAuthentication();
             app.UseAuthorization();
