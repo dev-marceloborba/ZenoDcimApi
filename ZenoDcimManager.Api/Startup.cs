@@ -94,7 +94,10 @@ namespace ZenoDcimManager.Api
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
             services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
-            services.AddCors();
+            services.AddCors(p => p.AddPolicy("zenoCors", builder =>
+            {
+                builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            }));
 
             services.AddResponseCompression(options =>
             {
@@ -151,12 +154,7 @@ namespace ZenoDcimManager.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
             }
 
-            app.UseCors(x =>
-                x
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-            );
+            app.UseCors("zenoCors");
 
             app.UseRouting();
 
