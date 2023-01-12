@@ -93,21 +93,31 @@ namespace ZenoDcimManager.Api
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
             services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
-            services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
+            // services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
+            // {
+            //     builder
+            //             .AllowAnyHeader()
+            //             .AllowAnyMethod()
+            //             .SetIsOriginAllowed((host) => true)
+            //             .AllowCredentials();
+            // }));
+            // services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
+            // {
+            //     builder
+            //         .AllowAnyOrigin()
+            //         .AllowAnyHeader()
+            //         .AllowAnyMethod();
+            // }));
+
+            services.AddCors(options =>
             {
-                builder
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .SetIsOriginAllowed((host) => true)
-                        .AllowCredentials();
-            }));
-            services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowAnyMethod();
-            }));
+                );
+            });
+
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
@@ -160,15 +170,16 @@ namespace ZenoDcimManager.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
             }
 
-            if (env.IsDevelopment())
-            {
-                app.UseCors("DevelopmentPolicy");
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseCors("DevelopmentPolicy");
+            // }
 
-            if (env.IsProduction())
-            {
-                app.UseCors("ProductionPolicy");
-            }
+            // if (env.IsProduction())
+            // {
+            //     app.UseCors("ProductionPolicy");
+            // }
+            app.UseCors("AllowAllOrigins");
 
             app.UseHttpsRedirection();
             app.UseRouting();
