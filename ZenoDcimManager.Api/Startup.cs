@@ -158,6 +158,10 @@ namespace ZenoDcimManager.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
+            }
+
+            if (env.IsDevelopment())
+            {
                 app.UseCors("DevelopmentPolicy");
             }
 
