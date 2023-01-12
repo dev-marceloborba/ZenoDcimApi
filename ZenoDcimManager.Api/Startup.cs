@@ -109,14 +109,14 @@ namespace ZenoDcimManager.Api
             //         .AllowAnyMethod();
             // }));
 
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("AllowAllOrigins",
-            //         builder => builder.AllowAnyOrigin()
-            //         .AllowAnyMethod()
-            //         .AllowAnyHeader()
-            //     );
-            // });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                );
+            });
 
             services.AddResponseCompression(options =>
             {
@@ -183,6 +183,9 @@ namespace ZenoDcimManager.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors("AllowAllOrigins");
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseResponseCompression();
