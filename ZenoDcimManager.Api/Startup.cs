@@ -93,21 +93,21 @@ namespace ZenoDcimManager.Api
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
             services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
-            // services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
-            // {
-            //     builder
-            //             .AllowAnyHeader()
-            //             .AllowAnyMethod()
-            //             .SetIsOriginAllowed((host) => true)
-            //             .AllowCredentials();
-            // }));
-            // services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
-            // {
-            //     builder
-            //         .AllowAnyOrigin()
-            //         .AllowAnyHeader()
-            //         .AllowAnyMethod();
-            // }));
+            services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
+            {
+                builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowCredentials();
+            }));
+            services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            }));
 
             services.AddCors(options =>
             {
@@ -179,12 +179,12 @@ namespace ZenoDcimManager.Api
             // {
             //     app.UseCors("ProductionPolicy");
             // }
-            // app.UseCors("AllowAllOrigins");
+            app.UseCors("AllowAllOrigins");
 
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseCors("AllowAllOrigins");
+            // app.UseCors("AllowAllOrigins");
 
             app.UseAuthentication();
             app.UseAuthorization();
