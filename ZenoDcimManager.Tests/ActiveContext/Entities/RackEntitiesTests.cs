@@ -33,7 +33,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldAdd3EquipmentsOnRack()
         {
-            var rack = new Rack(16, "F1-A12");
+            var rack = new Rack("16", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -46,7 +46,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldHave6OccupedSlots()
         {
-            var rack = new Rack(16, "F1-A12");
+            var rack = new Rack("16", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -59,7 +59,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnInvalidIfRackCapacityIsFullWhenNewEquipmentIsAdded()
         {
-            var rack = new Rack(6, "F1-A12");
+            var rack = new Rack("6", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -77,7 +77,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void SpaceUsedShouldBe50()
         {
-            var rack = new Rack(8, "F1-A12");
+            var rack = new Rack("8", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -89,7 +89,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void AvailableSpaceShouldBe50()
         {
-            var rack = new Rack(8, "F1-A12");
+            var rack = new Rack("8", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -101,7 +101,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnInvalidWhenAnEquipmentIsAddedOnANotAvaibleSlot()
         {
-            var rack = new Rack(8, "F1-A12");
+            var rack = new Rack("8", "F1-A12");
 
             var rackValidator = new RackValidator(rack);
             rackValidator.ValidatePosition();
@@ -112,7 +112,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnAvailableSlot9()
         {
-            var rack = new Rack(10, "F1-A12");
+            var rack = new Rack("10", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -126,7 +126,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnAvaibleSlot7to8()
         {
-            var rack = new Rack(12, "F1-A12");
+            var rack = new Rack("12", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server2);
@@ -141,7 +141,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldReturnAvaibleSlot3And4()
         {
-            var rack = new Rack(6, "F1-A12");
+            var rack = new Rack("6", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server3);
@@ -153,7 +153,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldInsertTwoServersAndRemoveTheFirstOne()
         {
-            var rack = new Rack(6, "F1-A12");
+            var rack = new Rack("6", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server3);
@@ -166,7 +166,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
         [TestCategory("Entities")]
         public void ShouldDeleteAnEquipment()
         {
-            var rack = new Rack(6, "F1-A12");
+            var rack = new Rack("5", "F1-A12");
 
             rack.PlaceEquipment(_server1);
             rack.PlaceEquipment(_server3);

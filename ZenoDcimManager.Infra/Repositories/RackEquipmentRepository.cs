@@ -46,6 +46,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.RackEquipments
                 .Include(x => x.BaseEquipment)
+                .Include(x => x.Rack)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

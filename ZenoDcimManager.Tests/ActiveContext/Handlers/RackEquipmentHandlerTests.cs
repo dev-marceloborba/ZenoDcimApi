@@ -29,7 +29,6 @@ namespace ZenoDcimManager.Tests.ZenoContext
             _command.InitialPosition = 1;
             _command.FinalPosition = 2;
             _command.RackEquipmentType = ERackEquipmentType.SERVER;
-            _command.RackLocalization = "RackLocalization";
 
             _handler = new RackEquipmentHandler(_rackEquipmentRepository, _rackRepository);
         }
@@ -58,7 +57,7 @@ namespace ZenoDcimManager.Tests.ZenoContext
         [TestCategory("Handlers")]
         public void ShouldNotCreateWhenRackDoesntExists()
         {
-            _command.RackLocalization = "ABC";
+            // _command.RackLocalization = "ABC";
 
             _handler.Handle(_command);
 

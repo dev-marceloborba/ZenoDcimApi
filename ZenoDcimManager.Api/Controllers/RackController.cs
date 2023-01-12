@@ -4,10 +4,10 @@ using ZenoDcimManager.Domain.ZenoContext.Commands;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
-using ZenoDcimManager.Shared.Commands;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -25,12 +25,17 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<ICommandResult> CreateRack(
+        public async Task<ActionResult> CreateRack(
             [FromBody] CreateRackCommand command,
             [FromServices] RackHandler handler
         )
         {
-            return (ICommandResult)await handler.Handle(command);
+            var result = await handler.Handle(command);
+            if (result.Success == false)
+            {
+                return BadRequest(result.Data);
+            }
+            return Ok(result);
         }
 
         [Route("{id}")]
@@ -51,6 +56,38 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IEnumerable<Rack>> GetAllRacks()
         {
             return await _repository.FindAllAsync();
+        }
+
+        [Route("{id}")]
+        [HttpGet]
+        public async Task<ActionResult> GetRackByIdAsync(
+            [FromRoute] Guid id
+        )
+        {
+            var result = await _repository.FindByIdAsync(id);
+            return Ok(new RackOutput
+            {
+                Id = result.Id,
+                Name = result.Name,
+                Localization = result.Localization,
+                Size = result.Size,
+                Capacity = result.Capacity,
+                Power = result.Power,
+                Weight = result.Weight,
+                Description = result.Description,
+                Site = result.Site,
+                Building = result.Building,
+                Floor = result.Floor,
+                Room = result.Room,
+                RackEquipments = result.RackEquipments,
+                RackSlots = result.GetRackSlots(),
+                Statistics = new RackStatistics
+                {
+                    AvailablePower = result.GetAvailablePower(),
+                    AvailableWeight = result.GetAvailableWeight(),
+                    AvailableSpace = result.TotalAvailableSpace()
+                }
+            });
         }
 
         [Route("{id}")]

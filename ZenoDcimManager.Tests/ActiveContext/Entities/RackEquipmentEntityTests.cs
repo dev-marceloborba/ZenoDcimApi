@@ -8,7 +8,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Entities
     [TestClass]
     public class RackEquipmentEntityTests
     {
-        private readonly Rack _rack = new Rack(16, "F1-A12");
+        private readonly Rack _rack = new Rack("16", "F1-A12");
         private readonly BaseEquipment _serverBase = new BaseEquipment();
         private RackEquipment _server;
 

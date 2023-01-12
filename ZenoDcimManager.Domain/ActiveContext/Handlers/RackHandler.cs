@@ -16,7 +16,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
     {
         private readonly IRackRepository _rackRepository;
 
-        public RackHandler(IRackRepository rackRepository )
+        public RackHandler(IRackRepository rackRepository)
         {
             _rackRepository = rackRepository;
         }
@@ -24,18 +24,24 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         public async Task<ICommandResult> Handle(CreateRackCommand command)
         {
             var rack = new Rack(command.Size, command.Localization);
+            rack.Name = command.Name;
+            rack.Localization = command.Localization;
+            rack.Size = command.Size;
+            rack.Capacity = command.Capacity;
+            rack.Power = command.Power;
+            rack.Weight = command.Weight;
+            rack.Description = command.Description;
+            rack.SiteId = command.SiteId;
+            rack.BuildingId = command.BuildingId;
+            rack.FloorId = command.FloorId;
+            rack.RoomId = command.RoomId;
+
             var rackValidator = new RackValidator(rack);
 
             AddNotifications(rackValidator);
 
             if (Invalid)
                 return new CommandResult(false, "Error on create rack", Notifications);
-
-            rack.Weight = command.Weight;
-            rack.SiteId = command.SiteId;
-            rack.BuildingId = command.BuildingId;
-            rack.FloorId = command.FloorId;
-            rack.RoomId = command.RoomId;
 
             // save on repository
             await _rackRepository.CreateAsync(rack);
@@ -48,8 +54,13 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         {
             var rack = await _rackRepository.FindByIdAsync(command.Id);
 
+            rack.Name = command.Name;
             rack.Localization = command.Localization;
             rack.Size = command.Size;
+            rack.Capacity = command.Capacity;
+            rack.Power = command.Power;
+            rack.Weight = command.Weight;
+            rack.Description = command.Description;
             rack.TrackModifiedDate();
 
             _rackRepository.Update(rack);

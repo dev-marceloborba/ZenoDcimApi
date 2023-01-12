@@ -27,7 +27,6 @@ using System.Text.Json.Serialization;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
-using System.Text.Json;
 
 namespace ZenoDcimManager.Api
 {
@@ -94,28 +93,21 @@ namespace ZenoDcimManager.Api
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
             services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
-            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
             {
-                builder.AllowAnyHeader()
+                builder
+                        .AllowAnyHeader()
                         .AllowAnyMethod()
                         .SetIsOriginAllowed((host) => true)
                         .AllowCredentials();
             }));
-
-            // services.AddCors(p => p.AddPolicy("zenoCors", builder =>
-            // {
-            //     builder.WithOrigins(
-            //         "https://main.d1ig3e0jiptnpr.amplifyapp.com",
-            //         "https://main.d1ig3e0jiptnpr.amplifyapp.com/v1/users",
-            //         "https://localhost:3000",
-            //         "http://main.d1ig3e0jiptnpr.amplifyapp.com",
-            //         "http://localhost:3000")
-            //     .AllowAnyMethod()
-            //     .AllowCredentials()
-            //     .AllowAnyHeader();
-            // }));
-            // services.AddCors();
-
+            services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            }));
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
@@ -123,7 +115,6 @@ namespace ZenoDcimManager.Api
             });
 
             services.AddAutoMapper(typeof(Startup));
-
             services.AddControllers()
                 .AddJsonOptions(
                     options =>
@@ -133,8 +124,6 @@ namespace ZenoDcimManager.Api
                     }
 
                  );
-
-            // services.AddControllers().AddNewtonSoftJson();
             services.AddSignalR();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
@@ -169,28 +158,22 @@ namespace ZenoDcimManager.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
+                app.UseCors("DevelopmentPolicy");
             }
 
+            if (env.IsProduction())
+            {
+                app.UseCors("ProductionPolicy");
+            }
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
-            app.UseCors("CorsPolicy");
-            // app.UseCors(x =>
-            // {
-            //     x.AllowAnyHeader();
-            //     x.AllowAnyMethod();
-            //     x.AllowCredentials();
-            // });
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationsHub>("/notifications");

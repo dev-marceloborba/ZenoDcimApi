@@ -99,8 +99,16 @@ namespace ZenoDcimManager.Api.Controllers
             rackEquipment.BaseEquipment.Model = command.Model;
             rackEquipment.BaseEquipment.Manufactor = command.Manufactor;
             rackEquipment.BaseEquipment.SerialNumber = command.SerialNumber;
-            rackEquipment.BaseEquipment.Size = command.Size;
+            rackEquipment.Size = command.Size;
             rackEquipment.RackId = command.RackId;
+            rackEquipment.Client = command.Client;
+            rackEquipment.Function = command.Function;
+            rackEquipment.RackMountType = command.RackMountType;
+            rackEquipment.RackEquipmentOrientation = command.RackEquipmentOrientation;
+            rackEquipment.Occupation = command.Occupation;
+            rackEquipment.Weight = command.Weight;
+            rackEquipment.Status = command.Status;
+            rackEquipment.Description = command.Description;
 
             rackEquipment.TrackModifiedDate();
 

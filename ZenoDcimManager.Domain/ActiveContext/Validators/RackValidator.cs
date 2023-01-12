@@ -14,7 +14,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Validators
             AddNotifications(new Contract()
                 .Requires()
                 .IsNotNullOrEmpty(rack.Localization, "Localization", "Localization is required")
-                .IsGreaterThan(rack.Size, 0, "Size", "Size must be greater than 0")
+                .IsGreaterThan(rack.Capacity, 0, "Capacity", "Capacity must be greater than 0")
             );
         }
 
@@ -22,9 +22,9 @@ namespace ZenoDcimManager.Domain.ZenoContext.Validators
         {
             foreach (var item in Rack.RackEquipments)
             {
-                if (item.InitialPosition > Rack.Size)
+                if (item.InitialPosition > Rack.Capacity)
                 {
-                    AddNotification("Size", "Rack initial position is greater than rack size");
+                    AddNotification("Capacity", "Rack initial position is greater than rack size");
                     break;
                 }
             }

@@ -21,7 +21,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Handlers
         public void ShouldNotCreateWhenRackInInvalid()
         {
             var command = new CreateRackCommand();
-            command.Size = 0;
+            command.Size = "";
             command.Localization = "";
             var handler = new RackHandler(_repository);
             handler.Handle(command);
@@ -33,7 +33,7 @@ namespace ZenoDcimManager.Tests.ZenoContext.Handlers
         public void ShouldCreateWhenRackValid()
         {
             var command = new CreateRackCommand();
-            command.Size = 16;
+            command.Size = "16";
             command.Localization = "A1-B1-B2-B2";
             var handler = new RackHandler(_repository);
             handler.Handle(command);

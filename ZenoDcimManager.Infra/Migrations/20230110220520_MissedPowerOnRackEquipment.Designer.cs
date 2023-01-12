@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20230110220520_MissedPowerOnRackEquipment")]
+    partial class MissedPowerOnRackEquipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1096,7 +1098,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RackPdu", (string)null);
+                    b.ToTable("RackPdu");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.ZenoContext.Entities.Room", b =>
@@ -1182,7 +1184,7 @@ namespace ZenoDcimManager.Infra.Migrations
                         .WithOne("CardSettings")
                         .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.EquipmentCardSettings", "EquipmentId");
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.EquipmentCardSettings.Parameter1#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
                         {
                             b1.Property<Guid>("EquipmentCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1203,7 +1205,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("EquipmentCardSettings", (string)null);
+                            b1.ToTable("EquipmentCardSettings");
 
                             b1.WithOwner()
                                 .HasForeignKey("EquipmentCardSettingsId");
@@ -1217,7 +1219,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.EquipmentCardSettings.Parameter2#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
                         {
                             b1.Property<Guid>("EquipmentCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1238,7 +1240,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("EquipmentCardSettings", (string)null);
+                            b1.ToTable("EquipmentCardSettings");
 
                             b1.WithOwner()
                                 .HasForeignKey("EquipmentCardSettingsId");
@@ -1252,7 +1254,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.EquipmentCardSettings.Parameter3#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
                         {
                             b1.Property<Guid>("EquipmentCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1273,7 +1275,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("EquipmentCardSettings", (string)null);
+                            b1.ToTable("EquipmentCardSettings");
 
                             b1.WithOwner()
                                 .HasForeignKey("EquipmentCardSettingsId");
@@ -1309,7 +1311,7 @@ namespace ZenoDcimManager.Infra.Migrations
                         .WithOne("CardSettings")
                         .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.RoomCardSettings", "RoomId");
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.RoomCardSettings.Parameter1#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
                         {
                             b1.Property<Guid>("RoomCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1330,7 +1332,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("RoomCardSettings", (string)null);
+                            b1.ToTable("RoomCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1344,7 +1346,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.RoomCardSettings.Parameter2#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
                         {
                             b1.Property<Guid>("RoomCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1365,7 +1367,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("RoomCardSettings", (string)null);
+                            b1.ToTable("RoomCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1379,7 +1381,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.RoomCardSettings.Parameter3#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
                         {
                             b1.Property<Guid>("RoomCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1400,7 +1402,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("RoomCardSettings", (string)null);
+                            b1.ToTable("RoomCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1433,7 +1435,7 @@ namespace ZenoDcimManager.Infra.Migrations
                         .WithOne("CardSettings")
                         .HasForeignKey("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings", "SiteId");
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings.Parameter1#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
                         {
                             b1.Property<Guid>("SiteBuildingCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1454,7 +1456,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("SiteBuildingCardSettings", (string)null);
+                            b1.ToTable("SiteBuildingCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1468,7 +1470,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings.Parameter2#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
                         {
                             b1.Property<Guid>("SiteBuildingCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1489,7 +1491,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("SiteBuildingCardSettings", (string)null);
+                            b1.ToTable("SiteBuildingCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1503,7 +1505,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings.Parameter3#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
                         {
                             b1.Property<Guid>("SiteBuildingCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1524,7 +1526,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("SiteBuildingCardSettings", (string)null);
+                            b1.ToTable("SiteBuildingCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1538,7 +1540,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings.Parameter4#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter4", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter4", b1 =>
                         {
                             b1.Property<Guid>("SiteBuildingCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1559,7 +1561,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("SiteBuildingCardSettings", (string)null);
+                            b1.ToTable("SiteBuildingCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1573,7 +1575,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings.Parameter5#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter5", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter5", b1 =>
                         {
                             b1.Property<Guid>("SiteBuildingCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1594,7 +1596,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("SiteBuildingCardSettings", (string)null);
+                            b1.ToTable("SiteBuildingCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()
@@ -1608,7 +1610,7 @@ namespace ZenoDcimManager.Infra.Migrations
                             b1.Navigation("EquipmentParameter");
                         });
 
-                    b.OwnsOne("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings.Parameter6#ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter6", b1 =>
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter6", b1 =>
                         {
                             b1.Property<Guid>("SiteBuildingCardSettingsId")
                                 .HasColumnType("uniqueidentifier");
@@ -1629,7 +1631,7 @@ namespace ZenoDcimManager.Infra.Migrations
 
                             b1.HasIndex("EquipmentParameterId");
 
-                            b1.ToTable("SiteBuildingCardSettings", (string)null);
+                            b1.ToTable("SiteBuildingCardSettings");
 
                             b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
                                 .WithMany()

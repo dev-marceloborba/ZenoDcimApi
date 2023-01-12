@@ -18,15 +18,15 @@ namespace ZenoDcimManager.Tests.ZenoContext.Mocks.Repositories
         public FakeRackRepository()
         {
             _server = new RackEquipment(_serverBase, 1, 2, ERackEquipmentType.SERVER);
-            _rack = new Rack(16, "Rack-01");
+            _rack = new Rack("16", "Rack-01");
             _rack.PlaceEquipment(_server);
 
             _racks.Add(_rack);
-            _racks.Add(new Rack(16, "Rack-02"));
-            _racks.Add(new Rack(16, "Rack-03"));
-            _racks.Add(new Rack(16, "Rack-04"));
-            _racks.Add(new Rack(16, "Rack-05"));
-            _racks.Add(new Rack(16, "Rack-06"));
+            _racks.Add(new Rack("16", "Rack-02"));
+            _racks.Add(new Rack("16", "Rack-03"));
+            _racks.Add(new Rack("16", "Rack-04"));
+            _racks.Add(new Rack("16", "Rack-05"));
+            _racks.Add(new Rack("16", "Rack-06"));
         }
 
         public void Delete(Rack model)

@@ -5,8 +5,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands
 {
     public class CreateRackCommand : ICommand
     {
-        public int Size { get; set; }
-        public int Weight { get; set; }
+        public string Name { get; set; }
+        public string Size { get; set; }
+        public int Capacity { get; set; }
+        public double Power { get; set; }
+        public double Weight { get; set; }
+        public string Description { get; set; }
         public Guid SiteId { get; set; }
         public Guid BuildingId { get; set; }
         public Guid FloorId { get; set; }
@@ -16,7 +20,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands
         {
 
         }
-        public CreateRackCommand(int size, string localization)
+        public CreateRackCommand(string size, string localization)
         {
             Size = size;
             Localization = localization;

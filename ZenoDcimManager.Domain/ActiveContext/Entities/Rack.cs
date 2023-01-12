@@ -9,9 +9,13 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
     public class Rack : Entity
     {
-        public int Weight { get; set; }
-        public int Size { get; set; }
+        public string Name { get; set; }
         public string Localization { get; set; }
+        public string Size { get; set; }
+        public int Capacity { get; set; }
+        public double Power { get; set; }
+        public double Weight { get; set; }
+        public string Description { get; set; }
         public List<RackEquipment> RackEquipments { get; private set; }
         // navigation properties
         public Site Site { get; set; }
@@ -28,7 +32,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 
         }
 
-        public Rack(int size, string localization)
+        public Rack(string size, string localization)
         {
             Size = size;
             Localization = localization;
@@ -92,7 +96,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
             var occuppedSlots = new List<int>();
             var allSlots = new List<int>();
 
-            for (int i = 1; i <= Size; i++)
+            for (int i = 1; i <= Capacity; i++)
             {
                 allSlots.Add(i);
             }
@@ -127,7 +131,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public double PercentUsedSpace()
         {
             var totalSlots = TotalOccupedSlots();
-            return (double)totalSlots / Size * 100;
+            return (double)totalSlots / Capacity * 100;
         }
 
         public double PercentAvailableSpace()
@@ -147,14 +151,14 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 
         public int TotalUsedSpace()
         {
-            return Size - TotalAvailableSpace();
+            return Capacity - TotalAvailableSpace();
         }
 
         public IEnumerable<RackSlot> GetRackSlots()
         {
             var slots = new List<RackSlot>();
 
-            for (int i = 1; i <= Size; i++)
+            for (int i = 1; i <= Capacity; i++)
             {
                 var eq = RackEquipments.FirstOrDefault(x => i >= x.InitialPosition && i <= x.FinalPosition);
                 if (eq == null)
@@ -162,7 +166,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
                     slots.Add(new RackSlot
                     {
                         InitialPosition = i,
-                        FinalPosition = i
+                        FinalPosition = i,
+                        RackMountType = ERackMountType.NO_ONE
                     });
                 }
                 else
@@ -174,7 +179,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
                             Description = eq.BaseEquipment.Name,
                             InitialPosition = eq.InitialPosition,
                             FinalPosition = eq.FinalPosition,
-                            EquipmentId = eq.Id
+                            RackMountType = eq.RackMountType,
+                            EquipmentId = eq.Id,
                         });
                     }
                 }
@@ -182,13 +188,19 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
 
             return slots.OrderBy(x => x.InitialPosition);
         }
-
-        public void ChangeLocalization(string localization) => Localization = localization;
-        public void ChangeSize(int size) => Size = size;
-
         public int GetEquipmentCounterByTipe(ERackEquipmentType rackEquipmentType)
         {
             return RackEquipments.Where(x => x.RackEquipmentType == rackEquipmentType).Count();
+        }
+
+        public double GetAvailablePower()
+        {
+            return Power - RackEquipments.Sum(x => x.Power);
+        }
+
+        public double GetAvailableWeight()
+        {
+            return Weight - RackEquipments.Sum(x => x.Weight);
         }
     }
 }

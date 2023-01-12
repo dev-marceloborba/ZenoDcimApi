@@ -30,7 +30,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 Model = command.Model,
                 Manufactor = command.Manufactor,
                 SerialNumber = command.SerialNumber,
-                Size = command.Size
+                // Size = command.Size
             };
             var baseEquipmentValidator = new BaseEquipmentValidator(baseEquipment);
 
@@ -39,6 +39,16 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 command.InitialPosition,
                 command.FinalPosition,
                 command.RackEquipmentType);
+
+            rackEquipment.Client = command.Client;
+            rackEquipment.Function = command.Function;
+            rackEquipment.RackMountType = command.RackMountType;
+            rackEquipment.RackEquipmentOrientation = command.RackEquipmentOrientation;
+            rackEquipment.Occupation = command.Occupation;
+            rackEquipment.Weight = command.Weight;
+            rackEquipment.Status = command.Status;
+            rackEquipment.Description = command.Description;
+
             var rackEquipmentValidator = new RackEquipmentValidator(rackEquipment);
 
             AddNotifications(baseEquipmentValidator, rackEquipmentValidator);
@@ -46,7 +56,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             if (Invalid)
                 return new CommandResult(false, "Error on creating rack equipment", Notifications);
 
-            var rack = await _rackRepository.FindByLocalization(command.RackLocalization);
+            var rack = await _rackRepository.FindByIdAsync(command.RackId);
             if (rack != null)
                 rackEquipment.RackId = rack.Id;
 
