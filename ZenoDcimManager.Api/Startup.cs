@@ -93,30 +93,30 @@ namespace ZenoDcimManager.Api
             services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
             services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 
-            services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
-            {
-                builder
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .SetIsOriginAllowed((host) => true)
-                        .AllowCredentials();
-            }));
-            services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            }));
+            // services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
+            // {
+            //     builder
+            //             .AllowAnyHeader()
+            //             .AllowAnyMethod()
+            //             .SetIsOriginAllowed((host) => true)
+            //             .AllowCredentials();
+            // }));
+            // services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
+            // {
+            //     builder
+            //         .AllowAnyOrigin()
+            //         .AllowAnyHeader()
+            //         .AllowAnyMethod();
+            // }));
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                );
-            });
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy("AllowAllOrigins",
+            //         builder => builder.AllowAnyOrigin()
+            //         .AllowAnyMethod()
+            //         .AllowAnyHeader()
+            //     );
+            // });
 
             services.AddResponseCompression(options =>
             {
@@ -179,13 +179,17 @@ namespace ZenoDcimManager.Api
             // {
             //     app.UseCors("ProductionPolicy");
             // }
-            app.UseCors("AllowAllOrigins");
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
-
             // app.UseCors("AllowAllOrigins");
 
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+            app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseResponseCompression();
