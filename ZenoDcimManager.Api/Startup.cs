@@ -45,12 +45,19 @@ var app = builder.Build();
 LoadConfiguration(app);
 
 // app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-app.UseCors();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("DevelopmentPolicy");
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseOptions();
 // app.UseCors();
+if (app.Environment.IsProduction())
+{
+    app.UseCors("ProductionPolicy");
+}
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -113,13 +120,20 @@ void ConfigureMvc(WebApplicationBuilder builder)
     // builder.Services.AddCors();
     builder.Services.AddCors(options =>
     {
-        options.AddDefaultPolicy(policy => policy
+        options.AddPolicy(name: "DevelopmentPolicy", policy => policy
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowAnyOrigin()
-        // .WithOrigins("http://localhost:3000", "https://main.d1ig3e0jiptnpr.amplifyapp.com'")
-        // .SetIsOriginAllowedToAllowWildcardSubdomains()
-        // .AllowCredentials()
+        );
+    });
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "ProductionPolicy", policy => policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed((host) => true)
+            .AllowCredentials()
         );
     });
 }
