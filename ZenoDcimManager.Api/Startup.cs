@@ -22,7 +22,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
@@ -44,7 +43,6 @@ builder.Services.AddSignalR();
 var app = builder.Build();
 LoadConfiguration(app);
 
-// app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("DevelopmentPolicy");
@@ -53,7 +51,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseOptions();
-// app.UseCors();
 if (app.Environment.IsProduction())
 {
     app.UseCors("ProductionPolicy");
@@ -117,7 +114,6 @@ void ConfigureMvc(WebApplicationBuilder builder)
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-    // builder.Services.AddCors();
     builder.Services.AddCors(options =>
     {
         options.AddPolicy(name: "DevelopmentPolicy", policy => policy
