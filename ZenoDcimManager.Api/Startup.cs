@@ -28,6 +28,7 @@ using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
 using System.IO.Compression;
+using ZenoDcimManager.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureAuthentication(builder);
@@ -43,18 +44,16 @@ builder.Services.AddSignalR();
 var app = builder.Build();
 LoadConfiguration(app);
 
-app.UseCors(builder =>
-{
-    builder
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-});
+// app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors();
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseOptions();
+// app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseStaticFiles();
 app.UseResponseCompression();
 
 if (app.Environment.IsDevelopment())
@@ -111,6 +110,18 @@ void ConfigureMvc(WebApplicationBuilder builder)
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
+    // builder.Services.AddCors();
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy => policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin()
+        // .WithOrigins("http://localhost:3000", "https://main.d1ig3e0jiptnpr.amplifyapp.com'")
+        // .SetIsOriginAllowedToAllowWildcardSubdomains()
+        // .AllowCredentials()
+        );
+    });
 }
 
 void ConfigureServices(WebApplicationBuilder builder)
