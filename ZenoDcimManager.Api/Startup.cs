@@ -27,180 +27,145 @@ using System.Text.Json.Serialization;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
+using System.IO.Compression;
 
-namespace ZenoDcimManager.Api
+var builder = WebApplication.CreateBuilder(args);
+ConfigureAuthentication(builder);
+ConfigureMvc(builder);
+ConfigureServices(builder);
+ConfigureRepositories(builder);
+ConfigureHandlers(builder);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
+
+var app = builder.Build();
+LoadConfiguration(app);
+
+app.UseCors(builder =>
 {
-    public class Startup
+    builder
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+});
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.UseStaticFiles();
+app.UseResponseCompression();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapHub<NotificationsHub>("notifications");
+
+app.Run();
+
+void LoadConfiguration(WebApplication app)
+{
+
+}
+
+void ConfigureAuthentication(WebApplicationBuilder builder)
+{
+    var key = Encoding.ASCII.GetBytes(Settings.Secret);
+    builder.Services.AddAuthentication(x =>
+     {
+         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+         x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+     })
+     .AddJwtBearer(x =>
+     {
+         x.RequireHttpsMetadata = false;
+         x.SaveToken = true;
+         x.TokenValidationParameters = new TokenValidationParameters
+         {
+             ValidateIssuerSigningKey = true,
+             IssuerSigningKey = new SymmetricSecurityKey(key),
+             ValidateIssuer = false,
+             ValidateAudience = false,
+         };
+     });
+}
+
+void ConfigureMvc(WebApplicationBuilder builder)
+{
+    builder.Services.AddResponseCompression(options =>
     {
-        public Startup(IConfiguration configuration)
+        options.Providers.Add<GzipCompressionProvider>();
+        options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
+    });
+    builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+    {
+        options.Level = CompressionLevel.Optimal;
+    });
+    builder.Services
+        .AddControllers()
+        .AddJsonOptions(options =>
         {
-            Configuration = configuration;
-        }
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
+}
 
-        public IConfiguration Configuration { get; }
+void ConfigureServices(WebApplicationBuilder builder)
+{
+    var connectionString = builder.Configuration.GetConnectionString("connectionString");
+    builder.Services.AddDbContext<ZenoContext>(options => options.UseSqlServer(connectionString));
+    builder.Services.AddTransient<IEmailService, EmailService>();
+    builder.Services.AddTransient<ICryptoService, CryptoService>();
+    builder.Services.AddTransient<ITokenService, TokenService>();
+}
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // contexts for SQL Server
-            services.AddDbContext<ZenoContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
+void ConfigureRepositories(WebApplicationBuilder builder)
+{
+    builder.Services.AddTransient<IUserRepository, UserRepository>();
+    builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
+    builder.Services.AddTransient<IRackRepository, RackRepository>();
+    builder.Services.AddTransient<IRackEquipmentRepository, RackEquipmentRepository>();
+    builder.Services.AddTransient<IPlcRepository, PlcRepository>();
+    builder.Services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
+    builder.Services.AddTransient<IAlarmRepository, AlarmRepository>();
+    builder.Services.AddTransient<IAlarmRuleRepository, AlarmRuleRepository>();
+    builder.Services.AddTransient<ISiteRepository, SiteRepository>();
+    builder.Services.AddTransient<IBuildingRepository, BuildingRepository>();
+    builder.Services.AddTransient<IFloorRepository, FloorRepository>();
+    builder.Services.AddTransient<IRoomRepository, RoomRepository>();
+    builder.Services.AddTransient<IEquipmentRepository, EquipmentRepository>();
+    builder.Services.AddTransient<IParameterRepository, ParameterRepository>();
+    builder.Services.AddTransient<IVirtualParameterRepository, VirtualParameterRepository>();
+    builder.Services.AddTransient<IEquipmentParameterRepository, EquipmentParameterRepository>();
+    builder.Services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
+    builder.Services.AddTransient<IMeasureRepository, MeasureRepository>();
+    builder.Services.AddTransient<ISupplierRepository, SupplierRepository>();
+    builder.Services.AddTransient<IGroupRepository, GroupRepository>();
+    builder.Services.AddTransient<IWorkOrderRepository, WorkOrderRepository>();
+}
 
-            // services
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<ICryptoService, CryptoService>();
-            services.AddTransient<ITokenService, TokenService>();
-
-            // repositories
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<ICompanyRepository, CompanyRepository>();
-            services.AddTransient<IRackRepository, RackRepository>();
-            services.AddTransient<IRackEquipmentRepository, RackEquipmentRepository>();
-            services.AddTransient<IPlcRepository, PlcRepository>();
-            services.AddTransient<IModbusTagRepository, ModbusTagRepository>();
-            services.AddTransient<IAlarmRepository, AlarmRepository>();
-            services.AddTransient<IAlarmRuleRepository, AlarmRuleRepository>();
-            services.AddTransient<ISiteRepository, SiteRepository>();
-            services.AddTransient<IBuildingRepository, BuildingRepository>();
-            services.AddTransient<IFloorRepository, FloorRepository>();
-            services.AddTransient<IRoomRepository, RoomRepository>();
-            services.AddTransient<IEquipmentRepository, EquipmentRepository>();
-            services.AddTransient<IParameterRepository, ParameterRepository>();
-            services.AddTransient<IVirtualParameterRepository, VirtualParameterRepository>();
-            services.AddTransient<IEquipmentParameterRepository, EquipmentParameterRepository>();
-            services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
-            services.AddTransient<IMeasureRepository, MeasureRepository>();
-            services.AddTransient<ISupplierRepository, SupplierRepository>();
-            services.AddTransient<IGroupRepository, GroupRepository>();
-            services.AddTransient<IWorkOrderRepository, WorkOrderRepository>();
-
-            // handlers
-            services.AddTransient<UserHandler, UserHandler>();
-            services.AddTransient<CompanyHandler, CompanyHandler>();
-            services.AddTransient<LoginHandler, LoginHandler>();
-            services.AddTransient<RackHandler, RackHandler>();
-            services.AddTransient<RackEquipmentHandler, RackEquipmentHandler>();
-            services.AddTransient<PlcHandler, PlcHandler>();
-            services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
-            services.AddTransient<AlarmHandler, AlarmHandler>();
-            services.AddTransient<AlarmRuleHandler, AlarmRuleHandler>();
-            services.AddTransient<SiteHandler, SiteHandler>();
-            services.AddTransient<BuildingHandler, BuildingHandler>();
-            services.AddTransient<FloorHandler, FloorHandler>();
-            services.AddTransient<RoomHandler, RoomHandler>();
-            services.AddTransient<EquipmentHandler, EquipmentHandler>();
-            services.AddTransient<EquipmentParameterHandler, EquipmentParameterHandler>();
-            services.AddTransient<ParameterHandler, ParameterHandler>();
-            services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
-            services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
-            services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
-
-            // services.AddCors(options => options.AddPolicy("ProductionPolicy", builder =>
-            // {
-            //     builder
-            //             .AllowAnyHeader()
-            //             .AllowAnyMethod()
-            //             .SetIsOriginAllowed((host) => true)
-            //             .AllowCredentials();
-            // }));
-            // services.AddCors(options => options.AddPolicy("DevelopmentPolicy", builder =>
-            // {
-            //     builder
-            //         .AllowAnyOrigin()
-            //         .AllowAnyHeader()
-            //         .AllowAnyMethod();
-            // }));
-
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("AllowAllOrigins",
-            //         builder => builder.AllowAnyOrigin()
-            //         .AllowAnyMethod()
-            //         .AllowAnyHeader()
-            //     );
-            // });
-
-            services.AddResponseCompression(options =>
-            {
-                options.Providers.Add<GzipCompressionProvider>();
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
-            });
-
-            services.AddAutoMapper(typeof(Startup));
-            services.AddControllers()
-                .AddJsonOptions(
-                    options =>
-                    {
-                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                        // options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                    }
-
-                 );
-            services.AddSignalR();
-
-            var key = Encoding.ASCII.GetBytes(Settings.Secret);
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                };
-            });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZenoDcimManager.Api", Version = "v1" });
-            });
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZenoDcimManager.Api v1"));
-            }
-
-            // if (env.IsDevelopment())
-            // {
-            //     app.UseCors("DevelopmentPolicy");
-            // }
-
-            // if (env.IsProduction())
-            // {
-            //     app.UseCors("ProductionPolicy");
-            // }
-            // app.UseCors("AllowAllOrigins");
-
-            app.UseCors(builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseResponseCompression();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHub<NotificationsHub>("/notifications");
-            });
-        }
-    }
+void ConfigureHandlers(WebApplicationBuilder builder)
+{
+    builder.Services.AddTransient<UserHandler, UserHandler>();
+    builder.Services.AddTransient<CompanyHandler, CompanyHandler>();
+    builder.Services.AddTransient<LoginHandler, LoginHandler>();
+    builder.Services.AddTransient<RackHandler, RackHandler>();
+    builder.Services.AddTransient<RackEquipmentHandler, RackEquipmentHandler>();
+    builder.Services.AddTransient<PlcHandler, PlcHandler>();
+    builder.Services.AddTransient<ModbusTagHandler, ModbusTagHandler>();
+    builder.Services.AddTransient<AlarmHandler, AlarmHandler>();
+    builder.Services.AddTransient<AlarmRuleHandler, AlarmRuleHandler>();
+    builder.Services.AddTransient<SiteHandler, SiteHandler>();
+    builder.Services.AddTransient<BuildingHandler, BuildingHandler>();
+    builder.Services.AddTransient<FloorHandler, FloorHandler>();
+    builder.Services.AddTransient<RoomHandler, RoomHandler>();
+    builder.Services.AddTransient<EquipmentHandler, EquipmentHandler>();
+    builder.Services.AddTransient<EquipmentParameterHandler, EquipmentParameterHandler>();
+    builder.Services.AddTransient<ParameterHandler, ParameterHandler>();
+    builder.Services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
+    builder.Services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
+    builder.Services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
 }
