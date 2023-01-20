@@ -46,10 +46,6 @@ namespace ZenoDcimManager.Api.Controllers
             virtualParameter.Name = command.Name;
             virtualParameter.Unit = command.Unit;
             virtualParameter.Scale = command.Scale;
-            virtualParameter.LowLimit = command.LowLimit;
-            virtualParameter.LowLowLimit = command.LowLowLimit;
-            virtualParameter.HighLimit = command.HighLimit;
-            virtualParameter.HighHighLimit = command.HighHighLimit;
             virtualParameter.Expression = command.Expression;
 
             _repository.Update(virtualParameter);

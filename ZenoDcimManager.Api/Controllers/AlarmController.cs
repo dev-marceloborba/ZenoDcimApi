@@ -52,7 +52,8 @@ namespace ZenoDcimManager.Api.Controllers
                 InDate = command.InDate,
                 OutDate = command.OutDate,
                 NotificationEnabled = command.NotificationEnabled,
-                EmailEnabled = command.EmailEnabled
+                EmailEnabled = command.EmailEnabled,
+                Type = command.Type,
             };
 
             if (alarm.NotificationEnabled == true)
@@ -102,13 +103,25 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<ActionResult> GetFilteredAlarms(
             [FromServices] ZenoContext context,
             [FromQuery] DateTime initialDate,
-            [FromQuery] DateTime finalDate)
+            [FromQuery] DateTime finalDate,
+            [FromQuery] int priority,
+            [FromQuery] int type)
         {
             // var result = await _repository.GetFilteredAlarms(new AlarmFiltersViewModel
             // {
             //     InitialDate = initialDate,
             //     FinalDate = finalDate
             // });
+
+            // type = 4: filtra tipo = 0 e tipo = 1 ou remove filtro por tipo.
+            // type = 0: filtra tipo = 0
+            // type = 1: filtra tipo = 1
+
+            // priority = 4, filtra severidade tipo 0, 1, e 2 ou remove filtro
+            // priority = 0 filtra severidade tipo 0
+            // priority = 1 filtra severidade tipo 1
+            // priority = 2 filtra severidade tipo 2
+
             var result = await context.Alarms
                 .AsNoTracking()
                 .Include(x => x.AlarmRule)
@@ -130,9 +143,13 @@ namespace ZenoDcimManager.Api.Controllers
                         Setpoint = x.AlarmRule.Setpoint,
                         Priority = x.AlarmRule.Priority,
                     },
-                    x.Priority
+                    x.Priority,
+                    x.Type
                 })
-                .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate)
+                .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate
+                        && (priority == 4 ? x.Priority >= 0 : x.Priority == (EAlarmPriority)priority)
+                        && (type == 4 ? x.Type >= 0 : x.Type == (EAlarmType)type)
+                )
                 .OrderByDescending(x => x.CreatedDate)
                 .ToListAsync();
             return Ok(result);
@@ -196,7 +213,8 @@ namespace ZenoDcimManager.Api.Controllers
                         // Room = arr[3],
                         // Equipment = arr[4],
                         // Parameter = arr[5],
-                        Pathname = arr[0] + '*' + arr[1] + '*' + arr[2] + '*' + arr[3] + '*' + arr[4]
+                        // Pathname = arr[0] + '*' + arr[1] + '*' + arr[2] + '*' + arr[3] + '*' + arr[4]
+                        Pathname = string.Join("*", arr)
                     });
                 }
 

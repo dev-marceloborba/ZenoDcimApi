@@ -139,5 +139,17 @@ namespace ZenoDcimManager.Api.Controllers
             // }
 
         }
+
+        [HttpGet]
+        [Route("building/floor/room/equipment/duplicate/{id}")]
+        public async Task<ActionResult> Duplicate(
+            [FromRoute] Guid id
+        )
+        {
+            var equipment = await _repository.FindByIdAsync(id);
+            var duplicated = equipment.Duplicate();
+
+            return Ok(duplicated);
+        }
     }
 }

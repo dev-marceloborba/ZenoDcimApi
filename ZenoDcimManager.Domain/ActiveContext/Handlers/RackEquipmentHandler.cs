@@ -46,6 +46,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             rackEquipment.RackEquipmentOrientation = command.RackEquipmentOrientation;
             rackEquipment.Occupation = command.Occupation;
             rackEquipment.Weight = command.Weight;
+            rackEquipment.Power = command.Power;
+            rackEquipment.Size = command.Size;
             rackEquipment.Status = command.Status;
             rackEquipment.Description = command.Description;
 

@@ -5,10 +5,13 @@ using ZenoDcimManager.Domain.ZenoContext.Enums;
 using ZenoDcimManager.Shared;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using ZenoDcimManager.Shared.Interfaces;
 
 namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
-    public class Equipment : Entity
+    public class Equipment : Entity,
+        IPrototype<Equipment>,
+        IDuplicate<Equipment>
     {
         public string Component { get; set; }
         public string ComponentCode { get; set; }
@@ -44,6 +47,20 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public string GetPathname()
         {
             return Room.Floor.Building.Site.Name + '*' + Room.Floor.Building.Name + '*' + Room.Floor.Name + '*' + Room.Name + '*' + this.ToString();
+        }
+
+        public Equipment Duplicate()
+        {
+            var duplicated = Clone();
+            duplicated.Component = duplicated.Component + " - cópia";
+            return duplicated;
+        }
+
+        public Equipment Clone()
+        {
+            var clone = (Equipment)MemberwiseClone();
+            clone.SetId(Guid.NewGuid());
+            return clone;
         }
     }
 }

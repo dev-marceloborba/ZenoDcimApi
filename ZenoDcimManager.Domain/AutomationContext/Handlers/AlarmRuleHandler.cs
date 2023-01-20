@@ -26,6 +26,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Handlers
                 Priority = command.Priority,
                 Conditional = command.Conditional,
                 Setpoint = command.Setpoint,
+                Type = command.Type,
                 EnableNotification = command.EnableNotification,
                 EnableEmail = command.EnableEmail,
                 EquipmentParameterId = command.EquipmentParameterId

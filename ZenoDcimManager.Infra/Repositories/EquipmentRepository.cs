@@ -38,10 +38,10 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Equipments
                 .AsNoTracking()
-                .Include(x => x.EquipmentParameters)
                 .Include(x => x.Building)
                 .Include(x => x.Floor)
                 .Include(x => x.Room)
+                .OrderBy(x => x.Component)
                 .ToListAsync();
         }
 

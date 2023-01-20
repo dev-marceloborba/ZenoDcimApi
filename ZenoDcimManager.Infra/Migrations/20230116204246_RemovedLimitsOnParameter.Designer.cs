@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20230116204246_RemovedLimitsOnParameter")]
+    partial class RemovedLimitsOnParameter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,9 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<Guid>("AlarmRuleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AlarmType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -84,9 +89,6 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
@@ -102,6 +104,9 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AlarmType")
+                        .HasColumnType("int");
 
                     b.Property<int>("Conditional")
                         .HasColumnType("int");
@@ -129,9 +134,6 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<double>("Setpoint")
                         .HasColumnType("float");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -805,6 +807,18 @@ namespace ZenoDcimManager.Infra.Migrations
 
                     b.Property<string>("Expression")
                         .HasColumnType("varchar(200)");
+
+                    b.Property<double>("HighHighLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("HighLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LowLimit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LowLowLimit")
+                        .HasColumnType("float");
 
                     b.Property<string>("ModbusTagName")
                         .HasColumnType("nvarchar(max)");

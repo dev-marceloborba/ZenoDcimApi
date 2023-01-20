@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Flunt.Notifications;
+using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
@@ -25,13 +26,24 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             {
                 Name = command.Name,
                 Unit = command.Unit,
-                HighLimit = command.HighLimit,
-                LowLimit = command.LowLimit,
                 Scale = command.Scale,
                 DataSource = command.DataSource,
                 EquipmentId = command.EquipmentId,
                 Expression = command.Expression
             };
+
+            foreach (var alarmRule in command.AlarmRules)
+            {
+                parameter.AlarmRules.Add(new AlarmRule
+                {
+                    Name = alarmRule.Name,
+                    Conditional = alarmRule.Conditional,
+                    EnableEmail = alarmRule.EnableEmail,
+                    EnableNotification = alarmRule.EnableNotification,
+                    Priority = alarmRule.Priority,
+                    Setpoint = alarmRule.Setpoint
+                });
+            }
 
             await _equipmentParameterRepository.CreateAsync(parameter);
             await _equipmentParameterRepository.Commit();
@@ -47,8 +59,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 {
                     Name = item.Name,
                     Unit = item.Unit,
-                    HighLimit = item.HighLimit,
-                    LowLimit = item.LowLimit,
                     Scale = item.Scale,
                     DataSource = item.DataSource,
                     EquipmentId = item.EquipmentId,

@@ -97,5 +97,16 @@ namespace ZenoDcimManager.Api.Controllers
             var result = await _repository.LoadBuildingCards(id);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("duplicate/{id}")]
+        public async Task<ActionResult> Duplicate(
+            [FromRoute] Guid id
+        )
+        {
+            var building = await _repository.FindByIdAsync(id);
+            var duplicated = building.Duplicate();
+            return Ok(duplicated);
+        }
     }
 }

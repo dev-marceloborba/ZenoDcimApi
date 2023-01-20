@@ -54,6 +54,7 @@ namespace ZenoDcimManager.Api.Controllers
             var alarmRule = await repository.FindByIdAsync(id);
             alarmRule.Name = command.Name;
             alarmRule.Conditional = command.Conditional;
+            alarmRule.Type = command.Type;
             alarmRule.EquipmentParameterId = command.EquipmentParameterId;
             alarmRule.Priority = command.Priority;
             alarmRule.Setpoint = command.Setpoint;

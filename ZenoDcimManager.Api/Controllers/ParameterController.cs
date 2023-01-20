@@ -42,10 +42,6 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var parameter = await _repository.FindByIdAsync(id);
-                parameter.LowLimit = command.LowLimit;
-                parameter.LowLowLimit = command.LowLowLimit;
-                parameter.HighLimit = command.HighLimit;
-                parameter.HighHighLimit = command.HighHighLimit;
                 parameter.Name = command.Name;
                 parameter.Scale = command.Scale;
                 parameter.Unit = command.Unit;

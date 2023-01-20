@@ -15,6 +15,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
         public bool Enabled { get; set; } = true;
         public TimeSpan AckInterval { get; set; }
         public EAlarmPriority Priority { get; set; }
+        public EAlarmType Type { get; set; }
         public bool NotificationEnabled { get; set; }
         public bool EmailEnabled { get; set; }
 

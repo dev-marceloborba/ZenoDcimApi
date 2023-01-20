@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
+using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -40,26 +41,42 @@ namespace ZenoDcimManager.Api.Controllers
             [FromBody] CreateEquipmentParameterCommand command,
             [FromServices] EquipmentParameterHandler handler)
         {
-            try
+            // try
+            // {
+            var equipmentParameter = await _repository.FindByIdAsync(id);
+            equipmentParameter.DataSource = command.DataSource;
+            equipmentParameter.Unit = command.Unit;
+            equipmentParameter.Scale = command.Scale;
+            equipmentParameter.ModbusTagName = command.Address;
+
+            var alarmRules = new List<AlarmRule>();
+            foreach (var item in command.AlarmRules)
             {
-                var equipmentParameter = await _repository.FindByIdAsync(id);
-                equipmentParameter.DataSource = command.DataSource;
-                equipmentParameter.HighHighLimit = command.HighHighLimit;
-                equipmentParameter.HighLimit = command.HighLimit;
-                equipmentParameter.LowLimit = command.LowLimit;
-                equipmentParameter.LowLowLimit = command.LowLowLimit;
-                equipmentParameter.Unit = command.Unit;
-                equipmentParameter.Scale = command.Scale;
-                equipmentParameter.ModbusTagName = command.Address;
-                equipmentParameter.TrackModifiedDate();
-                _repository.Update(equipmentParameter);
-                await _repository.Commit();
-                return Ok(new CommandResult(true, "Parâmetro de equipamento atualizado com sucesso", equipmentParameter));
+                var alarmRule = new AlarmRule
+                {
+                    Conditional = item.Conditional,
+                    EnableEmail = item.EnableEmail,
+                    EnableNotification = item.EnableNotification,
+                    EquipmentParameterId = item.EquipmentParameterId,
+                    Name = item.Name,
+                    Priority = item.Priority,
+                    Setpoint = item.Setpoint,
+                    Type = item.Type,
+                };
+                alarmRule.SetId(item.Id);
+                alarmRules.Add(alarmRule);
             }
-            catch
-            {
-                return BadRequest(new CommandResult(false, "Erro ao atualizar parâmetro de equipamento", new { id }));
-            }
+
+            equipmentParameter.AlarmRules = alarmRules;
+            equipmentParameter.TrackModifiedDate();
+            _repository.Update(equipmentParameter);
+            await _repository.Commit();
+            return Ok(new CommandResult(true, "Parâmetro de equipamento atualizado com sucesso", equipmentParameter));
+            // }
+            // catch
+            // {
+            //     return BadRequest(new CommandResult(false, "Erro ao atualizar parâmetro de equipamento", new { id }));
+            // }
         }
 
         [Route("building/floor/room/equipment/parameter/{id}")]
@@ -112,10 +129,6 @@ namespace ZenoDcimManager.Api.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     Unit = item.Unit,
-                    LowLowLimit = item.LowLowLimit,
-                    LowLimit = item.LowLimit,
-                    HighLimit = item.HighLimit,
-                    HighHighLimit = item.HighHighLimit,
                     Scale = item.Scale,
                     DataSource = item.DataSource,
                     Expression = item.Expression,

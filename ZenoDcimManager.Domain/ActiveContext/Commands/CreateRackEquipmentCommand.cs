@@ -20,6 +20,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands
         public string Function { get; set; }
         public int Occupation { get; set; }
         public double Weight { get; set; }
+        public double Power { get; set; }
         public EEquipmentStatus Status { get; set; }
         public string Description { get; set; }
         public Guid RackId { get; set; }

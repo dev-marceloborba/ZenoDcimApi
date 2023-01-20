@@ -33,24 +33,6 @@ namespace ZenoDcimManager.Api.Controllers
             return (ICommandResult)await handler.Handle(command);
         }
 
-        [Route("place-equipment/{id}")]
-        [HttpPut]
-        public async Task<ActionResult> PlaceRackEquipment(
-            [FromRoute] Guid id,
-            [FromBody] CreateRackEquipmentCommand command
-        )
-        {
-            var rackEquipment = await _repository.FindById(id);
-            rackEquipment.RackId = command.RackId;
-            rackEquipment.InitialPosition = command.InitialPosition;
-            rackEquipment.FinalPosition = command.FinalPosition;
-
-            _repository.Update(rackEquipment);
-            await _repository.Commit();
-
-            return Ok(new CommandResult(true, "Equipamento posicionado no rack", rackEquipment));
-        }
-
         [Route("")]
         [HttpGet]
         public async Task<IEnumerable<RackEquipment>> GetAllRackEquipments()
@@ -106,6 +88,7 @@ namespace ZenoDcimManager.Api.Controllers
             rackEquipment.RackMountType = command.RackMountType;
             rackEquipment.RackEquipmentOrientation = command.RackEquipmentOrientation;
             rackEquipment.Occupation = command.Occupation;
+            rackEquipment.Power = command.Power;
             rackEquipment.Weight = command.Weight;
             rackEquipment.Status = command.Status;
             rackEquipment.Description = command.Description;

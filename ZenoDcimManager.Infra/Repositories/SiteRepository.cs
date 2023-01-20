@@ -36,6 +36,7 @@ namespace ZenoDcimManager.Infra.Repositories
         public async Task<IEnumerable<Site>> FindAllAsync()
         {
             return await _context.Sites
+              .AsNoTracking()
               .Include(x => x.Buildings)
               .ThenInclude(x => x.Floors)
               .ThenInclude(x => x.Rooms)
@@ -47,7 +48,15 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task<Site> FindByIdAsync(Guid id)
         {
-            return await _context.Sites.FindAsync(id);
+            return await _context.Sites
+                .Where(x => x.Id == id)
+                .Include(x => x.Buildings)
+                    .ThenInclude(x => x.Floors)
+                    .ThenInclude(x => x.Rooms)
+                    .ThenInclude(x => x.Equipments)
+                    .ThenInclude(x => x.EquipmentParameters)
+                    .ThenInclude(x => x.AlarmRules)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<SiteCardViewModel>> LoadSiteCards()

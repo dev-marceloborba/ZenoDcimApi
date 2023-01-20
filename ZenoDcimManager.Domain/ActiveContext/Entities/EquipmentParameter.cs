@@ -4,28 +4,32 @@ using ZenoDcimManager.Domain.ActiveContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Shared;
 using ZenoDcimManager.Shared.Extensions;
+using ZenoDcimManager.Shared.Interfaces;
 
 namespace ZenoDcimManager.Domain.ZenoContext.Entities
 {
-    public class EquipmentParameter : Entity
+    public class EquipmentParameter : Entity,
+        IPrototype<EquipmentParameter>,
+        IDuplicate<EquipmentParameter>
     {
+        public EquipmentParameter()
+        {
+
+        }
+
         public string Name { get; set; }
         public string Unit { get; set; }
-        public double LowLowLimit { get; set; }
-        public double LowLimit { get; set; }
-        public double HighLimit { get; set; }
-        public double HighHighLimit { get; set; }
         public int Scale { get; set; }
         public string DataSource { get; set; }
         public string Expression { get; set; }
+        public RealtimeData Data { get; set; }
+        public List<AlarmRule> AlarmRules { get; set; } = new();
 
         // Navigations Property
         public Guid? EquipmentId { get; set; }
         public Equipment Equipment { get; set; }
         public string ModbusTagName { get; set; }
 
-        public RealtimeData Data { get; set; }
-        public List<AlarmRule> AlarmRules { get; set; }
 
         public override string ToString()
         {
@@ -41,6 +45,20 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
                 + Name;
             pathname = pathname.Replace(" ", "");
             return pathname.RemoveAccents();
+        }
+
+        public EquipmentParameter Clone()
+        {
+            var clone = (EquipmentParameter)MemberwiseClone();
+            clone.SetId(Guid.NewGuid());
+            return clone;
+        }
+
+        public EquipmentParameter Duplicate()
+        {
+            var duplicated = Clone();
+            duplicated.Name = duplicated.Name + " - cópia";
+            return duplicated;
         }
     }
 }
