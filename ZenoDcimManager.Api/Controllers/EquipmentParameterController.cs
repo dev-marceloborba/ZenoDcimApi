@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Infra.Contexts;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -39,44 +41,72 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> UpdateEquipmentParameter(
             [FromRoute] Guid id,
             [FromBody] CreateEquipmentParameterCommand command,
+            [FromServices] ZenoContext context,
             [FromServices] EquipmentParameterHandler handler)
         {
-            // try
-            // {
-            var equipmentParameter = await _repository.FindByIdAsync(id);
+
+            var newRules = command.AlarmRules.Where(x => x.Id == Guid.Empty);
+            var updatedRules = command.AlarmRules.Where(x => x.Id != Guid.Empty);
+            var deletedRules = new List<AlarmRule>();
+
+            var equipmentParameter = await _repository.FindByIdWithoutTracking(id);
+
+            foreach (var rule in equipmentParameter.AlarmRules)
+            {
+                if (command.AlarmRules.FirstOrDefault(x => x.Id == rule.Id) == null)
+                {
+                    var ruleToDelete = new AlarmRule();
+                    ruleToDelete.SetId(rule.Id);
+                    deletedRules.Add(ruleToDelete);
+                }
+            }
+
+            foreach (var rule in newRules)
+            {
+                var ruleToInsert = new AlarmRule();
+                ruleToInsert.EnableEmail = rule.EnableEmail;
+                ruleToInsert.EnableNotification = rule.EnableNotification;
+                ruleToInsert.EquipmentParameterId = equipmentParameter.Id;
+                ruleToInsert.Name = rule.Name;
+                ruleToInsert.Priority = rule.Priority;
+                ruleToInsert.Setpoint = rule.Setpoint;
+                ruleToInsert.Conditional = rule.Conditional;
+                ruleToInsert.Type = rule.Type;
+                await context.AlarmRules.AddAsync(ruleToInsert);
+            }
+
+            foreach (var rule in updatedRules)
+            {
+                var ruleToUpdate = await context.AlarmRules.FindAsync(rule.Id);
+                ruleToUpdate.EnableEmail = rule.EnableEmail;
+                ruleToUpdate.EnableNotification = rule.EnableNotification;
+                ruleToUpdate.EquipmentParameterId = equipmentParameter.Id;
+                ruleToUpdate.Name = rule.Name;
+                ruleToUpdate.Priority = rule.Priority;
+                ruleToUpdate.Setpoint = rule.Setpoint;
+                ruleToUpdate.Type = rule.Type;
+                ruleToUpdate.Conditional = rule.Conditional;
+                ruleToUpdate.TrackModifiedDate();
+                context.AlarmRules.Update(ruleToUpdate);
+            }
+
+            foreach (var rule in deletedRules)
+            {
+                context.Remove(rule);
+            }
+
             equipmentParameter.DataSource = command.DataSource;
             equipmentParameter.Unit = command.Unit;
             equipmentParameter.Scale = command.Scale;
             equipmentParameter.ModbusTagName = command.Address;
 
-            var alarmRules = new List<AlarmRule>();
-            foreach (var item in command.AlarmRules)
-            {
-                var alarmRule = new AlarmRule
-                {
-                    Conditional = item.Conditional,
-                    EnableEmail = item.EnableEmail,
-                    EnableNotification = item.EnableNotification,
-                    EquipmentParameterId = item.EquipmentParameterId,
-                    Name = item.Name,
-                    Priority = item.Priority,
-                    Setpoint = item.Setpoint,
-                    Type = item.Type,
-                };
-                alarmRule.SetId(item.Id);
-                alarmRules.Add(alarmRule);
-            }
-
-            equipmentParameter.AlarmRules = alarmRules;
             equipmentParameter.TrackModifiedDate();
+
+
             _repository.Update(equipmentParameter);
-            await _repository.Commit();
+            await context.SaveChangesAsync();
             return Ok(new CommandResult(true, "Parâmetro de equipamento atualizado com sucesso", equipmentParameter));
-            // }
-            // catch
-            // {
-            //     return BadRequest(new CommandResult(false, "Erro ao atualizar parâmetro de equipamento", new { id }));
-            // }
+
         }
 
         [Route("building/floor/room/equipment/parameter/{id}")]

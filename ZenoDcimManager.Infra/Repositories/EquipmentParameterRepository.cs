@@ -46,6 +46,15 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.EquipmentParameters
                 .Where(x => x.Id == id)
+                .Include(x => x.AlarmRules.OrderBy(y => y.Setpoint))
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<EquipmentParameter> FindByIdWithoutTracking(Guid id)
+        {
+            return await _context.EquipmentParameters
+                .AsNoTracking()
+                .Where(x => x.Id == id)
                 .Include(x => x.AlarmRules)
                 .FirstOrDefaultAsync();
         }

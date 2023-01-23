@@ -54,7 +54,7 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Include(x => x.Floor)
                 .Include(x => x.Room)
                 .Include(x => x.EquipmentParameters)
-                    .ThenInclude(x => x.AlarmRules)
+                    .ThenInclude(x => x.AlarmRules.OrderBy(x => x.Setpoint))
                 .FirstOrDefaultAsync();
 
             // TODO: a tabela de equipamento pode ter relação apenas com Room, visto:
