@@ -54,6 +54,8 @@ namespace ZenoDcimManager.Api.Controllers
                 NotificationEnabled = command.NotificationEnabled,
                 EmailEnabled = command.EmailEnabled,
                 Type = command.Type,
+                Priority = command.Priority,
+                Operator = command.Operator
             };
 
             if (alarm.NotificationEnabled == true)

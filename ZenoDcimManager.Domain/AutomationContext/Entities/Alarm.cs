@@ -18,6 +18,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Entities
         public EAlarmType Type { get; set; }
         public bool NotificationEnabled { get; set; }
         public bool EmailEnabled { get; set; }
+        public string Operator { get; set; }
 
         public Guid AlarmRuleId { get; set; }
         public AlarmRule AlarmRule { get; set; }

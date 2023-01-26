@@ -9,6 +9,8 @@ namespace ZenoDcimManager.Domain.AutomationContext.Commands
         public string Pathname { get; set; }
         public EAlarmStatus Status { get; set; }
         public EAlarmType Type { get; set; }
+        public EAlarmPriority Priority { get; set; }
+        public string Operator { get; set; }
         public double Value { get; set; }
         public DateTime InDate { get; set; }
         public DateTime? OutDate { get; set; }

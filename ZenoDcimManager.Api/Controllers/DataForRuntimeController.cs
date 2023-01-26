@@ -23,33 +23,39 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         public async Task<ActionResult> GetDataCenterStructure()
         {
-            var result = await _context.Buildings
-                .Include(x => x.Floors)
+            var result = await _context.Sites
+                .Include(x => x.Buildings)
+                .ThenInclude(x => x.Floors)
                 .ThenInclude(x => x.Rooms)
                 .ThenInclude(x => x.Equipments)
                 .ThenInclude(x => x.EquipmentParameters)
-                .Select(x => new
+                .Select(s => new
                 {
-                    Building = x.Name,
-                    Floors = x.Floors.Select(f => new
+                    Name = s.Name,
+                    Buildings = s.Buildings.Select(b => new
                     {
-                        Name = f.Name,
-                        Rooms = f.Rooms.Select(r => new
+                        Name = b.Name,
+                        Floors = b.Floors.Select(f => new
                         {
-                            Name = r.Name,
-                            Equipments = r.Equipments.Select(e => new
+                            Name = f.Name,
+                            Rooms = f.Rooms.Select(r => new
                             {
-                                Name = e.Component,
-                                Parameters = e.EquipmentParameters.Select(p => new
+                                Name = r.Name,
+                                Equipments = r.Equipments.Select(e => new
                                 {
-                                    Name = p.Name,
-                                    Expression = p.Expression
+                                    Name = e.Component,
+                                    Parameters = e.EquipmentParameters.Select(ep => new
+                                    {
+                                        Name = ep.Name,
+                                        Exppression = ep.Expression
+                                    })
                                 })
                             })
                         })
                     })
                 })
                 .ToListAsync();
+
             return Ok(result);
         }
 
@@ -69,26 +75,37 @@ namespace ZenoDcimManager.Api.Controllers
                     x.Setpoint,
                     x.EnableNotification,
                     x.EnableEmail,
-                    EquipmentParameter = new
-                    {
-                        Name = x.EquipmentParameter.Name,
-                        Equipment = new
-                        {
-                            Name = x.EquipmentParameter.Equipment.Component,
-                            Room = new
-                            {
-                                Name = x.EquipmentParameter.Equipment.Room.Name,
-                                Floor = new
-                                {
-                                    Name = x.EquipmentParameter.Equipment.Room.Floor.Name,
-                                    Building = new
-                                    {
-                                        Name = x.EquipmentParameter.Equipment.Room.Floor.Building.Name
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    x.Type,
+                    EquipmentParameter = x.EquipmentParameter.Name,
+                    Equipment = x.EquipmentParameter.Equipment.Component,
+                    Room = x.EquipmentParameter.Equipment.Room.Name,
+                    Floor = x.EquipmentParameter.Equipment.Room.Floor.Name,
+                    Building = x.EquipmentParameter.Equipment.Room.Floor.Building.Name,
+                    Site = x.EquipmentParameter.Equipment.Room.Floor.Building.Site.Name
+                    // EquipmentParameter = new
+                    // {
+                    //     Name = x.EquipmentParameter.Name,
+                    //     Equipment = new
+                    //     {
+                    //         Name = x.EquipmentParameter.Equipment.Component,
+                    //         Room = new
+                    //         {
+                    //             Name = x.EquipmentParameter.Equipment.Room.Name,
+                    //             Floor = new
+                    //             {
+                    //                 Name = x.EquipmentParameter.Equipment.Room.Floor.Name,
+                    //                 Building = new
+                    //                 {
+                    //                     Name = x.EquipmentParameter.Equipment.Room.Floor.Building.Name,
+                    //                     Site = new
+                    //                     {
+                    //                         Name = x.EquipmentParameter.Equipment.Room.Floor.Building.Site.Name
+                    //                     }
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 })
                 .ToListAsync();
             return Ok(result);
