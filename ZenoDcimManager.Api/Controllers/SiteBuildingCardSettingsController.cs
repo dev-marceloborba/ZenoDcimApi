@@ -50,8 +50,8 @@ namespace ZenoDcimManager.Api.Controllers.SiteBuildingCardSettingsController
         {
             var result = await _context.SiteBuildingCardSettings
                 .AsNoTracking()
-                .Include(x => x.Building)
                 .Include(x => x.Site)
+                .Include(x => x.Building)
                 .Include(x => x.Parameter1)
                 .ThenInclude(x => x.EquipmentParameter)
                 .Include(x => x.Parameter2)

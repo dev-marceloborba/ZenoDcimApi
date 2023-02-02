@@ -22,6 +22,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public int Scale { get; set; }
         public string DataSource { get; set; }
         public string Expression { get; set; }
+        public string Pathname { get; set; }
         public RealtimeData Data { get; set; }
         public List<AlarmRule> AlarmRules { get; set; } = new();
 

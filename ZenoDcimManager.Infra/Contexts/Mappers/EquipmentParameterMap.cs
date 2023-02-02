@@ -14,6 +14,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.Property(x => x.DataSource).HasColumnType("varchar(20)");
             builder.Property(x => x.Unit).HasColumnType("varchar(5)");
             builder.Property(x => x.Expression).HasColumnType("varchar(200)");
+            builder.Property(x => x.Pathname).HasColumnType("varchar(300)");
         }
     }
 }

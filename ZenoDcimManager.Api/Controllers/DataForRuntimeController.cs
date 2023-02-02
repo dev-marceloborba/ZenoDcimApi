@@ -29,6 +29,7 @@ namespace ZenoDcimManager.Api.Controllers
                 .ThenInclude(x => x.Rooms)
                 .ThenInclude(x => x.Equipments)
                 .ThenInclude(x => x.EquipmentParameters)
+                .ThenInclude(x => x.AlarmRules)
                 .Select(s => new
                 {
                     Name = s.Name,
@@ -47,7 +48,19 @@ namespace ZenoDcimManager.Api.Controllers
                                     Parameters = e.EquipmentParameters.Select(ep => new
                                     {
                                         Name = ep.Name,
-                                        Exppression = ep.Expression
+                                        Unit = ep.Unit,
+                                        Expression = ep.Expression,
+                                        AlarmRules = ep.AlarmRules.Select(ar => new
+                                        {
+                                            ar.Id,
+                                            ar.Name,
+                                            ar.Priority,
+                                            ar.Conditional,
+                                            ar.Setpoint,
+                                            ar.EnableNotification,
+                                            ar.EnableEmail,
+                                            ar.Type
+                                        })
                                     })
                                 })
                             })
