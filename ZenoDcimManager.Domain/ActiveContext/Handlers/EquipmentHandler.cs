@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Flunt.Notifications;
+using ZenoDcimManager.Domain.ActiveContext.Handlers;
+using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
@@ -13,10 +15,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         ICommandHandler<CreateMultipleEquipmentsCommand>
     {
         private readonly IEquipmentRepository _equipmentRepository;
+        private readonly EquipmentCardHandler _equipmentCardHandler;
 
-        public EquipmentHandler(IEquipmentRepository equipmentRepository)
+        public EquipmentHandler(IEquipmentRepository equipmentRepository, EquipmentCardHandler equipmentCardHandler)
         {
             _equipmentRepository = equipmentRepository;
+            _equipmentCardHandler = equipmentCardHandler;
         }
 
         public async Task<ICommandResult> Handle(CreateEquipmentCommand command)
@@ -38,7 +42,16 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             };
 
             await _equipmentRepository.CreateAsync(equipment);
-            await _equipmentRepository.Commit();
+            // await _equipmentRepository.Commit(); Commit excluido deste handler.
+
+            // Este outro handler possui o Commit da operacão, por isso foi removido da linha acima.
+            await _equipmentCardHandler.Handle(new EquipmentCardSettingsEditorCommand
+            {
+                EquipmentId = equipment.Id,
+                Parameter1 = null,
+                Parameter2 = null,
+                Parameter3 = null
+            });
 
             return new CommandResult(true, "Equipamento criado com sucesso", equipment);
         }

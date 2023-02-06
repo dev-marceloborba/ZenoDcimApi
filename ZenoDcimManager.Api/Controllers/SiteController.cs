@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -17,10 +18,12 @@ namespace ZenoDcimManager.Api.Controllers
     public class SiteController : ControllerBase
     {
         private readonly ISiteRepository _repository;
+        private readonly ISiteCardSettingsRepository _cardRepository;
 
-        public SiteController(ISiteRepository repository)
+        public SiteController(ISiteRepository repository, ISiteCardSettingsRepository cardRepository)
         {
             _repository = repository;
+            _cardRepository = cardRepository;
         }
 
         [Route("")]
@@ -78,15 +81,16 @@ namespace ZenoDcimManager.Api.Controllers
         {
             try
             {
-                var site = new Site();
-                site.SetId(id);
+                var site = await _repository.FindByIdAsync(id);
+                var card = site.CardSettings;
+                _cardRepository.Delete(card);
                 _repository.Delete(site);
                 await _repository.Commit();
                 return Ok(site);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

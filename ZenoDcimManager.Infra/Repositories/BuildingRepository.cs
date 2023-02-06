@@ -51,6 +51,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Buildings
                .Where(x => x.Id == id)
+               .Include(x => x.CardSettings)
                .Include(x => x.Site)
                .Include(x => x.Floors)
                 .ThenInclude(x => x.Rooms)

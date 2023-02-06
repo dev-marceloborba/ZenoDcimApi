@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZenoDcimManager.Infra.Contexts;
 
@@ -11,9 +12,10 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Infra.Migrations
 {
     [DbContext(typeof(ZenoContext))]
-    partial class ZenoContextModelSnapshot : ModelSnapshot
+    [Migration("20230206140954_DeleteBehaviourOnCards")]
+    partial class DeleteBehaviourOnCards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,6 +314,33 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("RoomCardSettings", (string)null);
+                });
+
+            modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BuildingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("SiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("SiteBuildingCardSettings", (string)null);
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.SiteCardSettings", b =>
@@ -1664,6 +1693,243 @@ namespace ZenoDcimManager.Infra.Migrations
                     b.Navigation("Parameter3");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.SiteBuildingCardSettings", b =>
+                {
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId");
+
+                    b.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
+
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter1", b1 =>
+                        {
+                            b1.Property<Guid>("SiteBuildingCardSettingsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Parameter1Description");
+
+                            b1.Property<bool>("Enabled")
+                                .HasColumnType("bit")
+                                .HasColumnName("Parameter1Enabled");
+
+                            b1.Property<Guid>("EquipmentParameterId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EquipmentParameter1Id");
+
+                            b1.HasKey("SiteBuildingCardSettingsId");
+
+                            b1.HasIndex("EquipmentParameterId");
+
+                            b1.ToTable("SiteBuildingCardSettings");
+
+                            b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
+                                .WithMany()
+                                .HasForeignKey("EquipmentParameterId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteBuildingCardSettingsId");
+
+                            b1.Navigation("EquipmentParameter");
+                        });
+
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter2", b1 =>
+                        {
+                            b1.Property<Guid>("SiteBuildingCardSettingsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Parameter2Description");
+
+                            b1.Property<bool>("Enabled")
+                                .HasColumnType("bit")
+                                .HasColumnName("Parameter2Enabled");
+
+                            b1.Property<Guid>("EquipmentParameterId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EquipmentParameter2Id");
+
+                            b1.HasKey("SiteBuildingCardSettingsId");
+
+                            b1.HasIndex("EquipmentParameterId");
+
+                            b1.ToTable("SiteBuildingCardSettings");
+
+                            b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
+                                .WithMany()
+                                .HasForeignKey("EquipmentParameterId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteBuildingCardSettingsId");
+
+                            b1.Navigation("EquipmentParameter");
+                        });
+
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter3", b1 =>
+                        {
+                            b1.Property<Guid>("SiteBuildingCardSettingsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Parameter3Description");
+
+                            b1.Property<bool>("Enabled")
+                                .HasColumnType("bit")
+                                .HasColumnName("Parameter3Enabled");
+
+                            b1.Property<Guid>("EquipmentParameterId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EquipmentParameter3Id");
+
+                            b1.HasKey("SiteBuildingCardSettingsId");
+
+                            b1.HasIndex("EquipmentParameterId");
+
+                            b1.ToTable("SiteBuildingCardSettings");
+
+                            b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
+                                .WithMany()
+                                .HasForeignKey("EquipmentParameterId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteBuildingCardSettingsId");
+
+                            b1.Navigation("EquipmentParameter");
+                        });
+
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter4", b1 =>
+                        {
+                            b1.Property<Guid>("SiteBuildingCardSettingsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Parameter4Description");
+
+                            b1.Property<bool>("Enabled")
+                                .HasColumnType("bit")
+                                .HasColumnName("Parameter4Enabled");
+
+                            b1.Property<Guid>("EquipmentParameterId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EquipmentParameter4Id");
+
+                            b1.HasKey("SiteBuildingCardSettingsId");
+
+                            b1.HasIndex("EquipmentParameterId");
+
+                            b1.ToTable("SiteBuildingCardSettings");
+
+                            b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
+                                .WithMany()
+                                .HasForeignKey("EquipmentParameterId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteBuildingCardSettingsId");
+
+                            b1.Navigation("EquipmentParameter");
+                        });
+
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter5", b1 =>
+                        {
+                            b1.Property<Guid>("SiteBuildingCardSettingsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Parameter5Description");
+
+                            b1.Property<bool>("Enabled")
+                                .HasColumnType("bit")
+                                .HasColumnName("Parameter5Enabled");
+
+                            b1.Property<Guid>("EquipmentParameterId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EquipmentParameter5Id");
+
+                            b1.HasKey("SiteBuildingCardSettingsId");
+
+                            b1.HasIndex("EquipmentParameterId");
+
+                            b1.ToTable("SiteBuildingCardSettings");
+
+                            b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
+                                .WithMany()
+                                .HasForeignKey("EquipmentParameterId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteBuildingCardSettingsId");
+
+                            b1.Navigation("EquipmentParameter");
+                        });
+
+                    b.OwnsOne("ZenoDcimManager.Domain.ActiveContext.ValueObjects.ParameterInfo", "Parameter6", b1 =>
+                        {
+                            b1.Property<Guid>("SiteBuildingCardSettingsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Parameter6Description");
+
+                            b1.Property<bool>("Enabled")
+                                .HasColumnType("bit")
+                                .HasColumnName("Parameter6Enabled");
+
+                            b1.Property<Guid>("EquipmentParameterId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EquipmentParameter6Id");
+
+                            b1.HasKey("SiteBuildingCardSettingsId");
+
+                            b1.HasIndex("EquipmentParameterId");
+
+                            b1.ToTable("SiteBuildingCardSettings");
+
+                            b1.HasOne("ZenoDcimManager.Domain.ZenoContext.Entities.EquipmentParameter", "EquipmentParameter")
+                                .WithMany()
+                                .HasForeignKey("EquipmentParameterId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteBuildingCardSettingsId");
+
+                            b1.Navigation("EquipmentParameter");
+                        });
+
+                    b.Navigation("Building");
+
+                    b.Navigation("Parameter1");
+
+                    b.Navigation("Parameter2");
+
+                    b.Navigation("Parameter3");
+
+                    b.Navigation("Parameter4");
+
+                    b.Navigation("Parameter5");
+
+                    b.Navigation("Parameter6");
+
+                    b.Navigation("Site");
                 });
 
             modelBuilder.Entity("ZenoDcimManager.Domain.AutomationContext.Entities.SiteCardSettings", b =>

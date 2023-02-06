@@ -5,16 +5,14 @@ using ZenoDcimManager.Shared;
 
 namespace ZenoDcimManager.Domain.AutomationContext.Entities
 {
-    public class SiteBuildingCardSettings : Entity
+    public class SiteCardSettings : Entity
     {
-        public SiteBuildingCardSettings()
+        public SiteCardSettings()
         {
         }
 
         public Guid? SiteId { get; set; }
         public Site Site { get; set; }
-        public Guid? BuildingId { get; set; }
-        public Building Building { get; set; }
         public ParameterInfo Parameter1 { get; set; }
         public ParameterInfo Parameter2 { get; set; }
         public ParameterInfo Parameter3 { get; set; }

@@ -41,6 +41,7 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Include(x => x.Building)
                 .Include(x => x.Floor)
                 .Include(x => x.Room)
+                .Include(x => x.EquipmentParameters)
                 .OrderBy(x => x.Component)
                 .ToListAsync();
         }

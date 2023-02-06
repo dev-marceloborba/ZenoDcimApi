@@ -18,6 +18,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
                 .HasColumnType("varchar(64)");
             builder.Property(x => x.Size).HasColumnType("varchar(14)"); //1000x1000x1000
             builder.Property(x => x.Manufactor).HasColumnType("varchar(20)");
+            builder.HasOne(x => x.CardSettings).WithOne(x => x.Equipment).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

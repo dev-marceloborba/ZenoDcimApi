@@ -7,7 +7,6 @@ using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
 using ZenoDcimManager.Domain.AutomationContext.ViewModels;
-using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -63,7 +62,7 @@ namespace ZenoDcimManager.Api.Controllers
         {
             var measure = new Measure
             {
-                Name = command.Name,
+                Name = command.Pathname,
                 Value = command.Value,
                 Timestamp = DateTime.UtcNow,
             };
@@ -82,7 +81,7 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 measures.Add(new Measure
                 {
-                    Name = item.Name,
+                    Name = item.Pathname,
                     Value = item.Value,
                     Timestamp = DateTime.UtcNow,
                 });

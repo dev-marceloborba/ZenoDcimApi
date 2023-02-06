@@ -4,13 +4,11 @@ using ZenoDcimManager.Domain.AutomationContext.Entities;
 
 namespace ZenoDcimManager.Infra.Contexts.Mappers
 {
-    public class SiteBuildingCardSettingsMap : IEntityTypeConfiguration<SiteBuildingCardSettings>
+    public class BuildingCardSettingsMap : IEntityTypeConfiguration<BuildingCardSettings>
     {
-        public void Configure(EntityTypeBuilder<SiteBuildingCardSettings> builder)
+        public void Configure(EntityTypeBuilder<BuildingCardSettings> builder)
         {
-            builder.ToTable("SiteBuildingCardSettings");
-            builder.HasIndex(x => x.BuildingId).IsUnique(false);
-            builder.HasIndex(x => x.SiteId).IsUnique(false);
+            builder.ToTable("BuildingCardSettings");
 
             // parameter 1
             builder.OwnsOne(x => x.Parameter1)

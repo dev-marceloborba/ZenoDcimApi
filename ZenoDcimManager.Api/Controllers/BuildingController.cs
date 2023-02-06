@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -17,10 +18,12 @@ namespace ZenoDcimManager.Api.Controllers
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingRepository _repository;
+        private readonly IBuildingCardSettingsRepository _cardRepository;
 
-        public BuildingController(IBuildingRepository repository)
+        public BuildingController(IBuildingRepository repository, IBuildingCardSettingsRepository cardRepository)
         {
             _repository = repository;
+            _cardRepository = cardRepository;
         }
 
         [Route("")]
@@ -76,9 +79,11 @@ namespace ZenoDcimManager.Api.Controllers
         {
             try
             {
-                var building = new Building();
-                building.SetId(id);
+                var building = await _repository.FindByIdAsync(id);
+                var card = building.CardSettings;
+
                 _repository.Delete(building);
+                _cardRepository.Delete(card);
                 await _repository.Commit();
                 return Ok();
             }

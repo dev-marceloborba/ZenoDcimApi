@@ -162,6 +162,10 @@ void ConfigureRepositories(WebApplicationBuilder builder)
     builder.Services.AddTransient<IVirtualParameterRepository, VirtualParameterRepository>();
     builder.Services.AddTransient<IEquipmentParameterRepository, EquipmentParameterRepository>();
     builder.Services.AddTransient<IEquipmentParameterGroupRepository, EquipmentParameterGroupRepository>();
+    builder.Services.AddTransient<IEquipmentCardSettingsRepository, EquipmentCardSettingsRepository>();
+    builder.Services.AddTransient<IRoomCardSettingsRepository, RoomCardSettingsRepository>();
+    builder.Services.AddTransient<IBuildingCardSettingsRepository, BuildingCardSettingsRepository>();
+    builder.Services.AddTransient<ISiteCardSettingsRepository, SiteCardSettingsRepository>();
     builder.Services.AddTransient<IMeasureRepository, MeasureRepository>();
     builder.Services.AddTransient<ISupplierRepository, SupplierRepository>();
     builder.Services.AddTransient<IGroupRepository, GroupRepository>();
@@ -189,4 +193,5 @@ void ConfigureHandlers(WebApplicationBuilder builder)
     builder.Services.AddTransient<ParameterGroupHandler, ParameterGroupHandler>();
     builder.Services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
     builder.Services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
+    builder.Services.AddTransient<EquipmentCardHandler, EquipmentCardHandler>();
 }

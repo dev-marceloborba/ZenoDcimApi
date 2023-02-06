@@ -15,7 +15,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         // Navigation property
         public Site Site { get; set; }
         public Guid? SiteId { get; set; }
-        public SiteBuildingCardSettings CardSettings { get; set; }
+        public BuildingCardSettings CardSettings { get; set; }
 
         public Building Clone()
         {

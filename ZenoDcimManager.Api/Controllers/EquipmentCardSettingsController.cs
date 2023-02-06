@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
-using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Infra.Contexts;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -25,20 +25,12 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         public async Task<ActionResult> CreateAsync(
-            [FromBody] EquipmentCardSettingsEditorCommand command
+            [FromBody] EquipmentCardSettingsEditorCommand command,
+            [FromServices] EquipmentCardHandler handler
         )
         {
-            var result = await _context.EquipmentCardSettings.AddAsync(
-                new EquipmentCardSettings
-                {
-                    EquipmentId = command.EquipmentId,
-                    Parameter1 = command.Parameter1,
-                    Parameter2 = command.Parameter2,
-                    Parameter3 = command.Parameter3
-                }
-            );
-            await _context.SaveChangesAsync();
-            return Ok();
+            var result = await handler.Handle(command);
+            return Ok(result);
         }
 
         [Route("{equipmentId}")]

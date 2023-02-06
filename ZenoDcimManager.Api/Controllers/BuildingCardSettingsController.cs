@@ -10,13 +10,13 @@ using ZenoDcimManager.Infra.Contexts;
 namespace ZenoDcimManager.Api.Controllers.SiteBuildingCardSettingsController
 {
     [ApiController]
-    [Route("v1/site-building-card-settings")]
+    [Route("v1/building-card-settings")]
     [AllowAnonymous]
-    public class SiteBuildingCardSettingsController : ControllerBase
+    public class BuildingCardSettingsController : ControllerBase
     {
         private readonly ZenoContext _context;
 
-        public SiteBuildingCardSettingsController(ZenoContext context)
+        public BuildingCardSettingsController(ZenoContext context)
         {
             _context = context;
         }
@@ -24,13 +24,12 @@ namespace ZenoDcimManager.Api.Controllers.SiteBuildingCardSettingsController
         [HttpPost]
         [Route("")]
         public async Task<ActionResult> CreateAsync(
-            [FromBody] SiteBuildingCardSettingsEditorCommand command
+            [FromBody] BuildingCardSettingsEditorCommand command
         )
         {
-            var result = await _context.SiteBuildingCardSettings.AddAsync(
-                new SiteBuildingCardSettings
+            var result = await _context.BuildingCardSettings.AddAsync(
+                new BuildingCardSettings
                 {
-                    SiteId = command.SiteId,
                     BuildingId = command.BuildingId,
                     Parameter1 = command.Parameter1,
                     Parameter2 = command.Parameter2,
@@ -48,9 +47,8 @@ namespace ZenoDcimManager.Api.Controllers.SiteBuildingCardSettingsController
         [Route("")]
         public async Task<ActionResult> FindAllAsync()
         {
-            var result = await _context.SiteBuildingCardSettings
+            var result = await _context.BuildingCardSettings
                 .AsNoTracking()
-                .Include(x => x.Site)
                 .Include(x => x.Building)
                 .Include(x => x.Parameter1)
                 .ThenInclude(x => x.EquipmentParameter)
@@ -72,10 +70,10 @@ namespace ZenoDcimManager.Api.Controllers.SiteBuildingCardSettingsController
         [Route("{id}")]
         public async Task<ActionResult> Update(
             [FromRoute] Guid id,
-            [FromBody] SiteBuildingCardSettingsEditorCommand command
+            [FromBody] BuildingCardSettingsEditorCommand command
         )
         {
-            var result = await _context.SiteBuildingCardSettings.FirstOrDefaultAsync(x => x.Id == id);
+            var result = await _context.BuildingCardSettings.FirstOrDefaultAsync(x => x.Id == id);
 
             result.Parameter1 = command.Parameter1;
             result.Parameter2 = command.Parameter2;
@@ -90,7 +88,6 @@ namespace ZenoDcimManager.Api.Controllers.SiteBuildingCardSettingsController
             await _context.SaveChangesAsync();
 
             return Ok(result);
-            // return Ok(command);
         }
     }
 }

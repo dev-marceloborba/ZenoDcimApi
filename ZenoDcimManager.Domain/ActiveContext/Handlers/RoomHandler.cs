@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Flunt.Notifications;
+using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
@@ -12,10 +14,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
         ICommandHandler<CreateRoomCommand>
     {
         private readonly IRoomRepository _roomRepository;
+        private readonly IRoomCardSettingsRepository _roomCardRepository;
 
-        public RoomHandler(IRoomRepository roomRepository)
+        public RoomHandler(IRoomRepository roomRepository, IRoomCardSettingsRepository roomCardRepository)
         {
             _roomRepository = roomRepository;
+            _roomCardRepository = roomCardRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateRoomCommand command)
@@ -27,6 +31,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             };
 
             await _roomRepository.CreateAsync(room);
+
+            var cardSettings = new RoomCardSettings { RoomId = room.Id, Parameter1 = null, Parameter2 = null, Parameter3 = null };
+            await _roomCardRepository.CreateAsync(cardSettings);
+
             await _roomRepository.Commit();
 
             return new CommandResult(true, "Sala criada com sucesso", room);

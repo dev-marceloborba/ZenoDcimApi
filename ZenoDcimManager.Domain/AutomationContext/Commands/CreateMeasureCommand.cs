@@ -5,7 +5,7 @@ namespace ZenoDcimManager.Domain.AutomationContext.Commands
 {
     public class CreateMeasureCommand : ICommand
     {
-        public string Name { get; set; }
+        public string Pathname { get; set; }
         public double Value { get; set; }
 
         public void Validate()

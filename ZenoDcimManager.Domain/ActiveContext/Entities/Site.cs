@@ -13,7 +13,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
     {
         public string Name { get; set; }
         public List<Building> Buildings { get; set; } = new List<Building>();
-        public SiteBuildingCardSettings CardSettings { get; set; }
+        public SiteCardSettings CardSettings { get; set; }
 
         public Site Clone()
         {

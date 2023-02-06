@@ -10,6 +10,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
         {
             builder.ToTable("Site");
             builder.Property(x => x.Name).HasColumnType("varchar(20)");
+            builder.HasOne(x => x.CardSettings).WithOne(x => x.Site).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

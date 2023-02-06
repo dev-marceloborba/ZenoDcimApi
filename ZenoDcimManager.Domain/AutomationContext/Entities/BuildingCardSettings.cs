@@ -1,13 +1,18 @@
 using System;
 using ZenoDcimManager.Domain.ActiveContext.ValueObjects;
-using ZenoDcimManager.Shared.Commands;
+using ZenoDcimManager.Domain.ZenoContext.Entities;
+using ZenoDcimManager.Shared;
 
-namespace ZenoDcimManager.Domain.AutomationContext.Commands
+namespace ZenoDcimManager.Domain.AutomationContext.Entities
 {
-    public class SiteBuildingCardSettingsEditorCommand : ICommand
+    public class BuildingCardSettings : Entity
     {
-        public Guid? SiteId { get; set; } = new Guid();
-        public Guid? BuildingId { get; set; } = new Guid();
+        public BuildingCardSettings()
+        {
+        }
+
+        public Guid BuildingId { get; set; }
+        public Building Building { get; set; }
         public ParameterInfo Parameter1 { get; set; }
         public ParameterInfo Parameter2 { get; set; }
         public ParameterInfo Parameter3 { get; set; }
@@ -15,9 +20,6 @@ namespace ZenoDcimManager.Domain.AutomationContext.Commands
         public ParameterInfo Parameter5 { get; set; }
         public ParameterInfo Parameter6 { get; set; }
 
-        public void Validate()
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 }
