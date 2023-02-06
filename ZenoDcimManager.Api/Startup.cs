@@ -47,14 +47,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseCors("DevelopmentPolicy");
 }
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseOptions();
 if (app.Environment.IsProduction())
 {
     app.UseCors("ProductionPolicy");
 }
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseOptions();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
