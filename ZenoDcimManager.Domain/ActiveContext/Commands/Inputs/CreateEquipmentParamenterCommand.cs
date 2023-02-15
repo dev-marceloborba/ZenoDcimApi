@@ -14,6 +14,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Commands.Inputs
         public string DataSource { get; set; }
         public string Address { get; set; }
         public string Expression { get; set; }
+        public string Pathname { get; set; }
         public List<CreateAlarmRuleCommand> AlarmRules { get; set; } = new();
         public void Validate()
         {

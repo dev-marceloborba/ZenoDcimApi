@@ -36,6 +36,7 @@ ConfigureServices(builder);
 ConfigureRepositories(builder);
 ConfigureHandlers(builder);
 
+builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
@@ -67,6 +68,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHub<NotificationsHub>("notifications");
+app.MapRazorPages();
 
 app.Run();
 

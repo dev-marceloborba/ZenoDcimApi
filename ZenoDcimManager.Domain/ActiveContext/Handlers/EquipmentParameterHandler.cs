@@ -29,7 +29,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 Scale = command.Scale,
                 DataSource = command.DataSource,
                 EquipmentId = command.EquipmentId,
-                Expression = command.Expression
+                Expression = command.Expression,
+                Pathname = command.Pathname
             };
 
             foreach (var alarmRule in command.AlarmRules)

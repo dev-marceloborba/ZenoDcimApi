@@ -99,6 +99,7 @@ namespace ZenoDcimManager.Api.Controllers
             equipmentParameter.Unit = command.Unit;
             equipmentParameter.Scale = command.Scale;
             equipmentParameter.ModbusTagName = command.Address;
+            equipmentParameter.Pathname = command.Pathname;
             equipmentParameter.TrackModifiedDate();
 
             _repository.Update(equipmentParameter);
