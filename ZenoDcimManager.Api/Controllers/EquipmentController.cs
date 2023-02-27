@@ -69,9 +69,10 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("building/floor/room/equipment")]
         [HttpGet]
-        public async Task<IEnumerable<Equipment>> FindAllEquipments()
+        public async Task<ActionResult> FindAllEquipments()
         {
-            return await _repository.FindAllAsync();
+            var result = await _repository.FindAllAsync();
+            return Ok(result);
         }
 
         [Route("equipments-by-room/{id}")]
@@ -101,9 +102,9 @@ namespace ZenoDcimManager.Api.Controllers
                 await _repository.Commit();
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

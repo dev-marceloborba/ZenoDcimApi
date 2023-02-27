@@ -28,6 +28,7 @@ using ZenoDcimManager.Domain.ActiveContext.Handlers;
 using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
 using System.IO.Compression;
 using ZenoDcimManager.Api.Middlewares;
+using FastReport.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureAuthentication(builder);
@@ -36,10 +37,11 @@ ConfigureServices(builder);
 ConfigureRepositories(builder);
 ConfigureHandlers(builder);
 
-builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+
+FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
 var app = builder.Build();
 LoadConfiguration(app);
@@ -58,6 +60,7 @@ app.UseRouting();
 app.UseOptions();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseFastReport();
 app.MapControllers();
 app.UseResponseCompression();
 
@@ -68,7 +71,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHub<NotificationsHub>("notifications");
-app.MapRazorPages();
 
 app.Run();
 

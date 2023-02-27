@@ -202,5 +202,27 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         {
             return Weight - RackEquipments.Sum(x => x.Weight);
         }
+
+        public bool CheckBusyPosition(int position, int occupation)
+        {
+            var availableCounter = 0;
+
+            var rackSlots = GetRackSlots();
+            foreach (var rackSlot in rackSlots)
+            {
+                if (rackSlot.RackMountType == ERackMountType.NO_ONE && position <= rackSlot.InitialPosition)
+                    availableCounter++;
+                else if (rackSlot.RackMountType != ERackMountType.NO_ONE)
+                {
+                    availableCounter = 0;
+                }
+
+                if (availableCounter == occupation)
+                    break;
+
+            }
+
+            return availableCounter != occupation;
+        }
     }
 }

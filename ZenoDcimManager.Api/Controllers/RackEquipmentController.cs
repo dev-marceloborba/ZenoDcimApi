@@ -25,12 +25,20 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<ICommandResult> CreateRackEquipment(
+        public async Task<ActionResult> CreateRackEquipment(
             [FromBody] CreateRackEquipmentCommand command,
             [FromServices] RackEquipmentHandler handler
         )
         {
-            return (ICommandResult)await handler.Handle(command);
+            var result = await handler.Handle(command);
+            if (result.Success)
+            {
+                return Ok(result); 
+            } else
+            {
+                return BadRequest(result.Message);
+            }
+            //return (ICommandResult)await handler.Handle(command);
         }
 
         [Route("")]

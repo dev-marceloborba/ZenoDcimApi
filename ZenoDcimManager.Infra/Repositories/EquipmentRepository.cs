@@ -38,6 +38,7 @@ namespace ZenoDcimManager.Infra.Repositories
         {
             return await _context.Equipments
                 .AsNoTracking()
+                .Include(x => x.Site)
                 .Include(x => x.Building)
                 .Include(x => x.Floor)
                 .Include(x => x.Room)

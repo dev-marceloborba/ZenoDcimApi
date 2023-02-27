@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -109,52 +110,78 @@ namespace ZenoDcimManager.Api.Controllers
             [FromQuery] int priority,
             [FromQuery] int type)
         {
-            // var result = await _repository.GetFilteredAlarms(new AlarmFiltersViewModel
-            // {
-            //     InitialDate = initialDate,
-            //     FinalDate = finalDate
-            // });
+            var query = context.Alarms
+               .AsNoTracking()
+               .Include(x => x.AlarmRule)
+               .Select(x => new
+               {
+                   x.Pathname,
+                   x.Value,
+                   x.Status,
+                   x.Enabled,
+                   x.Id,
+                   x.CreatedDate,
+                   x.InDate,
+                   x.OutDate,
+                   x.RecognizedDate,
+                   AlarmRule = new
+                   {
+                       Id = x.AlarmRule.Id,
+                       Name = x.AlarmRule.Name,
+                       Setpoint = x.AlarmRule.Setpoint,
+                       Priority = x.AlarmRule.Priority,
+                   },
+                   x.Priority,
+                   x.Type
+               })
+               .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate)
+               .OrderByDescending(x => x.CreatedDate)
+               .AsQueryable();
 
-            // type = 4: filtra tipo = 0 e tipo = 1 ou remove filtro por tipo.
-            // type = 0: filtra tipo = 0
-            // type = 1: filtra tipo = 1
+            // priority
+            // LOW: 1, MEDIUM: 2: HIGH: 4
+            switch (priority)
+            {
+                case 0:
+                    query = query.Where(e => e.Priority == EAlarmPriority.NONE);
+                    break;
+                case 1:
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW);
+                    break;
+                case 2:
+                    query = query.Where(e => e.Priority == EAlarmPriority.MEDIUM);
+                    break;
+                case 3:
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW && e.Priority == EAlarmPriority.MEDIUM);
+                    break;
+                case 4:
+                    query = query.Where(e => e.Priority == EAlarmPriority.HIGH);
+                    break;
+                case 5:
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW && e.Priority == EAlarmPriority.HIGH);
+                    break;
+                case 6:
+                    query = query.Where(e => e.Priority == EAlarmPriority.MEDIUM && e.Priority == EAlarmPriority.HIGH);
+                    break;
+                case 7:
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW && e.Priority == EAlarmPriority.MEDIUM && e.Priority == EAlarmPriority.HIGH);
+                    break;
+            }
 
-            // priority = 4, filtra severidade tipo 0, 1, e 2 ou remove filtro
-            // priority = 0 filtra severidade tipo 0
-            // priority = 1 filtra severidade tipo 1
-            // priority = 2 filtra severidade tipo 2
+            switch (type)
+            {
+                case 0:
+                    query = query.Where(e => e.Type == EAlarmType.ALARM);
+                    break;
+                case 1:
+                    query = query.Where(e => e.Type == EAlarmType.EVENT);
+                    break;
+                case 2:
+                    query = query.Where(e => e.Type == EAlarmType.ALARM && e.Type == EAlarmType.EVENT);
+                    break;
+            }
 
-            var result = await context.Alarms
-                .AsNoTracking()
-                .Include(x => x.AlarmRule)
-                .Select(x => new
-                {
-                    x.Pathname,
-                    x.Value,
-                    x.Status,
-                    x.Enabled,
-                    x.Id,
-                    x.CreatedDate,
-                    x.InDate,
-                    x.OutDate,
-                    x.RecognizedDate,
-                    AlarmRule = new
-                    {
-                        Id = x.AlarmRule.Id,
-                        Name = x.AlarmRule.Name,
-                        Setpoint = x.AlarmRule.Setpoint,
-                        Priority = x.AlarmRule.Priority,
-                    },
-                    x.Priority,
-                    x.Type
-                })
-                .Where(x => x.CreatedDate >= initialDate && x.CreatedDate <= finalDate
-                        && (priority == 4 ? x.Priority >= 0 : x.Priority == (EAlarmPriority)priority)
-                        && (type == 4 ? x.Type >= 0 : x.Type == (EAlarmType)type)
-                )
-                .OrderByDescending(x => x.CreatedDate)
-                .ToListAsync();
-            return Ok(result);
+            return Ok(await query.ToListAsync());
         }
 
         [HttpDelete]

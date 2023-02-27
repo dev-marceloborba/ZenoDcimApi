@@ -30,7 +30,6 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
                 Model = command.Model,
                 Manufactor = command.Manufactor,
                 SerialNumber = command.SerialNumber,
-                // Size = command.Size
             };
             var baseEquipmentValidator = new BaseEquipmentValidator(baseEquipment);
 
@@ -61,6 +60,21 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             var rack = await _rackRepository.FindByIdAsync(command.RackId);
             if (rack != null)
                 rackEquipment.RackId = rack.Id;
+
+            // Validações do equipamento com o rack
+
+            if (rack.CheckBusyPosition(command.InitialPosition, command.Occupation))
+                return new CommandResult(false, "Posição ocupada no rack", null);
+
+            if (rackEquipment.Power > rack.GetAvailablePower())
+                return new CommandResult(false, "Potência disponível do rack não suporta a instalação demandada", null);
+
+            if (rackEquipment.Occupation > rack.TotalOccupedSlots())
+                return new CommandResult(false, "Capacidade disponível do rack não suporta a instalação demanada", null);
+
+            if (rackEquipment.Weight > rack.GetAvailableWeight())
+                return new CommandResult(false, "Peso disponível do rack não suporta a instalação demandada", null);
+
 
             await _rackEquipmentRepository.Create(rackEquipment);
             await _rackEquipmentRepository.Commit();

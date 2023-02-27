@@ -35,7 +35,24 @@ namespace ZenoDcimManager.Api.Controllers
             };
 
             var result = await _repository.FindAllAsync(filter);
-            return Ok(result);
+            var output = new List<MeasureHistoryOutput>();
+            foreach (var measure in result)
+            {
+                var normalizedName = measure.Name.Replace("_", " ");
+                var fields = normalizedName.Split("*");
+                output.Add(new MeasureHistoryOutput
+                {
+                    Site = fields[0],
+                    Building = fields[1],
+                    Floor = fields[2],
+                    Room = fields[3],
+                    Equipment = fields[4],
+                    Parameter = fields[5],
+                    Value = measure.Value,
+                    Timestamp = measure.Timestamp
+                });
+            }
+            return Ok(output);
         }
 
         [HttpGet]
