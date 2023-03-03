@@ -27,7 +27,7 @@ namespace ZenoDcimManager.Tests.UserContext.Handlers
             _emailService = new FakeEmailService();
             _cryptoService = new FakeCryptoService();
             _companyRepository = new FakeCompanyRepository();
-            _handler = new UserHandler(_userRepository, _emailService, _cryptoService, _companyRepository);
+            _handler = new UserHandler(_userRepository, null, _emailService, _cryptoService, _companyRepository);
         }
         [TestMethod]
         [TestCategory("Handlers")]
