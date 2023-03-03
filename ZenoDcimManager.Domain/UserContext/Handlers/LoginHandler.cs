@@ -6,6 +6,7 @@ using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.UserContext.Commands.Output;
 using System.Threading.Tasks;
+using ZenoDcimManager.Domain.UserContext.ValueObjects;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
@@ -46,7 +47,38 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
 
             var token = _tokenService.GenerateToken(user);
 
-            return new CommandResult(true, "Logado com sucesso", new AuthenticationOutputCommand(token, user.FirstName, user.Email, user.Id));
+            var permissions = new UserGroupOutputCommand
+            {
+                Id = user.Group.Id,
+                Name = user.Group.Name,
+                Description = user.Group.Description,
+                Actions = new ActionPermissions
+                {
+                    AckAlarms = user.Group.ActionAckAlarms,
+                    EditConnections = user.Group.ActionEditConnections
+                },
+                Registers = new RegisterPermissions
+                {
+                    Alarms = user.Group.RegisterAlarms,
+                    Datacenter = user.Group.RegisterDatacenter,
+                    Parameters = user.Group.RegisterParameters,
+                    Users = user.Group.RegisterUsers,
+                    Notifications = user.Group.RegisterNotifications
+                },
+                Views = new ViewPermissions
+                {
+                    Alarms = user.Group.ViewAlarms,
+                    Equipments = user.Group.ViewEquipments,
+                    Parameters = user.Group.ViewParameters
+                },
+                General = new GeneralPermissions
+                {
+                    ReceiveEmail = user.Group.ReceiveEmail
+                }
+
+            };
+
+            return new CommandResult(true, "Logado com sucesso", new AuthenticationOutputCommand(token, user.FirstName, user.Email, user.Id, permissions));
         }
     }
 }

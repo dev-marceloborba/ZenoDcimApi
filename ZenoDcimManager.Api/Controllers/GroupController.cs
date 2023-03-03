@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.UserContext.Commands.Input;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Repositories;
+using ZenoDcimManager.Domain.UserContext.ValueObjects;
 // using ZenoDcimManager.Domain.UserContext.ValueObjects;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -37,6 +38,10 @@ namespace ZenoDcimManager.Api.Controllers
                 ViewParameters = command.Views.Parameters,
                 ReceiveEmail = command.General.ReceiveEmail
             };
+            // group.Actions = new ActionPermissions { AckAlarms = command.Actions.AckAlarms, EditConnections = command.Actions.EditConnections };
+            // group.Registers = new RegisterPermissions { Alarms = command.Registers.Alarms, Datacenter = command.Registers.Datacenter, Notifications = command.Registers.Notifications, Parameters = command.Registers.Parameters, Users = command.Registers.Users };
+            // group.Views = new ViewPermissions { Alarms = command.Views.Alarms, Equipments = command.Views.Equipments, Parameters = command.Views.Parameters };
+            // group.General = new GeneralPermissions { ReceiveEmail = command.General.ReceiveEmail };
 
             await repository.CreateAsync(group);
             await repository.Commit();
@@ -87,6 +92,12 @@ namespace ZenoDcimManager.Api.Controllers
             group.ViewEquipments = command.Views.Equipments;
             group.ViewParameters = command.Views.Parameters;
             group.ReceiveEmail = command.General.ReceiveEmail;
+
+            // group.Actions = new ActionPermissions { AckAlarms = command.Actions.AckAlarms, EditConnections = command.Actions.EditConnections };
+            // group.Registers = new RegisterPermissions { Alarms = command.Registers.Alarms, Datacenter = command.Registers.Datacenter, Notifications = command.Registers.Notifications, Parameters = command.Registers.Parameters, Users = command.Registers.Users };
+            // group.Views = new ViewPermissions { Alarms = command.Views.Alarms, Equipments = command.Views.Equipments, Parameters = command.Views.Parameters };
+            // group.General = new GeneralPermissions { ReceiveEmail = command.General.ReceiveEmail };
+
             group.TrackModifiedDate();
 
             repository.Update(group);

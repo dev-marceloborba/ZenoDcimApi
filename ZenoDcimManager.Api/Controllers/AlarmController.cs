@@ -61,7 +61,8 @@ namespace ZenoDcimManager.Api.Controllers
 
             if (alarm.NotificationEnabled == true)
             {
-                await _hubContext.Clients.All.SendAlarmNotification(alarm);
+                // await _hubContext.Clients.All.SendAlarmNotification(alarm);
+                await _hubContext.Clients.All.SendNotification("alarm", alarm);
             }
 
             if (alarm.EmailEnabled == true)
@@ -152,32 +153,32 @@ namespace ZenoDcimManager.Api.Controllers
                     query = query.Where(e => e.Priority == EAlarmPriority.MEDIUM);
                     break;
                 case 3:
-                    query = query.Where(e => e.Priority == EAlarmPriority.LOW && e.Priority == EAlarmPriority.MEDIUM);
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW || e.Priority == EAlarmPriority.MEDIUM);
                     break;
                 case 4:
                     query = query.Where(e => e.Priority == EAlarmPriority.HIGH);
                     break;
                 case 5:
-                    query = query.Where(e => e.Priority == EAlarmPriority.LOW && e.Priority == EAlarmPriority.HIGH);
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW || e.Priority == EAlarmPriority.HIGH);
                     break;
                 case 6:
-                    query = query.Where(e => e.Priority == EAlarmPriority.MEDIUM && e.Priority == EAlarmPriority.HIGH);
+                    query = query.Where(e => e.Priority == EAlarmPriority.MEDIUM || e.Priority == EAlarmPriority.HIGH);
                     break;
                 case 7:
-                    query = query.Where(e => e.Priority == EAlarmPriority.LOW && e.Priority == EAlarmPriority.MEDIUM && e.Priority == EAlarmPriority.HIGH);
+                    query = query.Where(e => e.Priority == EAlarmPriority.LOW || e.Priority == EAlarmPriority.MEDIUM || e.Priority == EAlarmPriority.HIGH);
                     break;
             }
 
             switch (type)
             {
-                case 0:
+                case 1:
                     query = query.Where(e => e.Type == EAlarmType.ALARM);
                     break;
-                case 1:
+                case 2:
                     query = query.Where(e => e.Type == EAlarmType.EVENT);
                     break;
-                case 2:
-                    query = query.Where(e => e.Type == EAlarmType.ALARM && e.Type == EAlarmType.EVENT);
+                case 3:
+                    query = query.Where(e => e.Type == EAlarmType.ALARM || e.Type == EAlarmType.EVENT);
                     break;
             }
 

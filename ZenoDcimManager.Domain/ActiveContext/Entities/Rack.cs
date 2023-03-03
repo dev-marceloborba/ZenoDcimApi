@@ -206,9 +206,10 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public bool CheckBusyPosition(int position, int occupation)
         {
             var availableCounter = 0;
-
+            var finalPosition = position + occupation;
             var rackSlots = GetRackSlots();
-            foreach (var rackSlot in rackSlots)
+            var rackRange = rackSlots.Where(x => x.InitialPosition >= position && x.FinalPosition <= finalPosition);
+            foreach (var rackSlot in rackRange)
             {
                 if (rackSlot.RackMountType == ERackMountType.NO_ONE && position <= rackSlot.InitialPosition)
                     availableCounter++;

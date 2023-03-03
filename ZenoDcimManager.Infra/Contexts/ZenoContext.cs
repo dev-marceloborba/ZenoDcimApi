@@ -20,6 +20,7 @@ namespace ZenoDcimManager.Infra.Contexts
         public DbSet<Company> Companies { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupTemp> GroupTemps { get; set; }
         public DbSet<UserPreferencies> UserPreferencies { get; set; }
 
         // Datacenter
@@ -60,6 +61,8 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new CompanyMap());
             modelBuilder.ApplyConfiguration(new ContractMap());
             modelBuilder.ApplyConfiguration(new GroupMap());
+            modelBuilder.Ignore<GroupTemp>();
+            // modelBuilder.ApplyConfiguration(new GroupTempMap());
             modelBuilder.ApplyConfiguration(new UserPreferenciesMap());
 
             // Datacenter

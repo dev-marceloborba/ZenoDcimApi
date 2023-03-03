@@ -22,11 +22,6 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
 
         }
 
-        public User(string firstName, string lastName, string email, string hashedPassword)
-        {
-            HashedPassword = hashedPassword;
-        }
-
         public void Activate() => Active = true;
 
         public void Deactivate() => Active = false;

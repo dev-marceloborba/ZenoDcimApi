@@ -10,6 +10,10 @@ using ZenoDcimManager.Shared.Services;
 using Flunt.Notifications;
 using ZenoDcimManager.Domain.UserContext.Commands.Output;
 using System.Threading.Tasks;
+using ZenoDcimManager.Domain.UserContext.ValueObjects;
+using System;
+using Microsoft.Extensions.Options;
+using Microsoft.Win32;
 
 namespace ZenoDcimManager.Domain.UserContext.Handlers
 {
@@ -19,13 +23,15 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
         ICommandHandler<EditUserCommand>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly IEmailService _emailService;
         private readonly ICryptoService _cryptoService;
 
-        public UserHandler(IUserRepository userRepository, IEmailService emailService, ICryptoService cryptoService, ICompanyRepository companyRepository)
+        public UserHandler(IUserRepository userRepository, IGroupRepository groupRepository, IEmailService emailService, ICryptoService cryptoService, ICompanyRepository companyRepository)
         {
             _userRepository = userRepository;
+            _groupRepository = groupRepository;
             _emailService = emailService;
             _cryptoService = cryptoService;
             _companyRepository = companyRepository;
@@ -49,7 +55,15 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             }
 
             var hashedPassword = _cryptoService.EncryptPassword(command.Password);
-            var user = new User(command.FirstName, command.LastName, command.Email, hashedPassword);
+
+            var user = new User
+            {
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                Email = command.Email,
+                HashedPassword = hashedPassword,
+                Active = true
+            };
             user.CompanyId = command.CompanyId;
             user.GroupId = command.GroupId;
 
@@ -59,7 +73,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             AddNotifications(userValidator);
 
             if (Invalid)
-                return new CommandResult(false, "Nao foi possivel criar o usuario", "");
+                return new CommandResult(false, "Nao foi possivel criar o usuario", Notifications);
 
             // save informations
             await _userRepository.CreateAsync(user);
@@ -68,7 +82,7 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             // send e-mail
             _emailService.Send(user.ToString(), user.Email, "Welcome to Zeno DCIM", "Your account was created");
 
-            return new CommandResult(true, "Usuario criado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, null));
+            return new CommandResult(true, "Usuario criado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, null, null));
 
         }
 
@@ -82,22 +96,57 @@ namespace ZenoDcimManager.Domain.UserContext.Handlers
             // }
 
             var user = await _userRepository.FindByIdAsync(command.Id);
+            var group = await _groupRepository.FindByIdAsync(command.GroupId);
 
-            // if (user == null)
-            // {
-            //     AddNotification("User", "User not found");
-            //     return new CommandResult(false, "Nao foi possivel editar o usuario", Notifications);
-            // }
+            if (user == null)
+            {
+                AddNotification("User", "User not found");
+                return new CommandResult(false, "Nao foi possivel editar o usuario", Notifications);
+            }
 
             user.FirstName = command.FirstName;
             user.LastName = command.LastName;
             user.Email = command.Email;
-            user.GroupId = command.GroupId;
+            user.Active = command.Active;
+            user.GroupId = group.Id;
 
-            // _userRepository.Update(user);
-            // await _userRepository.Commit();
+            _userRepository.Update(user);
 
-            return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, null));
+            await _userRepository.Commit();
+
+            var outputGroup = new UserGroupOutputCommand {
+                Id = group.Id,
+                Name = group.Name,
+                Description = group.Description,
+                Actions = new ActionPermissions
+                {
+                    AckAlarms = group.ActionAckAlarms,
+                    EditConnections = group.ActionEditConnections
+                },
+                Registers = new RegisterPermissions
+                {
+                    Alarms = group.RegisterAlarms,
+                    Datacenter = group.RegisterDatacenter,
+                    Parameters = group.RegisterParameters,
+                    Users = group.RegisterUsers,
+                    Notifications = group.RegisterNotifications
+                },
+                Views = new ViewPermissions
+                {
+                    Alarms = group.ViewAlarms,
+                    Equipments = group.ViewEquipments,
+                    Parameters = group.ViewParameters
+                },
+                General = new GeneralPermissions
+                {
+                    ReceiveEmail = group.ReceiveEmail
+                }
+            
+            };
+
+            return new CommandResult(true, "Usuario alterado com sucesso", new UserOutputCommand(
+                user.Id, user.FirstName, user.LastName, user.Email, user.Active, null, outputGroup
+            ));
         }
     }
 }

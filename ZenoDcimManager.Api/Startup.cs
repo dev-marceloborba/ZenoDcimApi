@@ -29,11 +29,16 @@ using ZenoDcimManager.Domain.ServiceOrderContext.Repositories;
 using System.IO.Compression;
 using ZenoDcimManager.Api.Middlewares;
 using FastReport.Data;
+using ZenoDcimManager.Api.Settings;
+using ZenoDcimManager.Api.Extensions;
+using ZenoDcimManager.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+// MapConfiguration(builder);
 ConfigureAuthentication(builder);
 ConfigureMvc(builder);
 ConfigureServices(builder);
+// ConfigureMqttServices(builder);
 ConfigureRepositories(builder);
 ConfigureHandlers(builder);
 
@@ -198,4 +203,30 @@ void ConfigureHandlers(WebApplicationBuilder builder)
     builder.Services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
     builder.Services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
     builder.Services.AddTransient<EquipmentCardHandler, EquipmentCardHandler>();
+}
+
+void MapConfiguration(WebApplicationBuilder builder)
+{
+    MapBrokerHostSettings(builder);
+    MapClientSettings(builder);
+}
+
+void MapBrokerHostSettings(WebApplicationBuilder builder)
+{
+    BrokerHostSettings brokerHostSettings = new BrokerHostSettings();
+    builder.Configuration.GetSection(nameof(BrokerHostSettings)).Bind(brokerHostSettings);
+    AppSettingsProvider.BrokerHostSettings = brokerHostSettings;
+}
+
+void MapClientSettings(WebApplicationBuilder builder)
+{
+    ClientSettings clientSettings = new ClientSettings();
+    builder.Configuration.GetSection(nameof(ClientSettings)).Bind(clientSettings);
+    AppSettingsProvider.ClientSettings = clientSettings;
+}
+
+void ConfigureMqttServices(WebApplicationBuilder builder)
+{
+    builder.Services.AddMqttClientHostedService();
+    builder.Services.AddSingleton<ExternalService>();
 }

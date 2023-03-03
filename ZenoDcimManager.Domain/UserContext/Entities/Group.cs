@@ -21,5 +21,15 @@ namespace ZenoDcimManager.Domain.UserContext.Entities
         public bool ViewEquipments { get; set; }
         // General
         public bool ReceiveEmail { get; set; }
+        // public ActionPermissions Actions { get; set; }
+        // public RegisterPermissions Registers { get; set; }
+        // public ViewPermissions Views { get; set; }
+        // public GeneralPermissions General { get; set; }
+
+        public Group()
+        {
+
+        }
+
     }
 }

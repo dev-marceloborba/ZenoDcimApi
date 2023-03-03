@@ -7,5 +7,10 @@ namespace ZenoDcimManager.Domain.UserContext.ValueObjects
         public bool ReceiveEmail { get; set; }
         // public bool ReceiveNotifications { get; set; }
 
+        public GeneralPermissions()
+        {
+
+        }
+
     }
 }

@@ -6,6 +6,8 @@ using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using ZenoDcimManager.Domain.UserContext.Commands.Output;
+using ZenoDcimManager.Domain.UserContext.ValueObjects;
 
 namespace ZenoDcimManager.Infra.Repositories
 {
@@ -39,7 +41,11 @@ namespace ZenoDcimManager.Infra.Repositories
 
         public async Task<User> FindUserByEmail(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Users
+                .Where(x => x.Email == email)
+                .Include(x => x.Group)
+                .Include(x => x.UserPreferencies)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<User>> FindAllAsync()
@@ -81,6 +87,44 @@ namespace ZenoDcimManager.Infra.Repositories
             {
                 return true;
             }
+        }
+
+        public async Task<UserOutputCommand> FindUser(Guid id)
+        {
+            return await _context.Users
+                .Where(x => x.Id == id)
+                .Include(x => x.Group)
+                .Include(x => x.UserPreferencies)
+                .Select(x => new UserOutputCommand(x.Id, x.FirstName, x.LastName, x.Email, x.Active, x.UserPreferencies, new UserGroupOutputCommand
+                {
+                    Id = x.Group.Id,
+                    Name = x.Group.Name,
+                    Description = x.Group.Description,
+                    Actions = new ActionPermissions
+                    {
+                        AckAlarms = x.Group.ActionAckAlarms,
+                        EditConnections = x.Group.ActionEditConnections
+                    },
+                    Registers = new RegisterPermissions
+                    {
+                        Alarms = x.Group.RegisterAlarms,
+                        Datacenter = x.Group.RegisterDatacenter,
+                        Parameters = x.Group.RegisterParameters,
+                        Users = x.Group.RegisterUsers,
+                        Notifications = x.Group.RegisterNotifications
+                    },
+                    Views = new ViewPermissions
+                    {
+                        Alarms = x.Group.ViewAlarms,
+                        Equipments = x.Group.ViewEquipments,
+                        Parameters = x.Group.ViewParameters
+                    },
+                    General = new GeneralPermissions
+                    {
+                        ReceiveEmail = x.Group.ReceiveEmail
+                    }
+                }))
+                .FirstOrDefaultAsync();
         }
     }
 }

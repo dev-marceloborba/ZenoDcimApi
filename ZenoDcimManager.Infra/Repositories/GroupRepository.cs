@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.UserContext.Commands.Output;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Repositories;
 using ZenoDcimManager.Domain.UserContext.ValueObjects;
-using ZenoDcimManager.Domain.UserContext.ViewModels;
 using ZenoDcimManager.Infra.Contexts;
 
 namespace ZenoDcimManager.Infra.Repositories
@@ -54,11 +54,11 @@ namespace ZenoDcimManager.Infra.Repositories
             _context.Entry(model).State = EntityState.Modified;
         }
 
-        async Task<IEnumerable<UserGroupResponseViewModel>> IGroupRepository.FindAllAsync()
+        async Task<IEnumerable<UserGroupOutputCommand>> IGroupRepository.FindAllAsync()
         {
             return await _context.Groups
                 .AsNoTracking()
-                .Select(x => new UserGroupResponseViewModel
+                .Select(x => new UserGroupOutputCommand
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -72,9 +72,9 @@ namespace ZenoDcimManager.Infra.Repositories
                     {
                         Alarms = x.RegisterAlarms,
                         Datacenter = x.RegisterDatacenter,
-                        Notifications = x.RegisterNotifications,
                         Parameters = x.RegisterParameters,
-                        Users = x.RegisterUsers
+                        Users = x.RegisterUsers,
+                        Notifications = x.RegisterNotifications
                     },
                     Views = new ViewPermissions
                     {
@@ -88,7 +88,6 @@ namespace ZenoDcimManager.Infra.Repositories
                     }
                 })
                 .ToListAsync();
-
         }
     }
 }

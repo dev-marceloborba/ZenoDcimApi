@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ZenoDcimManager.Domain.UserContext.Commands.Output;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Shared.Helpers;
 using ZenoDcimManager.Shared.Repositories;
@@ -11,5 +12,6 @@ namespace ZenoDcimManager.Domain.UserContext.Repositories
     {
         Task<User> FindUserByEmail(string email);
         Task Login(string email, string password);
+        Task<UserOutputCommand> FindUser(Guid id);
     }
 }

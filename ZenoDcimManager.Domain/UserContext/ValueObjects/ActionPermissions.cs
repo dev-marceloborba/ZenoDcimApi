@@ -6,5 +6,10 @@ namespace ZenoDcimManager.Domain.UserContext.ValueObjects
     {
         public bool EditConnections { get; set; }
         public bool AckAlarms { get; set; }
+
+        public ActionPermissions()
+        {
+
+        }
     }
 }

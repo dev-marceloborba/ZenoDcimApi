@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZenoDcimManager.Domain.UserContext.Commands.Output;
 using ZenoDcimManager.Domain.UserContext.Entities;
 using ZenoDcimManager.Domain.UserContext.Enums;
 using ZenoDcimManager.Domain.UserContext.Repositories;
@@ -64,6 +65,11 @@ namespace ZenoDcimManager.Tests.UserContext.Repositories
         }
 
         public Task<bool> CheckIfExists(string parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserOutputCommand> FindUser(Guid id)
         {
             throw new NotImplementedException();
         }

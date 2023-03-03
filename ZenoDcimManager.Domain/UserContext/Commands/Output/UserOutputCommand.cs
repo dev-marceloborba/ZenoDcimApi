@@ -12,8 +12,10 @@ namespace ZenoDcimManager.Domain.UserContext.Commands.Output
         public string Email { get; set; }
         public bool Active { get; set; }
         public UserPreferencies UserPreferencies { get; set; }
+        public UserGroupOutputCommand Group { get; set; }
 
-        public UserOutputCommand(Guid id, string firstName, string lastName, string email, bool active, UserPreferencies userPreferencies)
+        public UserOutputCommand(Guid id, string firstName, string lastName, string email, bool active,
+            UserPreferencies userPreferencies, UserGroupOutputCommand group)
         {
             Id = id;
             FirstName = firstName;
@@ -21,6 +23,7 @@ namespace ZenoDcimManager.Domain.UserContext.Commands.Output
             Email = email;
             Active = active;
             UserPreferencies = userPreferencies;
+            Group = group;
         }
 
 

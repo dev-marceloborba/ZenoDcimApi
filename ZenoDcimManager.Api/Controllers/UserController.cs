@@ -14,6 +14,7 @@ namespace ZenoDcimManager.Api.Controllers
 {
     [ApiController]
     [Route("/v1/users")]
+    [AllowAnonymous]
     public class UserController : ControllerBase
     {
 
@@ -26,19 +27,24 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("")]
         [HttpPost]
-        [AllowAnonymous]
-        public async Task<ICommandResult> CreateUser(
+        public async Task<ActionResult> CreateUser(
             [FromBody] CreateUserCommand command,
             [FromServices] UserHandler handler
         )
         {
-            return await handler.Handle(command);
+            var user = await handler.Handle(command);
+            if (user.Success)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return BadRequest(user.Data);
+            }
         }
 
         [Route("")]
         [HttpGet]
-        //[Authorize]
-        [AllowAnonymous]
         public async Task<IEnumerable<User>> GetAllUsers()
         {
             return await _repository.FindAllAsync();
@@ -46,16 +52,14 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<UserOutputCommand> FindUserById(Guid id)
+        public async Task<ActionResult> FindUserById(Guid id)
         {
-            var user = await _repository.FindByIdAsync(id);
-            return new UserOutputCommand(user.Id, user.FirstName, user.LastName, user.Email, user.Active, user.UserPreferencies);
+            var user = await _repository.FindUser(id);
+            return Ok(user);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult> DeleteUserById(Guid id)
         {
             try
@@ -74,7 +78,6 @@ namespace ZenoDcimManager.Api.Controllers
 
         [Route("login")]
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ActionResult<ICommandResult>> Login(
             [FromBody] LoginCommand command,
             [FromServices] LoginHandler handler
@@ -91,19 +94,19 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Edit(
-            [FromBody] EditUserCommand command
+            [FromBody] EditUserCommand command,
+            [FromServices] UserHandler handler
         )
         {
-            var user = await _repository.FindByIdAsync(command.Id);
-            user.FirstName = command.FirstName;
-            user.LastName = command.LastName;
-            user.Email = command.Email;
-            user.GroupId = command.GroupId;
-
-            _repository.Update(user);
-            await _repository.Commit();
-
-            return Ok(new CommandResult(true, "Usuário editado com sucesso", user));
+            var user = await handler.Handle(command);
+            if (user.Success)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return BadRequest(user.Data);
+            }
         }
 
         //[Route("{email}")]
