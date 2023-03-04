@@ -11,6 +11,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         IDuplicate<Room>
     {
         public string Name { get; set; }
+        public int RackCapacity { get; set; }
+        public double PowerCapacity { get; set; }
         public List<Equipment> Equipments { get; set; } = new List<Equipment>();
         // Navigation property
         public Guid? FloorId { get; set; }

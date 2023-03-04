@@ -27,6 +27,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
             var room = new Room
             {
                 Name = command.Name,
+                RackCapacity = command.RackCapacity,
+                PowerCapacity = command.PowerCapacity,
                 FloorId = command.FloorId
             };
 

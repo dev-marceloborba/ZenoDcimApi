@@ -44,6 +44,8 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 var room = await _repository.FindByIdAsync(id);
                 room.Name = command.Name;
+                room.RackCapacity = command.RackCapacity;
+                room.PowerCapacity = command.PowerCapacity;
                 room.FloorId = command.FloorId;
                 room.BuildingId = command.BuildingId;
                 room.TrackModifiedDate();

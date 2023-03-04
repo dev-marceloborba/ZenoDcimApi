@@ -22,6 +22,8 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
             return clone;
         }
 
+        public int GetRoomsQuantity() => Rooms.Count;
+
         public Floor Duplicate()
         {
             var duplicated = Clone();
