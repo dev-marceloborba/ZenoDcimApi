@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Infra.Contexts;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -112,6 +116,46 @@ namespace ZenoDcimManager.Api.Controllers
             var building = await _repository.FindByIdAsync(id);
             var duplicated = building.Duplicate();
             return Ok(duplicated);
+        }
+
+        [HttpGet]
+        [Route("occupation-card/{id}")]
+        public async Task<ActionResult> GetOccupationCard(
+            [FromRoute] Guid id,
+            [FromServices] ZenoContext context
+        )
+        {
+            var output = new List<OccupiedOutput>();
+            var buildings = await context.Buildings
+                .AsNoTracking()
+                .Include(x => x.Floors)
+                    .ThenInclude(x => x.Rooms)
+                    .ThenInclude(x => x.Racks)
+                    .ThenInclude(x => x.RackEquipments)
+                .Where(x => x.SiteId == id)
+                .ToListAsync();
+
+            var rooms = await context.Rooms
+                .AsNoTracking()
+                .Where(x => x.RackCapacity > 0)
+                .ToListAsync();
+
+            foreach (var building in buildings)
+            {
+                output.Add(new OccupiedOutput
+                {
+                    Id = building.Id,
+                    Name = building.Name,
+                    PowerCapacity = building.GetPowerCapacity(),
+                    RackCapacity = building.GetRackCapacity(),
+                    OccupiedPower = building.GetOccupiedPower(),
+                    OccupiedCapacity = building.GetOccupiedCapacity(),
+                    RacksQuantity = building.GetRacksQuantity(),
+                    RoomsQuantity = building.GetRoomsQuantity()
+                });
+            }
+
+            return Ok(output.Where(x => x.RackCapacity > 0));
         }
     }
 }

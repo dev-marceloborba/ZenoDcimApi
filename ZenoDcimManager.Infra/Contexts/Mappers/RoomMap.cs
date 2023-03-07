@@ -11,6 +11,7 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.ToTable("Room");
             builder.Property(x => x.Name).HasColumnType("varchar(200)");
             builder.HasOne(x => x.CardSettings).WithOne(x => x.Room).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Racks).WithOne(x => x.Room).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

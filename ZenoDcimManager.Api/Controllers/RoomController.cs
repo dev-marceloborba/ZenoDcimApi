@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -108,6 +111,40 @@ namespace ZenoDcimManager.Api.Controllers
         {
             var result = await _repository.LoadCardSettings(buildingId);
             return Ok(result);
+        }
+
+        [Route("occupation-card/{id}")]
+        [HttpGet]
+        public async Task<ActionResult> GetOccupationCard(
+            [FromRoute] Guid id,
+            [FromServices] ZenoContext context
+        )
+        {
+            var output = new List<OccupiedOutput>();
+            var rooms = await context.Rooms
+                .AsNoTracking()
+                .Where(x => x.BuildingId == id)
+                .Include(x => x.Racks)
+                .ThenInclude(x => x.RackEquipments)
+                .ToListAsync();
+
+
+            foreach (var room in rooms)
+            {
+                output.Add(new OccupiedOutput
+                {
+                    Id = room.Id,
+                    Name = room.Name,
+                    PowerCapacity = room.PowerCapacity,
+                    RackCapacity = room.RackCapacity,
+                    OccupiedPower = room.GetOccupiedPower(),
+                    OccupiedCapacity = room.GetOccupiedCapacity(),
+                    RacksQuantity = room.GetRacksQuantity(),
+                    RoomsQuantity = rooms.Count
+                });
+            }
+
+            return Ok(output.Where(x => x.RackCapacity > 0));
         }
     }
 }

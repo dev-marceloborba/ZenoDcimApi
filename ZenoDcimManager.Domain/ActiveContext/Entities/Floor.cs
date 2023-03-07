@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ZenoDcimManager.Shared;
 using ZenoDcimManager.Shared.Interfaces;
 
@@ -23,6 +24,12 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         }
 
         public int GetRoomsQuantity() => Rooms.Count;
+
+        public double GetPowerCapacity() => Rooms.Sum(x => x.PowerCapacity);
+        public int GetRackCapacity() => Rooms.Sum(x => x.RackCapacity);
+        public double GetOccupiedPower() => Rooms.Sum(x => x.GetOccupiedPower());
+        public int GetRacksQuantity() => Rooms.Sum(x => x.GetRacksQuantity());
+        public int GetOccupiedCapacity() => Rooms.Sum(x => x.GetOccupiedCapacity());
 
         public Floor Duplicate()
         {

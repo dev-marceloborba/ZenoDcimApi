@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Infra.Contexts;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -88,6 +92,41 @@ namespace ZenoDcimManager.Api.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [Route("occupation-card")]
+        [HttpGet]
+        public async Task<ActionResult> GetOccupationCard(
+            [FromRoute] Guid id,
+            [FromServices] ZenoContext context
+        )
+        {
+            var output = new List<OccupiedOutput>();
+
+            var floors = await context.Floors
+                .AsNoTracking()
+                .Where(x => x.BuildingId == id)
+                .Include(x => x.Rooms)
+                .ThenInclude(x => x.Racks)
+                .ThenInclude(x => x.RackEquipments)
+                .ToListAsync();
+
+            foreach (var floor in floors)
+            {
+                output.Add(new OccupiedOutput
+                {
+                    Id = floor.Id,
+                    Name = floor.Name,
+                    PowerCapacity = floor.GetPowerCapacity(),
+                    RackCapacity = floor.GetRackCapacity(),
+                    OccupiedPower = floor.GetOccupiedPower(),
+                    OccupiedCapacity = floor.GetOccupiedCapacity(),
+                    RacksQuantity = floor.GetRacksQuantity(),
+                    RoomsQuantity = floor.GetRoomsQuantity()
+                });
+            }
+
+            return Ok(output);
         }
 
     }

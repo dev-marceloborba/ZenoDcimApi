@@ -78,17 +78,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
             return quantity;
         }
 
-        public int TotalOccupedSlots()
-        {
-            var quantity = 0;
-            RackEquipments.ForEach(x =>
-            {
-                if (x.IsNotAvailable())
-                    quantity += x.RackUnit();
-            });
-
-            return quantity;
-        }
+        public int TotalOccupedSlots() => RackEquipments.Sum(x => x.RackUnit());
 
         public int[] AvailablePositions()
         {
@@ -193,10 +183,9 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
             return RackEquipments.Where(x => x.RackEquipmentType == rackEquipmentType).Count();
         }
 
-        public double GetAvailablePower()
-        {
-            return Power - RackEquipments.Sum(x => x.Power);
-        }
+        public double GetOccupiedPower() => RackEquipments.Sum(x => x.Power);
+
+        public double GetAvailablePower() => Power - GetOccupiedPower();
 
         public double GetAvailableWeight()
         {

@@ -6,13 +6,15 @@ using ZenoDcimManager.Shared.Commands;
 using ZenoDcimManager.Shared.Handlers;
 using Flunt.Notifications;
 using System.Threading.Tasks;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
+using System;
 
 namespace ZenoDcimManager.Domain.ZenoContext.Handlers
 {
     public class RackHandler :
         Notifiable,
         ICommandHandler<CreateRackCommand>,
-        ICommandHandler<EditRackCommand>
+        ICommandHandler<RackEditorCommand>
     {
         private readonly IRackRepository _rackRepository;
 
@@ -68,6 +70,56 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
 
             return new CommandResult(true, "Rack was successful edited", rack);
 
+        }
+
+        public async Task<ICommandResult> Handle(RackEditorCommand command)
+        {
+
+            if (command.Id?.GetType() == typeof(Guid))
+            {
+                var rack = await _rackRepository.FindByIdAsync((Guid)command.Id);
+                ConfigureObject(rack, command);
+                rack.TrackModifiedDate();
+
+                _rackRepository.Update(rack);
+                await _rackRepository.Commit();
+
+                return new CommandResult(true, "Rack alterado com sucesso", rack);
+            }
+            else
+            {
+                Rack rack = new Rack();
+                ConfigureObject(rack, command);
+
+                var rackValidator = new RackValidator(rack);
+
+                AddNotifications(rackValidator);
+
+                if (Invalid)
+                    return new CommandResult(false, "Error on create rack", Notifications);
+
+                // save on repository
+                await _rackRepository.CreateAsync(rack);
+                await _rackRepository.Commit();
+
+                return new CommandResult(true, "Rack criado com sucesso", rack);
+
+            }
+        }
+
+        private void ConfigureObject(Rack obj, RackEditorCommand command)
+        {
+            obj.Name = command.Name;
+            obj.Localization = command.Localization;
+            obj.Size = command.Size;
+            obj.Capacity = command.Capacity;
+            obj.Power = command.Power;
+            obj.Weight = command.Weight;
+            obj.Description = command.Description;
+            obj.SiteId = command.SiteId;
+            obj.BuildingId = command.BuildingId;
+            obj.FloorId = command.FloorId;
+            obj.RoomId = command.RoomId;
         }
     }
 }

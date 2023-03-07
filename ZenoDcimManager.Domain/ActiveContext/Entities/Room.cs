@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Shared;
 using ZenoDcimManager.Shared.Interfaces;
@@ -20,6 +21,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         public Guid? BuildingId { get; set; }
         public Building Building { get; set; }
         public RoomCardSettings CardSettings { get; set; }
+        public List<Rack> Racks { get; set; }
 
         public Room Clone()
         {
@@ -39,5 +41,9 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
         {
             return Floor.Building.Site.Name + '*' + Floor.Building.Name + '*' + Floor.Name + '*' + Name;
         }
+
+        public double GetOccupiedPower() => Racks.Sum(x => x.GetOccupiedPower());
+        public int GetRacksQuantity() => Racks.Count;
+        public int GetOccupiedCapacity() => Racks.Sum(x => x.TotalOccupedSlots());
     }
 }

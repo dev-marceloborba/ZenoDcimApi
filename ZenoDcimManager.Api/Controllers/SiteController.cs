@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
 using ZenoDcimManager.Domain.ZenoContext.Repositories;
+using ZenoDcimManager.Infra.Contexts;
 using ZenoDcimManager.Shared.Commands;
 
 namespace ZenoDcimManager.Api.Controllers
@@ -146,6 +150,41 @@ namespace ZenoDcimManager.Api.Controllers
             await _repository.CreateAsync(duplicated);
             await _repository.Commit();
             return Ok(duplicated);
+        }
+
+        [HttpGet]
+        [Route("occupation-card")]
+        public async Task<ActionResult> GetOccupationCard(
+            [FromServices] ZenoContext context
+        )
+        {
+            var output = new List<OccupiedOutput>();
+            var sites = await context.Sites
+                .AsNoTracking()
+                .Include(x => x.Buildings)
+                    .ThenInclude(x => x.Floors)
+                    .ThenInclude(x => x.Rooms)
+                    .ThenInclude(x => x.Racks)
+                    .ThenInclude(x => x.RackEquipments)
+                .ToListAsync();
+
+            foreach (var site in sites)
+            {
+                output.Add(new OccupiedOutput
+                {
+                    Id = site.Id,
+                    Name = site.Name,
+                    PowerCapacity = site.GetPowerCapacity(),
+                    RackCapacity = site.GetRackCapacity(),
+                    OccupiedPower = site.GetOccupiedPower(),
+                    OccupiedCapacity = site.GetOccupiedCapacity(),
+                    RacksQuantity = site.GetRacksQuantity(),
+                    RoomsQuantity = site.GetRoomsQuantity()
+                });
+            }
+
+
+            return Ok(output);
         }
     }
 }

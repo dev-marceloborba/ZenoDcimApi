@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
+using ZenoDcimManager.Infra.Contexts;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using ZenoDcimManager.Domain.ActiveContext.Commands.Inputs;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -26,7 +30,7 @@ namespace ZenoDcimManager.Api.Controllers
         [Route("")]
         [HttpPost]
         public async Task<ActionResult> CreateRack(
-            [FromBody] CreateRackCommand command,
+            [FromBody] RackEditorCommand command,
             [FromServices] RackHandler handler
         )
         {
@@ -42,7 +46,7 @@ namespace ZenoDcimManager.Api.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateRack(
             [FromRoute] Guid id,
-            [FromBody] EditRackCommand command,
+            [FromBody] RackEditorCommand command,
             [FromServices] RackHandler handler
         )
         {
@@ -170,6 +174,38 @@ namespace ZenoDcimManager.Api.Controllers
                 return BadRequest();
             }
 
+        }
+
+        [Route("occupation-card/{id}")]
+        [HttpGet]
+        public async Task<ActionResult> GetOccupationCard(
+            [FromRoute] Guid id,
+            [FromServices] ZenoContext context
+        )
+        {
+            var output = new List<OccupiedOutput>();
+            var racks = await context.Racks
+                .AsNoTracking()
+                .Where(x => x.RoomId == id)
+                .Include(x => x.RackEquipments)
+                .ToListAsync();
+
+            foreach (var rack in racks)
+            {
+                output.Add(new OccupiedOutput
+                {
+                    Id = rack.Id,
+                    Name = rack.Name,
+                    PowerCapacity = rack.Power,
+                    RackCapacity = rack.Capacity,
+                    OccupiedPower = rack.GetOccupiedPower(),
+                    OccupiedCapacity = rack.TotalOccupedSlots(),
+                    RacksQuantity = 0,
+                    RoomsQuantity = 0
+                });
+            }
+
+            return Ok(output);
         }
     }
 }
