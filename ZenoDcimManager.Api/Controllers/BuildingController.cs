@@ -133,6 +133,7 @@ namespace ZenoDcimManager.Api.Controllers
                     .ThenInclude(x => x.Racks)
                     .ThenInclude(x => x.RackEquipments)
                 .Where(x => x.SiteId == id)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
             var rooms = await context.Rooms

@@ -187,7 +187,8 @@ namespace ZenoDcimManager.Api.Controllers
             var racks = await context.Racks
                 .AsNoTracking()
                 .Where(x => x.RoomId == id)
-                .Include(x => x.RackEquipments)
+                    .Include(x => x.RackEquipments)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
             foreach (var rack in racks)

@@ -166,6 +166,7 @@ namespace ZenoDcimManager.Api.Controllers
                     .ThenInclude(x => x.Rooms)
                     .ThenInclude(x => x.Racks)
                     .ThenInclude(x => x.RackEquipments)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
             foreach (var site in sites)
