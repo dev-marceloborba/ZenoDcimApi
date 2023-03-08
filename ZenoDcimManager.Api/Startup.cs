@@ -55,15 +55,16 @@ if (app.Environment.IsDevelopment())
 {
     app.UseCors("DevelopmentPolicy");
 }
+if (app.Environment.IsProduction())
+{
+    app.UseCors("ProductionPolicy");
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseOptions();
-if (app.Environment.IsProduction())
-{
-    app.UseCors("ProductionPolicy");
-}
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseFastReport();
