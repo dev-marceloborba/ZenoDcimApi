@@ -183,6 +183,7 @@ void ConfigureRepositories(WebApplicationBuilder builder)
     builder.Services.AddTransient<ISupplierRepository, SupplierRepository>();
     builder.Services.AddTransient<IGroupRepository, GroupRepository>();
     builder.Services.AddTransient<IWorkOrderRepository, WorkOrderRepository>();
+    builder.Services.AddTransient<IWorkOrderEventRepository, WorkOrderEventRepository>();
 }
 
 void ConfigureHandlers(WebApplicationBuilder builder)

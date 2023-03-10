@@ -5,7 +5,7 @@ using ZenoDcimManager.Domain.ActiveContext.Repositories;
 using ZenoDcimManager.Domain.ServiceOrderContext.Commands;
 using ZenoDcimManager.Domain.ServiceOrderContext.Entities;
 using ZenoDcimManager.Domain.ServiceOrderContext.Enums;
-using ZenoDcimManager.Shared.Commands;
+using ZenoDcimManager.Domain.ServiceOrderContext.Handlers;
 
 namespace ZenoDcimManager.Api.Controllers
 {
@@ -13,114 +13,91 @@ namespace ZenoDcimManager.Api.Controllers
     [Route("v1/work-orders")]
     public class WorkOrderController : ControllerBase
     {
+        private readonly IWorkOrderRepository _repository;
+
+        public WorkOrderController(IWorkOrderRepository repository)
+        {
+            _repository = repository;
+        }
 
         [HttpPost]
         [Route("")]
         public async Task<ActionResult> CreateAsync(
-            [FromBody] CreateWorkOrderCommand command,
-            [FromServices] IWorkOrderRepository repository)
+            [FromBody] WorkOrderEditorCommand command,
+            [FromServices] WorkOrderHandler handler)
         {
-            command.Validate();
-
-            if (command.Valid)
-            {
-                Console.WriteLine("valid");
-            }
-            else
-            {
-                Console.WriteLine("Invalid");
-            }
-
-            var workOrder = new WorkOrder
-            {
-                SiteId = command.SiteId,
-                BuildingId = command.BuildingId,
-                FloorId = command.FloorId,
-                RoomId = command.RoomId,
-                EquipmentId = command.EquipmentId,
-                Description = command.Description,
-                FinalDate = command.FinalDate,
-                InitialDate = command.InitialDate,
-                MaintenanceType = command.MaintenanceType,
-                Nature = command.Nature,
-                OrderType = command.OrderType,
-                Responsible = command.Responsible,
-                ResponsibleType = command.ResponsibleType,
-                WorkOrderStatus = EWorkOrderStatus.CREATED,
-                Title = command.Title,
-                Priority = command.Priority,
-                EstimatedRepairTime = command.EstimatedRepairTime,
-                RealRepairTime = command.RealRepairTime,
-                Cost = command.Cost
-            };
-
-            await repository.CreateAsync(workOrder);
-            await repository.Commit();
-
-            return Ok(new CommandResult(true, "Ordem de serviço criada com sucesso", workOrder));
+            var result = await handler.Handle(command);
+            return Ok(result);
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult> Update(
             [FromRoute] Guid id,
-            [FromBody] CreateWorkOrderCommand command,
-            [FromServices] IWorkOrderRepository repository)
+            [FromBody] WorkOrderEditorCommand command,
+            [FromServices] WorkOrderHandler handler)
         {
-            var workOrder = await repository.FindByIdAsync(id);
-            workOrder.Description = command.Description;
-            workOrder.FinalDate = command.FinalDate;
-            workOrder.InitialDate = command.InitialDate;
-            workOrder.MaintenanceType = command.MaintenanceType;
-            workOrder.Nature = command.Nature;
-            workOrder.OrderType = command.OrderType;
-            workOrder.Responsible = command.Responsible;
-            workOrder.ResponsibleType = command.ResponsibleType;
-            workOrder.Title = command.Title;
-            workOrder.Priority = command.Priority;
-            workOrder.EstimatedRepairTime = command.EstimatedRepairTime;
-            workOrder.RealRepairTime = command.RealRepairTime;
-            workOrder.Cost = command.Cost;
-            workOrder.TrackModifiedDate();
-
-            repository.Update(workOrder);
-            await repository.Commit();
-
-            return Ok(new CommandResult(true, "Ordem de serviço atualizada com sucesso", workOrder));
+            command.Id = id;
+            var result = await handler.Handle(command);
+            return Ok(result);
         }
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult> FindAllAsync(
-            [FromServices] IWorkOrderRepository repository)
+        public async Task<ActionResult> FindAllAsync()
         {
-            var result = await repository.FindAllAsync();
+            var result = await _repository.FindAllAsync();
             return Ok(result);
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult> FindByIdAsync(
-            [FromRoute] Guid id,
-            [FromServices] IWorkOrderRepository repository)
+            [FromRoute] Guid id)
         {
-            var result = await repository.FindByIdAsync(id);
+            var result = await _repository.FindByIdAsync(id);
             return Ok(result);
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult> Delete(
-            [FromRoute] Guid id,
-            [FromServices] IWorkOrderRepository repository)
+            [FromRoute] Guid id)
         {
             var workOrder = new WorkOrder();
             workOrder.SetId(id);
 
-            repository.Delete(workOrder);
-            await repository.Commit();
+            _repository.Delete(workOrder);
+            await _repository.Commit();
 
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("approve/{id}")]
+        public async Task<ActionResult> Approve(
+            [FromRoute] Guid id)
+        {
+            var workOrder = await _repository.FindByIdAsync(id);
+            workOrder.WorkOrderStatus = EWorkOrderStatus.APPROVED;
+            workOrder.TrackModifiedDate();
+            _repository.Update(workOrder);
+            await _repository.Commit();
+            return Ok(workOrder);
+        }
+
+        [HttpPost]
+        [Route("accept/{id}")]
+        public async Task<ActionResult> Accept(
+            [FromRoute] Guid id
+        )
+        {
+            var workOrder = await _repository.FindByIdAsync(id);
+            workOrder.WorkOrderStatus = EWorkOrderStatus.IN_EXECUTION;
+            workOrder.TrackModifiedDate();
+            _repository.Update(workOrder);
+            await _repository.Commit();
+            return Ok(workOrder);
         }
     }
 }

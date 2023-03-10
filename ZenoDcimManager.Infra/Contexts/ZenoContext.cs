@@ -51,6 +51,7 @@ namespace ZenoDcimManager.Infra.Contexts
 
         // Ordem de serviço
         public DbSet<WorkOrder> WorkOrders { get; set; }
+        public DbSet<WorkOrderEvent> WorkOrderEvents { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -95,6 +96,7 @@ namespace ZenoDcimManager.Infra.Contexts
             // Ordem de serviço
             modelBuilder.ApplyConfiguration(new WorkOrderMap());
             modelBuilder.ApplyConfiguration(new SupplierMap());
+            modelBuilder.ApplyConfiguration(new WorkOrderEventMap());
         }
     }
 }
