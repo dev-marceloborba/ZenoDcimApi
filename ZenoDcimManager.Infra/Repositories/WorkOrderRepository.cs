@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ServiceOrderContext.DTOs;
 using ZenoDcimManager.Domain.ServiceOrderContext.Entities;
+using ZenoDcimManager.Domain.ServiceOrderContext.Enums;
 using ZenoDcimManager.Infra.Contexts;
 
 namespace ZenoDcimManager.Infra.Repositories
@@ -55,6 +57,23 @@ namespace ZenoDcimManager.Infra.Repositories
                 .Include(x => x.Room)
                 .Include(x => x.Equipment)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<WorkOrder>> FindFilteredWorkOrders(WorkOrderFilterDto filterDto)
+        {
+            var query = _context.WorkOrders
+                .AsNoTracking()
+                .Include(x => x.Site)
+                .Include(x => x.Building)
+                .Include(x => x.Floor)
+                .Include(x => x.Room)
+                .Include(x => x.Equipment)
+                .AsQueryable();
+
+            if (filterDto.Status != 8)
+                query = query.Where(x => x.Status == (EWorkOrderStatus)filterDto.Status);
+
+            return await query.ToListAsync();
         }
 
         public void Update(WorkOrder model)

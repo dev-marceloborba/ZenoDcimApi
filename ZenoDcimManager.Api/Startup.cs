@@ -32,6 +32,7 @@ using FastReport.Data;
 using ZenoDcimManager.Api.Settings;
 using ZenoDcimManager.Api.Extensions;
 using ZenoDcimManager.Api.Services;
+using ZenoDcimManager.Domain.ServiceOrderContext.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 // MapConfiguration(builder);
@@ -208,6 +209,7 @@ void ConfigureHandlers(WebApplicationBuilder builder)
     builder.Services.AddTransient<VirtualParameterHandler, VirtualParameterHandler>();
     builder.Services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
     builder.Services.AddTransient<EquipmentCardHandler, EquipmentCardHandler>();
+    builder.Services.AddTransient<WorkOrderHandler, WorkOrderHandler>();
 }
 
 void MapConfiguration(WebApplicationBuilder builder)

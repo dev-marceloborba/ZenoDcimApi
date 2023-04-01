@@ -16,9 +16,7 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Commands
         public Guid EquipmentId { get; set; }
         public EWorkOrderNature Nature { get; set; }
         public EResponsibleType ResponsibleType { get; set; }
-        public string Executor { get; set; }
-        public string Supervisor { get; set; }
-        public string Manager { get; set; }
+        public string User { get; set; }
         public EMaintenanceType MaintenanceType { get; set; }
         public EWorkOrderType OrderType { get; set; }
         public DateTime InitialDate { get; set; }
@@ -36,7 +34,7 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Commands
             AddNotifications(
                 new Contract()
                    .Requires()
-                   .IsGreaterThan(InitialDate, FinalDate, "InitialDate", "Data final deve ser maior que a data inicial")
+                   .IsGreaterThan(FinalDate, InitialDate, "InitialDate", "Data final deve ser maior que a data inicial")
             );
         }
     }

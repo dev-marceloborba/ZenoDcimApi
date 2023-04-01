@@ -33,7 +33,7 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Handlers
             {
                 var workOrder = await _workOrderRepository.FindByIdAsync((Guid)command.Id);
                 MapObject(workOrder, command);
-                workOrder.WorkOrderStatus = command.Status;
+                workOrder.Status = command.Status;
                 workOrder.TrackModifiedDate();
 
                 _workOrderRepository.Update(workOrder);
@@ -45,12 +45,13 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Handlers
             {
                 var workOrder = new WorkOrder();
                 MapObject(workOrder, command);
-                workOrder.WorkOrderStatus = EWorkOrderStatus.DRAFT;
+                workOrder.Status = EWorkOrderStatus.DRAFT;
 
                 await _workOrderRepository.CreateAsync(workOrder);
                 await _workOrderEventRepository.CreateAsync(new WorkOrderEvent
                 {
-                    User = command.Supervisor,
+                    WorkOrderId = workOrder.Id,
+                    User = command.User,
                     Status = EWorkOrderStatus.DRAFT
                 });
                 await _workOrderRepository.Commit();
@@ -62,15 +63,18 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Handlers
 
         private void MapObject(WorkOrder workOrder, WorkOrderEditorCommand command)
         {
+            workOrder.SiteId = command.SiteId;
+            workOrder.BuildingId = command.BuildingId;
+            workOrder.FloorId = command.FloorId;
+            workOrder.RoomId = command.RoomId;
+            workOrder.EquipmentId = command.EquipmentId;
             workOrder.Description = command.Description;
             workOrder.FinalDate = command.FinalDate;
             workOrder.InitialDate = command.InitialDate;
             workOrder.MaintenanceType = command.MaintenanceType;
             workOrder.Nature = command.Nature;
             workOrder.OrderType = command.OrderType;
-            workOrder.Executor = command.Executor;
-            workOrder.Supervisor = command.Supervisor;
-            workOrder.Manager = command.Manager;
+            workOrder.Supervisor = command.User;
             workOrder.ResponsibleType = command.ResponsibleType;
             workOrder.Title = command.Title;
             workOrder.Priority = command.Priority;

@@ -20,6 +20,11 @@ namespace ZenoDcimManager.Infra.Contexts.Mappers
             builder.Property(x => x.FinalDate).HasConversion(typeof(UtcValueConverter));
             builder.Property(x => x.Cost).HasPrecision(18, 2);
             builder.HasMany(x => x.WorkOrderEvents).WithOne(x => x.WorkOrder);
+            builder.HasOne(x => x.Site);
+            builder.HasOne(x => x.Building);
+            builder.HasOne(x => x.Floor);
+            builder.HasOne(x => x.Room);
+            builder.HasOne(x => x.Equipment);
         }
     }
 }

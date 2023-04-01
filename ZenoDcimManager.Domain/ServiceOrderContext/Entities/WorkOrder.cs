@@ -16,15 +16,15 @@ namespace ZenoDcimManager.Domain.ServiceOrderContext.Entities
         public Equipment Equipment { get; set; }
         public EWorkOrderNature Nature { get; set; }
         public EResponsibleType ResponsibleType { get; set; }
-        public string Executor { get; set; }
+        public string? Executor { get; set; }
         public string Supervisor { get; set; }
-        public string Manager { get; set; }
+        public string? Manager { get; set; }
         public EMaintenanceType MaintenanceType { get; set; }
         public EWorkOrderType OrderType { get; set; }
         public DateTime InitialDate { get; set; }
         public DateTime FinalDate { get; set; }
         public string Description { get; set; }
-        public EWorkOrderStatus WorkOrderStatus { get; set; }
+        public EWorkOrderStatus Status { get; set; }
         public int EstimatedRepairTime { get; set; }
         public int? RealRepairTime { get; set; }
         public decimal? Cost { get; set; }
