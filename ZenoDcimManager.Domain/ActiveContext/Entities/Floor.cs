@@ -23,7 +23,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Entities
             return clone;
         }
 
-        public int GetRoomsQuantity() => Rooms.Count;
+        public int GetRoomsQuantity() => Rooms.Where(r => r.RackCapacity > 0).Count();
 
         public double GetPowerCapacity() => Rooms.Sum(x => x.PowerCapacity);
         public int GetRackCapacity() => Rooms.Sum(x => x.RackCapacity);

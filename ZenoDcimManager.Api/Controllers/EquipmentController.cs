@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZenoDcimManager.Domain.ActiveContext.Usecases;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -17,19 +18,29 @@ namespace ZenoDcimManager.Api.Controllers
     public class EquipmentController : ControllerBase
     {
         private readonly IEquipmentRepository _repository;
+        private readonly UpdatePathnameWhenStructureChanges _updatePathname;
 
-        public EquipmentController(IEquipmentRepository repository)
+        public EquipmentController(IEquipmentRepository repository, UpdatePathnameWhenStructureChanges updatePathname)
         {
             _repository = repository;
+            _updatePathname = updatePathname;
         }
 
         [Route("building/floor/room/equipment")]
         [HttpPost]
-        public async Task<ICommandResult> CreateEquipment(
+        public async Task<ActionResult> CreateEquipment(
           [FromBody] CreateEquipmentCommand command,
           [FromServices] EquipmentHandler handler)
         {
-            return (ICommandResult)await handler.Handle(command);
+            var result = await handler.Handle(command);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
         }
 
         [Route("building/floor/room/equipment/{id}")]
@@ -42,6 +53,7 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var equipment = await _repository.FindByIdAsync(id);
+                await _updatePathname.Execute(equipment.Component, command.Component);
                 equipment.Component = command.Component;
                 equipment.ComponentCode = command.ComponentCode;
                 equipment.Description = command.Description;

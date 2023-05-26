@@ -9,6 +9,7 @@ namespace ZenoDcimManager.Domain.ZenoContext.Repositories
 {
     public interface IEquipmentParameterRepository : CrudRepository<EquipmentParameter>, IUnitOfWork
     {
+        Task<IEnumerable<EquipmentParameter>> FindParametersContainingName(string name);
         IList<EquipmentParameter> FindParametersByEquipmentId(Guid id);
         Task<EquipmentParameter> FindByIdWithoutTracking(Guid id);
     }

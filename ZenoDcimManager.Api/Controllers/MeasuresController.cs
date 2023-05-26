@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ZenoDcimManager.Domain.AutomationContext.Commands;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.AutomationContext.Repositories;
@@ -16,10 +17,12 @@ namespace ZenoDcimManager.Api.Controllers
     public class MeasuresController : ControllerBase
     {
         private readonly IMeasureRepository _repository;
+        private readonly ILogger<MeasuresController> _logger;
 
-        public MeasuresController(IMeasureRepository repository)
+        public MeasuresController(IMeasureRepository repository, ILogger<MeasuresController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -77,14 +80,22 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<IActionResult> CreateAsync(
             [FromBody] CreateMeasureCommand command)
         {
-            var measure = new Measure
+            try
             {
-                Name = command.Pathname,
-                Value = command.Value,
-                Timestamp = DateTime.UtcNow,
-            };
-            await _repository.CreateAsync(measure);
-            await _repository.Commit();
+                var measure = new Measure
+                {
+                    Name = command.Pathname,
+                    Value = command.Value,
+                    Timestamp = DateTime.UtcNow,
+                };
+                await _repository.CreateAsync(measure);
+                await _repository.Commit();
+            }
+            catch
+            {
+                _logger.LogError("Erro ao registrar parâmetro no histórico");
+            }
+
             return Ok();
         }
 

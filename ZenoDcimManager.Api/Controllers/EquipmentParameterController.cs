@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
+using ZenoDcimManager.Domain.ActiveContext.Usecases;
 using ZenoDcimManager.Domain.AutomationContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
@@ -21,10 +22,12 @@ namespace ZenoDcimManager.Api.Controllers
     public class EquipmentParameterControler : ControllerBase
     {
         private readonly IEquipmentParameterRepository _repository;
+        private readonly UpdatePathnameWhenStructureChanges _updatePathname;
 
-        public EquipmentParameterControler(IEquipmentParameterRepository repository)
+        public EquipmentParameterControler(IEquipmentParameterRepository repository, UpdatePathnameWhenStructureChanges updatePathname)
         {
             _repository = repository;
+            _updatePathname = updatePathname;
         }
 
         [Route("building/floor/room/equipment/parameter")]
@@ -95,6 +98,9 @@ namespace ZenoDcimManager.Api.Controllers
                 context.Remove(rule);
             }
 
+            // await _updatePathname.Execute(command.Name, equipmentParameter.Name);
+
+            equipmentParameter.Name = command.Name;
             equipmentParameter.DataSource = command.DataSource;
             equipmentParameter.Unit = command.Unit;
             equipmentParameter.Scale = command.Scale;

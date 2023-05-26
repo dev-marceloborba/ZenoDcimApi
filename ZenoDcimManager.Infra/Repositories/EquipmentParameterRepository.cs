@@ -78,9 +78,17 @@ namespace ZenoDcimManager.Infra.Repositories
                 .ToList();
         }
 
+        public async Task<IEnumerable<EquipmentParameter>> FindParametersContainingName(string name)
+        {
+            return await _context.EquipmentParameters
+                .Where(x => x.Pathname.Contains(name))
+                .ToListAsync();
+        }
+
         public void Update(EquipmentParameter model)
         {
             _context.Entry(model).State = EntityState.Modified;
+            // _context.EquipmentParameters.Update(model);
         }
     }
 }

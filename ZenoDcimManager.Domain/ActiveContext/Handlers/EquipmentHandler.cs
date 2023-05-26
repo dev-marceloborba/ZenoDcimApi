@@ -25,12 +25,20 @@ namespace ZenoDcimManager.Domain.ZenoContext.Handlers
 
         public async Task<ICommandResult> Handle(CreateEquipmentCommand command)
         {
+            var existedEquipment = await _equipmentRepository.FindEquipmentByName(command.SiteId, command.BuildingId, command.FloorId, command.RoomId, command.Component);
+
+            if (existedEquipment != null)
+            {
+                return new CommandResult(false, "Equipamento já cadastrado, por favor, utilize outro nome", null);
+            }
+
             var equipment = new Equipment
             {
                 Component = command.Component,
                 ComponentCode = command.ComponentCode,
                 Group = command.Group,
                 Description = command.Description,
+                SiteId = command.SiteId,
                 BuildingId = command.BuildingId,
                 FloorId = command.FloorId,
                 RoomId = command.RoomId,

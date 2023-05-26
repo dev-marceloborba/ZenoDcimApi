@@ -33,6 +33,7 @@ using ZenoDcimManager.Api.Settings;
 using ZenoDcimManager.Api.Extensions;
 using ZenoDcimManager.Api.Services;
 using ZenoDcimManager.Domain.ServiceOrderContext.Handlers;
+using ZenoDcimManager.Domain.ActiveContext.Usecases;
 
 var builder = WebApplication.CreateBuilder(args);
 // MapConfiguration(builder);
@@ -42,6 +43,7 @@ ConfigureServices(builder);
 // ConfigureMqttServices(builder);
 ConfigureRepositories(builder);
 ConfigureHandlers(builder);
+ConfigureUsecases(builder);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -210,6 +212,11 @@ void ConfigureHandlers(WebApplicationBuilder builder)
     builder.Services.AddTransient<AlarmEmailHandler, AlarmEmailHandler>();
     builder.Services.AddTransient<EquipmentCardHandler, EquipmentCardHandler>();
     builder.Services.AddTransient<WorkOrderHandler, WorkOrderHandler>();
+}
+
+void ConfigureUsecases(WebApplicationBuilder builder)
+{
+    builder.Services.AddTransient<UpdatePathnameWhenStructureChanges, UpdatePathnameWhenStructureChanges>();
 }
 
 void MapConfiguration(WebApplicationBuilder builder)

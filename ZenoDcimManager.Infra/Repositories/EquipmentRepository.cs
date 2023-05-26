@@ -76,6 +76,14 @@ namespace ZenoDcimManager.Infra.Repositories
             //     .FirstOrDefaultAsync();
         }
 
+
+        public async Task<Equipment> FindEquipmentByName(Guid siteId, Guid buildingId, Guid floorId, Guid roomId, string name)
+        {
+            return await _context.Equipments
+                .Where(x => x.Component == name && x.SiteId == siteId && x.BuildingId == buildingId && x.FloorId == floorId && x.RoomId == roomId)
+                .FirstOrDefaultAsync();
+        }
+
         public IEnumerable<Equipment> FindEquipmentByRoom(Guid roomId)
         {
             return _context.Rooms

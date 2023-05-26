@@ -24,6 +24,7 @@ namespace ZenoDcimManager.Api.Controllers
         public async Task<ActionResult> GetDataCenterStructure()
         {
             var result = await _context.Sites
+                .AsNoTracking()
                 .Include(x => x.Buildings)
                 .ThenInclude(x => x.Floors)
                 .ThenInclude(x => x.Rooms)

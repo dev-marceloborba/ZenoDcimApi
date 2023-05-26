@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
+using ZenoDcimManager.Domain.ActiveContext.Usecases;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -21,11 +22,14 @@ namespace ZenoDcimManager.Api.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomRepository _repository;
+        private readonly UpdatePathnameWhenStructureChanges _updatePathname;
 
-        public RoomController(IRoomRepository repository)
+        public RoomController(IRoomRepository repository, UpdatePathnameWhenStructureChanges updatePathname)
         {
             _repository = repository;
+            _updatePathname = updatePathname;
         }
+
         [Route("")]
         [HttpPost]
         public async Task<ICommandResult> CreateRoom(
@@ -46,6 +50,7 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var room = await _repository.FindByIdAsync(id);
+                await _updatePathname.Execute(room.Name, command.Name);
                 room.Name = command.Name;
                 room.RackCapacity = command.RackCapacity;
                 room.PowerCapacity = command.PowerCapacity;

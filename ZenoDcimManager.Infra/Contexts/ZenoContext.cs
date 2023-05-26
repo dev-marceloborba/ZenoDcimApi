@@ -98,5 +98,10 @@ namespace ZenoDcimManager.Infra.Contexts
             modelBuilder.ApplyConfiguration(new SupplierMap());
             modelBuilder.ApplyConfiguration(new WorkOrderEventMap());
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
     }
 }

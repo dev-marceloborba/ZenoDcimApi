@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
 using ZenoDcimManager.Domain.ActiveContext.Repositories;
+using ZenoDcimManager.Domain.ActiveContext.Usecases;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -23,11 +24,13 @@ namespace ZenoDcimManager.Api.Controllers
     {
         private readonly IBuildingRepository _repository;
         private readonly IBuildingCardSettingsRepository _cardRepository;
+        private readonly UpdatePathnameWhenStructureChanges _updatePathname;
 
-        public BuildingController(IBuildingRepository repository, IBuildingCardSettingsRepository cardRepository)
+        public BuildingController(IBuildingRepository repository, IBuildingCardSettingsRepository cardRepository, UpdatePathnameWhenStructureChanges updatePathname)
         {
             _repository = repository;
             _cardRepository = cardRepository;
+            _updatePathname = updatePathname;
         }
 
         [Route("")]
@@ -49,6 +52,7 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var building = await _repository.FindByIdAsync(id);
+                await _updatePathname.Execute(building.Name, command.Name);
                 building.Name = command.Name;
                 building.SiteId = command.SiteId;
                 building.TrackModifiedDate();

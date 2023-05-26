@@ -38,7 +38,8 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Measures
                 .AsNoTracking()
                 .Where(x => x.Timestamp >= filter.InitialDate && x.Timestamp <= filter.FinalDate)
-                .OrderByDescending(x => x.Timestamp)
+                // .OrderByDescending(x => x.Timestamp)
+                .OrderBy(x => x.Timestamp)
                 .ToListAsync();
         }
 
@@ -47,7 +48,8 @@ namespace ZenoDcimManager.Infra.Repositories
             return await _context.Measures
                 .AsNoTracking()
                 .Where(x => x.Timestamp >= filter.InitialDate && x.Timestamp <= filter.FinalDate && x.Name.Contains(parameter))
-                .OrderByDescending(x => x.Timestamp)
+                // .OrderByDescending(x => x.Timestamp)
+                .OrderBy(x => x.Timestamp)
                 .ToListAsync();
         }
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZenoDcimManager.Domain.ActiveContext.Commands.Outputs;
+using ZenoDcimManager.Domain.ActiveContext.Usecases;
 using ZenoDcimManager.Domain.ZenoContext.Commands.Inputs;
 using ZenoDcimManager.Domain.ZenoContext.Entities;
 using ZenoDcimManager.Domain.ZenoContext.Handlers;
@@ -21,10 +22,12 @@ namespace ZenoDcimManager.Api.Controllers
     public class FloorController : ControllerBase
     {
         private readonly IFloorRepository _repository;
+        private readonly UpdatePathnameWhenStructureChanges _updatePathname;
 
-        public FloorController(IFloorRepository repository)
+        public FloorController(IFloorRepository repository, UpdatePathnameWhenStructureChanges updatePathname)
         {
             _repository = repository;
+            _updatePathname = updatePathname;
         }
 
         [Route("building/floor")]
@@ -46,6 +49,7 @@ namespace ZenoDcimManager.Api.Controllers
             try
             {
                 var floor = await _repository.FindByIdAsync(id);
+                await _updatePathname.Execute(floor.Name, command.Name);
                 floor.Name = command.Name;
                 floor.BuildingId = command.BuildingId;
                 floor.TrackModifiedDate();
