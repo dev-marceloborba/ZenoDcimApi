@@ -54,6 +54,8 @@ FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 var app = builder.Build();
 LoadConfiguration(app);
 
+app.UseCors("DevelopmentPolicy");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -71,7 +73,7 @@ app.UseOptions();
 //--
 
 // app.UseCors("DevelopmentPolicy");
-app.UseCors("ProductionPolicy");
+// app.UseCors("ProductionPolicy");
 
 
 app.UseAuthentication();
