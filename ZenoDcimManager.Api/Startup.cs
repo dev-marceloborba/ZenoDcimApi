@@ -70,7 +70,8 @@ app.UseOptions();
 // }
 //--
 
-app.UseCors("DevelopmentPolicy");
+// app.UseCors("DevelopmentPolicy");
+app.UseCors("ProductionPolicy");
 
 
 app.UseAuthentication();
