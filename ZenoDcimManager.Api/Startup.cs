@@ -60,15 +60,18 @@ app.UseRouting();
 app.UseOptions();
 
 //--
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors("DevelopmentPolicy");
-}
-if (app.Environment.IsProduction())
-{
-    app.UseCors("ProductionPolicy");
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseCors("DevelopmentPolicy");
+// }
+// if (app.Environment.IsProduction())
+// {
+//     app.UseCors("ProductionPolicy");
+// }
 //--
+
+app.UseCors("DevelopmentPolicy");
+
 
 app.UseAuthentication();
 app.UseAuthorization();
