@@ -57,6 +57,16 @@ LoadConfiguration(app);
 // app.UseCors("DevelopmentPolicy");
 // app.UseCors("ProductionPolicy");
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("DevelopmentPolicy");
+}
+if (app.Environment.IsProduction())
+{
+    app.UseCors("ProductionPolicy");
+}
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -137,24 +147,24 @@ void ConfigureMvc(WebApplicationBuilder builder)
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-    // builder.Services.AddCors(options =>
-    // {
-    //     options.AddPolicy(name: "DevelopmentPolicy", policy => policy
-    //         .AllowAnyHeader()
-    //         .AllowAnyMethod()
-    //         .AllowAnyOrigin()
-    //     );
-    // });
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "DevelopmentPolicy", policy => policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin()
+        );
+    });
 
-    // builder.Services.AddCors(options =>
-    // {
-    //     options.AddPolicy(name: "ProductionPolicy", policy => policy
-    //         .AllowAnyHeader()
-    //         .AllowAnyMethod()
-    //         .SetIsOriginAllowed((host) => true)
-    //         .AllowCredentials()
-    //     );
-    // });
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "ProductionPolicy", policy => policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed((host) => true)
+            .AllowCredentials()
+        );
+    });
 }
 
 void ConfigureServices(WebApplicationBuilder builder)
