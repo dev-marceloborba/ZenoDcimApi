@@ -47,7 +47,7 @@ ConfigureUsecases(builder);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
+// builder.Services.AddSignalR();
 
 //FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
@@ -75,7 +75,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapHub<NotificationsHub>("notifications");
+    // endpoints.MapHub<NotificationsHub>("notifications");
 });
 app.UseResponseCompression();
 
