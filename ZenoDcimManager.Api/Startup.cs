@@ -49,13 +49,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 
-FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
+//FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
 var app = builder.Build();
 LoadConfiguration(app);
 
 // app.UseCors("DevelopmentPolicy");
-app.UseCors("ProductionPolicy");
+// app.UseCors("ProductionPolicy");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -79,7 +79,7 @@ app.UseOptions();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseFastReport();
+//app.UseFastReport();
 app.MapControllers();
 app.UseResponseCompression();
 
@@ -137,24 +137,24 @@ void ConfigureMvc(WebApplicationBuilder builder)
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy(name: "DevelopmentPolicy", policy => policy
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowAnyOrigin()
-        );
-    });
+    // builder.Services.AddCors(options =>
+    // {
+    //     options.AddPolicy(name: "DevelopmentPolicy", policy => policy
+    //         .AllowAnyHeader()
+    //         .AllowAnyMethod()
+    //         .AllowAnyOrigin()
+    //     );
+    // });
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy(name: "ProductionPolicy", policy => policy
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .SetIsOriginAllowed((host) => true)
-            .AllowCredentials()
-        );
-    });
+    // builder.Services.AddCors(options =>
+    // {
+    //     options.AddPolicy(name: "ProductionPolicy", policy => policy
+    //         .AllowAnyHeader()
+    //         .AllowAnyMethod()
+    //         .SetIsOriginAllowed((host) => true)
+    //         .AllowCredentials()
+    //     );
+    // });
 }
 
 void ConfigureServices(WebApplicationBuilder builder)
