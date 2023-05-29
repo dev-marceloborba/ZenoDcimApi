@@ -47,35 +47,12 @@ ConfigureUsecases(builder);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
+// builder.Services.AddSignalR();
 
 //FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
 var app = builder.Build();
 LoadConfiguration(app);
-
-// app.UseCors("DevelopmentPolicy");
-// app.UseCors("ProductionPolicy");
-
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseOptions();
-
-//--
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseCors("DevelopmentPolicy");
-// }
-// if (app.Environment.IsProduction())
-// {
-//     app.UseCors("ProductionPolicy");
-// }
-//--
-
-// app.UseCors("DevelopmentPolicy");
-// app.UseCors("ProductionPolicy");
 
 if (app.Environment.IsDevelopment())
 {
@@ -86,6 +63,10 @@ if (app.Environment.IsProduction())
     app.UseCors("ProductionPolicy");
 }
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseOptions();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -94,7 +75,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapHub<NotificationsHub>("notifications");
+    // endpoints.MapHub<NotificationsHub>("notifications");
 });
 app.UseResponseCompression();
 
