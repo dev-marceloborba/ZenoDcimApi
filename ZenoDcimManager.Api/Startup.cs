@@ -47,7 +47,7 @@ ConfigureUsecases(builder);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
+// builder.Services.AddSignalR();
 
 //FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
@@ -56,15 +56,6 @@ LoadConfiguration(app);
 
 // app.UseCors("DevelopmentPolicy");
 // app.UseCors("ProductionPolicy");
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors("DevelopmentPolicy");
-}
-if (app.Environment.IsProduction())
-{
-    app.UseCors("ProductionPolicy");
-}
 
 
 app.UseHttpsRedirection();
@@ -86,6 +77,15 @@ app.UseOptions();
 // app.UseCors("DevelopmentPolicy");
 // app.UseCors("ProductionPolicy");
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("DevelopmentPolicy");
+}
+if (app.Environment.IsProduction())
+{
+    app.UseCors("ProductionPolicy");
+}
+
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -99,7 +99,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHub<NotificationsHub>("notifications");
+// app.MapHub<NotificationsHub>("notifications");
 
 app.Run();
 
